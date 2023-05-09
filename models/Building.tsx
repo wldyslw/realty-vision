@@ -11,8 +11,10 @@ import React, {
     useMemo,
     useCallback,
 } from 'react';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, Html, Edges } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+
+import { ViewModes } from '@/components/Viewer';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -67,9 +69,10 @@ type GLTFResult = GLTF & {
 };
 
 export type BuildingProps = JSX.IntrinsicElements['group'] & {
-    selectedFlat: string | null;
-    selectedFloor: number | null;
-    hoveredFlat: string | null;
+    selectedApartment?: string | null;
+    selectedFloor?: number | null;
+    hoveredFlat?: string | null;
+    showLabels?: boolean;
 };
 
 export type BuildingRef = {
@@ -103,11 +106,13 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
     const HoverMaterial = useMemo(() => {
         const mat = materials.DefaultMaterial.clone();
         mat.color = new THREE.Color(hoverColor);
+        mat.emissive = new THREE.Color(hoverColor);
         return mat;
     }, [materials.DefaultMaterial]);
     const SelectMaterial = useMemo(() => {
         const mat = materials.DefaultMaterial.clone();
         mat.color = new THREE.Color(selectColor);
+        mat.emissive = new THREE.Color(selectColor);
         return mat;
     }, [materials.DefaultMaterial]);
 
@@ -123,7 +128,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
 
     const getMaterial = useCallback(
         (id: string) => {
-            if (props.selectedFlat === id) {
+            if (props.selectedApartment === id) {
                 return SelectMaterial;
             }
             if (props.hoveredFlat === id) {
@@ -136,41 +141,60 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
             SelectMaterial,
             materials.DefaultMaterial,
             props.hoveredFlat,
-            props.selectedFlat,
+            props.selectedApartment,
         ]
     );
 
     return (
         <group {...props} dispose={null}>
             <group ref={setRef} name="0" position={[0, 4, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">01</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base.geometry}
                     material={materials.DefaultMaterial}
-                />
+                >
+                    {/* <Edges color="white" scale={1.1} /> */}
+                </mesh>
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat001"
                     geometry={nodes.Flat001.geometry}
                     material={getMaterial('Flat001')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat002"
                     geometry={nodes.Flat002.geometry}
                     material={getMaterial('Flat002')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat003"
                     geometry={nodes.Flat003.geometry}
                     material={getMaterial('Flat003')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat004"
                     geometry={nodes.Flat004.geometry}
                     material={getMaterial('Flat004')}
@@ -178,34 +202,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="1" position={[0, 8.2, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">02</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base001.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common001.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat005"
                     geometry={nodes.Flat005.geometry}
                     material={getMaterial('Flat005')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat006"
                     geometry={nodes.Flat006.geometry}
                     material={getMaterial('Flat006')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat007"
                     geometry={nodes.Flat007.geometry}
                     material={getMaterial('Flat007')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat008"
                     geometry={nodes.Flat008.geometry}
                     material={getMaterial('Flat008')}
@@ -213,34 +254,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="2" position={[0, 12.4, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">03</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base002.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common002.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat009"
                     geometry={nodes.Flat009.geometry}
                     material={getMaterial('Flat009')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat010"
                     geometry={nodes.Flat010.geometry}
                     material={getMaterial('Flat010')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat011"
                     geometry={nodes.Flat011.geometry}
                     material={getMaterial('Flat011')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat012"
                     geometry={nodes.Flat012.geometry}
                     material={getMaterial('Flat012')}
@@ -248,34 +306,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="3" position={[0, 16.6, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">04</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base003.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common003.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat013"
                     geometry={nodes.Flat013.geometry}
                     material={getMaterial('Flat013')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat014"
                     geometry={nodes.Flat014.geometry}
                     material={getMaterial('Flat014')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat015"
                     geometry={nodes.Flat015.geometry}
                     material={getMaterial('Flat015')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat016"
                     geometry={nodes.Flat016.geometry}
                     material={getMaterial('Flat016')}
@@ -283,34 +358,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="4" position={[0, 20.8, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">05</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base004.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common004.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat017"
                     geometry={nodes.Flat017.geometry}
                     material={getMaterial('Flat017')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat018"
                     geometry={nodes.Flat018.geometry}
                     material={getMaterial('Flat018')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat019"
                     geometry={nodes.Flat019.geometry}
                     material={getMaterial('Flat019')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat020"
                     geometry={nodes.Flat020.geometry}
                     material={getMaterial('Flat020')}
@@ -318,34 +410,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="5" position={[0, 25, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">06</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base005.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common005.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat021"
                     geometry={nodes.Flat021.geometry}
                     material={getMaterial('Flat021')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat022"
                     geometry={nodes.Flat022.geometry}
                     material={getMaterial('Flat022')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat023"
                     geometry={nodes.Flat023.geometry}
                     material={getMaterial('Flat023')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat024"
                     geometry={nodes.Flat024.geometry}
                     material={getMaterial('Flat024')}
@@ -353,34 +462,51 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <group ref={setRef} name="6" position={[0, 29.2, 0]}>
+                {props.showLabels && (
+                    <Html transform sprite distanceFactor={30}>
+                        <div className="floor-label">07</div>
+                    </Html>
+                )}
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Base006.geometry}
                     material={materials.DefaultMaterial}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     geometry={nodes.Common006.geometry}
                     material={materials.DefaultMaterial}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat025"
                     geometry={nodes.Flat025.geometry}
                     material={getMaterial('Flat025')}
                     position={[5.5, 0.2, 4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat026"
                     geometry={nodes.Flat026.geometry}
                     material={getMaterial('Flat026')}
                     position={[5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat027"
                     geometry={nodes.Flat027.geometry}
                     material={getMaterial('Flat027')}
                     position={[-5.5, 0.2, -4.5]}
                 />
                 <mesh
+                    castShadow
+                    receiveShadow
                     name="Flat028"
                     geometry={nodes.Flat028.geometry}
                     material={getMaterial('Flat028')}
@@ -388,10 +514,14 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                 />
             </group>
             <mesh
+                castShadow
+                receiveShadow
                 geometry={nodes.Basement.geometry}
                 material={materials.DefaultMaterial}
             />
             <mesh
+                castShadow
+                receiveShadow
                 visible={
                     props.selectedFloor === null ||
                     props.selectedFloor === undefined
