@@ -4,14 +4,16 @@ import {
     PerformanceMonitor,
     Sky,
     Grid,
+    useHelper,
 } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
-import { useMemo, useState } from 'react';
+import { RefObject, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import ModelController from './ModelController';
 import { HALF_PI } from '@/utils/constants';
 import { Model as City } from '@/models/City';
+import { CameraHelper, type PointLight } from 'three';
 
 export enum ViewModes {
     Overview,
@@ -22,6 +24,44 @@ export enum ViewModes {
 type ViewerProps = {
     className?: string;
 };
+
+type LightsProps = {
+    viewMode: ViewModes;
+};
+
+function Lights(props: LightsProps) {
+    const ref = useRef<PointLight>();
+    // useHelper(
+    //     ref.current?.shadow.camera
+    //         ? { current: ref.current?.shadow.camera }
+    //         : false,
+    //     CameraHelper
+    // );
+
+    return (
+        <>
+            <pointLight
+                ref={ref as RefObject<PointLight>}
+                shadow-mapSize={[2048, 2048]}
+                shadow-camera-far={500}
+                castShadow
+                intensity={2}
+                position={[-100, 100, -100]}
+                shadow-bias={-0.001}
+            />
+            {props.viewMode !== ViewModes.Overview && (
+                <pointLight
+                    shadow-mapSize={[2048, 2048]}
+                    castShadow
+                    intensity={2}
+                    position={[100, 100, 100]}
+                    shadow-bias={-0.001}
+                />
+            )}
+            <ambientLight intensity={0.2} />
+        </>
+    );
+}
 
 // TODO: Solve limitation: CameraControls doesn't allow to truck&rotate on the same mouse button
 export default function Viewer(props: ViewerProps) {
@@ -44,6 +84,7 @@ export default function Viewer(props: ViewerProps) {
             shadows
             camera={{ position: [60, 60, 60] }}
         >
+            {/* <axesHelper args={[50]} /> */}
             <ModelController mode={viewMode} onHover={hover} />
             <Perf position="bottom-right" />
             <PerformanceMonitor></PerformanceMonitor>
@@ -54,20 +95,7 @@ export default function Viewer(props: ViewerProps) {
                 maxPolarAngle={HALF_PI}
             />
 
-            <pointLight
-                shadow-mapSize={[1024, 1024]}
-                intensity={2}
-                position={[30, 30, 30]}
-                shadow-bias={-0.001}
-            />
-            <pointLight
-                shadow-mapSize={[1024, 1024]}
-                castShadow
-                intensity={2}
-                position={[-30, 30, -30]}
-                shadow-bias={-0.001}
-            />
-            <ambientLight intensity={0.2} />
+            <Lights viewMode={viewMode} />
 
             {viewMode !== ViewModes.Overview && (
                 <Grid

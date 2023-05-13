@@ -2,15 +2,19 @@ import * as THREE from 'three';
 import { useRouter } from 'next/router';
 import React, {
     useCallback,
+    useContext,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react';
-import { ThreeEvent, useFrame } from '@react-three/fiber';
+import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
+import type { CameraControls } from '@react-three/drei';
 
 import { BuildingProps, BuildingRef, Model } from '../models/Building';
+import { Exposure } from '@/types';
 import { ViewModes } from './Viewer';
+import { ComplexInfoContext } from '@/utils/globalContext';
 
 type ModelControllerProps = {
     mode?: ViewModes;
@@ -21,6 +25,20 @@ type ModelControllerProps = {
     onHover?: (isHovered: boolean) => void;
 };
 
+const ExposureToRotationMap: Record<Exposure, number> = {
+    N: 0,
+    W: Math.PI / 2,
+    S: Math.PI,
+    E: (Math.PI * 3) / 2,
+};
+
+function circularMean(...angles: number[]) {
+    return Math.atan2(
+        angles.reduce((acc, a) => acc + Math.sin(a), 0),
+        angles.reduce((acc, a) => acc + Math.cos(a), 0)
+    );
+}
+
 export default function ModelController({
     mode = ViewModes.Overview,
     onHover,
@@ -29,6 +47,7 @@ export default function ModelController({
     const [selectedFloor, selectFloor] = useState<number | null>(null);
     const [selectedApartment, selectApartment] = useState<string | null>(null);
     const [hoveredApartment, hoverApartment] = useState<string | null>(null);
+    const { controls }: { controls: CameraControls } = useThree();
 
     const modelRef = useRef<BuildingRef>(null);
 
@@ -61,25 +80,56 @@ export default function ModelController({
         }
     });
 
+    const complexInfo = useContext(ComplexInfoContext);
+
+    const rotateToApartment = useCallback(
+        (id: string) => {
+            if (controls) {
+                const exposure = complexInfo.data?.buildings[0].apartments.find(
+                    (apt) => apt.id === id
+                )?.exposure;
+                if (exposure) {
+                    const angle = circularMean(
+                        ...exposure.map((e) => ExposureToRotationMap[e])
+                    );
+                    controls.rotateAzimuthTo(angle, true);
+                }
+            }
+        },
+        [complexInfo.data?.buildings, controls]
+    );
+
+    const rotateToFloor = useCallback(
+        (showDetails: boolean) => {
+            controls?.rotatePolarTo(
+                (showDetails ? 30 : 60) * THREE.MathUtils.DEG2RAD,
+                true
+            );
+        },
+        [controls]
+    );
+
     useEffect(() => {
         if (router.query.apartmentId) {
-            selectApartment(
-                decodeURIComponent(router.query.apartmentId as string)
-            );
+            const id = decodeURIComponent(router.query.apartmentId as string);
+            selectApartment(id);
+            rotateToApartment(id);
         } else {
             selectApartment(null);
         }
         hoverApartment(null);
-    }, [router.query.apartmentId]);
+    }, [router.query.apartmentId, rotateToApartment]);
 
     useEffect(() => {
         const floorDetails = router.query.floorDetails;
         if (floorDetails !== undefined && !Number.isNaN(+floorDetails)) {
             selectFloor(+floorDetails - 1);
+            rotateToFloor(true);
         } else {
             selectFloor(null);
+            rotateToFloor(false);
         }
-    }, [router.query.floorDetails]);
+    }, [rotateToFloor, router.query.floorDetails]);
 
     const updateRouter = useCallback(
         (id?: string) => {
@@ -110,6 +160,7 @@ export default function ModelController({
             const { name } = e.object;
             if (name.startsWith('Flat')) {
                 updateRouter(e.object.name);
+                rotateToApartment(e.object.name);
                 const parentName = e.object.parent?.name;
                 if (parentName && !Number.isNaN(+parentName)) {
                     // selectFloor(+parentName);
@@ -118,7 +169,7 @@ export default function ModelController({
                 handleApartmentDeselect();
             }
         },
-        [handleApartmentDeselect, updateRouter]
+        [handleApartmentDeselect, rotateToApartment, updateRouter]
     );
 
     const handleApartmentHover = useCallback(
@@ -147,7 +198,7 @@ export default function ModelController({
         switch (mode) {
             case ViewModes.Search: {
                 return {
-                    showLabels: true,
+                    showFloorLabels: true,
                     hoveredFlat: hoveredApartment,
                     selectedApartment: selectedApartment,
                     selectedFloor: selectedFloor,
@@ -159,7 +210,7 @@ export default function ModelController({
             }
             case ViewModes.Overview: {
                 return {
-                    showLabels: false,
+                    showFloorLabels: false,
                     hoveredFlat: null,
                     selectedApartment: null,
                     selectedFloor: null,
@@ -186,5 +237,5 @@ export default function ModelController({
         handleBuildingUnhover,
     ]);
 
-    return <Model {...modelProps} ref={modelRef} />;
+    return <Model {...modelProps} showApartmentLabels ref={modelRef} />;
 }

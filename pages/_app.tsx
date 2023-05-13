@@ -23,11 +23,11 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 <div
                     className={`${
                         router.pathname === '/' ? 'w-60' : 'w-16'
-                    } relative shrink-0 transition-all dark:bg-gray-900`}
+                    } relative shrink-0 transition-all dark:bg-gray-800`}
                 >
                     <MainNav />
                 </div>
-                <div className="min-h-0 w-full min-w-0">
+                <div className="flex min-h-0 w-full min-w-0">
                     <Component {...pageProps} />
                     <Viewer />
                 </div>

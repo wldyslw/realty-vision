@@ -1,8 +1,65 @@
 import ApartmentInfo from '@/components/AparmentInfoModal';
+import { Availability } from '@/types';
+import { ComplexInfoContext } from '@/utils/globalContext';
 import { useRouter } from 'next/router';
+import { useCallback, useContext } from 'react';
 
 export default function Search() {
     const router = useRouter();
+    const { data } = useContext(ComplexInfoContext);
 
-    return router.query.apartmentId ? <ApartmentInfo /> : null;
+    const handleApartmentSelect = useCallback(
+        (e: React.PointerEvent<HTMLTableRowElement>) => {
+            const id = e.currentTarget.dataset.id as string;
+            router.push({ query: { ...router.query, apartmentId: id } });
+        },
+        [router]
+    );
+
+    return (
+        <>
+            <div className="w-128 p-3 dark:bg-gray-900">
+                <div id="filters"></div>
+                <div id="data">
+                    <table className="w-full">
+                        <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Availability</td>
+                                <td>Floor</td>
+                                <td>Area</td>
+                                <td>Exposure</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data?.buildings[0].apartments?.map((apt) => {
+                                return (
+                                    <tr
+                                        className="hover:cursor-pointer hover:bg-gray-800"
+                                        key={apt.id}
+                                        onPointerDown={handleApartmentSelect}
+                                        role="link"
+                                        data-href={`/search?apartmentId=${apt.id}`}
+                                        data-id={apt.id}
+                                    >
+                                        <td>{apt.name}</td>
+                                        <td>
+                                            {apt.availability ===
+                                            Availability.Available
+                                                ? 'Available'
+                                                : 'Sold'}
+                                        </td>
+                                        <td>{apt.floorNumber}</td>
+                                        <td>{apt.fullArea}</td>
+                                        <td>{apt.exposure.join(', ')}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {router.query.apartmentId ? <ApartmentInfo /> : null}
+        </>
+    );
 }

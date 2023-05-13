@@ -10,7 +10,12 @@ const aptIds = [
     ['Flat025', 'Flat026', 'Flat027', 'Flat028'],
 ];
 
-const exposures: Exposure[] = ['N', 'E', 'S', 'W'];
+const exposures: Exposure[][] = [
+    ['N', 'W'],
+    ['W', 'S'],
+    ['S', 'E'],
+    ['E', 'N'],
+];
 
 export const apartments = aptIds.reduce((acc, floor, floorNumber) => {
     const flats: Apartment[] = floor.map((id, index) => {
@@ -19,10 +24,13 @@ export const apartments = aptIds.reduce((acc, floor, floorNumber) => {
             name: id,
             type: '',
             floorNumber: floorNumber + 1,
-            fullArea: 50,
-            balconyArea: 5,
-            exposure: [exposures[index]],
-            availability: Availability.available,
+            fullArea: Math.round(Math.random() * 120 + 30),
+            balconyArea: Math.round(Math.random() * 10 + 5),
+            exposure: exposures[index],
+            availability:
+                Math.random() > 0.1
+                    ? Availability.Available
+                    : Availability.Sold,
         } as Apartment;
     });
     return [...acc, ...flats];

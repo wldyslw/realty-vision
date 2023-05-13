@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
+
 import { ComplexInfoContext } from '@/utils/globalContext';
 
 export default function ApartmentInfo() {
@@ -43,7 +44,7 @@ export default function ApartmentInfo() {
     }, [apartmentInfo?.floorNumber, router]);
 
     return (
-        <aside className="absolute right-4 top-4 z-10 w-64 rounded-md bg-white p-4 text-black">
+        <aside className="absolute right-4 top-4 z-10 w-64 rounded-md bg-white p-4 dark:bg-gray-900">
             <div>
                 <Link href="/search">x</Link>
             </div>

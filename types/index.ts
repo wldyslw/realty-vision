@@ -1,7 +1,7 @@
 export type Exposure = 'N' | 'E' | 'S' | 'W';
 export enum Availability {
-    sold = 0,
-    available = 1,
+    Sold = 0,
+    Available = 1,
 }
 export type Apartment = {
     id: string;
