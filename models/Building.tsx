@@ -71,7 +71,6 @@ export type BuildingProps = JSX.IntrinsicElements['group'] & {
     selectedFloor?: number | null;
     hoveredFlat?: string | null;
     showFloorLabels?: boolean;
-    showApartmentLabels?: boolean;
 };
 
 export type BuildingRef = {
@@ -80,8 +79,10 @@ export type BuildingRef = {
     floorsCount: number;
 };
 
-const hoverColor = 0x52b3fe;
-const selectColor = 0x0b7ec6;
+// const hoverColor = 0x52b3fe;
+// const selectColor = 0x0b7ec6;
+const hoverColor = 0x52d960;
+const selectColor = 0x13af34;
 
 export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
     props,
@@ -175,7 +176,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat001')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 0 && (
+                    {props.selectedFloor === 1 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">001</div>
                         </Html>
@@ -189,7 +190,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat002')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 0 && (
+                    {props.selectedFloor === 1 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">002</div>
                         </Html>
@@ -203,7 +204,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat003')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 0 && (
+                    {props.selectedFloor === 1 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">003</div>
                         </Html>
@@ -217,7 +218,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat004')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 0 && (
+                    {props.selectedFloor === 1 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">004</div>
                         </Html>
@@ -251,7 +252,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat005')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 1 && (
+                    {props.selectedFloor === 2 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">005</div>
                         </Html>
@@ -265,7 +266,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat006')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 1 && (
+                    {props.selectedFloor === 2 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">006</div>
                         </Html>
@@ -279,7 +280,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat007')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 1 && (
+                    {props.selectedFloor === 2 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">007</div>
                         </Html>
@@ -293,7 +294,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat008')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 1 && (
+                    {props.selectedFloor === 2 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">008</div>
                         </Html>
@@ -327,7 +328,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat009')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 2 && (
+                    {props.selectedFloor === 3 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">009</div>
                         </Html>
@@ -341,7 +342,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat010')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 2 && (
+                    {props.selectedFloor === 3 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">010</div>
                         </Html>
@@ -355,7 +356,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat011')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 2 && (
+                    {props.selectedFloor === 3 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">011</div>
                         </Html>
@@ -369,7 +370,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat012')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 2 && (
+                    {props.selectedFloor === 3 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">012</div>
                         </Html>
@@ -403,7 +404,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat013')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 3 && (
+                    {props.selectedFloor === 4 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">013</div>
                         </Html>
@@ -417,7 +418,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat014')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 3 && (
+                    {props.selectedFloor === 4 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">014</div>
                         </Html>
@@ -431,7 +432,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat015')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 3 && (
+                    {props.selectedFloor === 4 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">015</div>
                         </Html>
@@ -445,7 +446,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat016')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 3 && (
+                    {props.selectedFloor === 4 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">016</div>
                         </Html>
@@ -479,7 +480,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat017')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 4 && (
+                    {props.selectedFloor === 5 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">017</div>
                         </Html>
@@ -493,7 +494,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat018')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 4 && (
+                    {props.selectedFloor === 5 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">018</div>
                         </Html>
@@ -507,7 +508,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat019')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 4 && (
+                    {props.selectedFloor === 5 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">019</div>
                         </Html>
@@ -521,7 +522,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat020')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 4 && (
+                    {props.selectedFloor === 5 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">020</div>
                         </Html>
@@ -555,7 +556,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat021')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 5 && (
+                    {props.selectedFloor === 6 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">021</div>
                         </Html>
@@ -569,7 +570,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat022')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 5 && (
+                    {props.selectedFloor === 6 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">022</div>
                         </Html>
@@ -583,7 +584,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat023')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 5 && (
+                    {props.selectedFloor === 6 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">023</div>
                         </Html>
@@ -597,7 +598,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat024')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 5 && (
+                    {props.selectedFloor === 6 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">024</div>
                         </Html>
@@ -631,7 +632,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat025')}
                     position={[5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 6 && (
+                    {props.selectedFloor === 7 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">025</div>
                         </Html>
@@ -645,7 +646,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat026')}
                     position={[5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 6 && (
+                    {props.selectedFloor === 7 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">026</div>
                         </Html>
@@ -659,7 +660,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat027')}
                     position={[-5.5, 0.2, -4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 6 && (
+                    {props.selectedFloor === 7 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">027</div>
                         </Html>
@@ -673,7 +674,7 @@ export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
                     material={getMaterial('Flat028')}
                     position={[-5.5, 0.2, 4.5]}
                 >
-                    {props.showApartmentLabels && props.selectedFloor === 6 && (
+                    {props.selectedFloor === 7 && (
                         <Html transform sprite distanceFactor={30}>
                             <div className="apartment-label">028</div>
                         </Html>

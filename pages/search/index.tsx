@@ -18,7 +18,7 @@ export default function Search() {
 
     return (
         <>
-            <div className="w-128 p-3 dark:bg-gray-900">
+            <div className="max-h-48 w-128 max-w-full overflow-scroll p-3 dark:bg-gray-900 md:h-full md:max-h-full">
                 <div id="filters"></div>
                 <div id="data">
                     <table className="w-full">
@@ -37,7 +37,7 @@ export default function Search() {
                                     <tr
                                         className="hover:cursor-pointer hover:bg-gray-800"
                                         key={apt.id}
-                                        onPointerDown={handleApartmentSelect}
+                                        onClick={handleApartmentSelect}
                                         role="link"
                                         data-href={`/search?apartmentId=${apt.id}`}
                                         data-id={apt.id}

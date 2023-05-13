@@ -44,43 +44,28 @@ export default function ModelController({
     onHover,
 }: ModelControllerProps) {
     const router = useRouter();
-    const [selectedFloor, selectFloor] = useState<number | null>(null);
-    const [selectedApartment, selectApartment] = useState<string | null>(null);
     const [hoveredApartment, hoverApartment] = useState<string | null>(null);
     const { controls }: { controls: CameraControls } = useThree();
-
-    const modelRef = useRef<BuildingRef>(null);
-
-    const handleBuildingSelect = useCallback(() => {
-        router.push('/search');
-    }, [router]);
-
-    const handleBuildingHover = useCallback(() => {
-        onHover?.(true);
-    }, [onHover]);
-    const handleBuildingUnhover = useCallback(() => {
-        onHover?.(false);
-    }, [onHover]);
-
-    useFrame((state, delta) => {
-        if (modelRef.current) {
-            for (let i = 0; i < modelRef.current.floorsCount; i++) {
-                const currentY = modelRef.current.floorsRef[i].position.y;
-
-                const initialY = modelRef.current.initialPositions[i];
-                const targetY =
-                    initialY +
-                    (selectedFloor !== null && selectedFloor < i ? 100 : 0);
-
-                if (currentY !== targetY) {
-                    modelRef.current.floorsRef[i].position.y =
-                        THREE.MathUtils.damp(currentY, targetY, 15, delta);
-                }
-            }
-        }
-    });
-
     const complexInfo = useContext(ComplexInfoContext);
+
+    const selectedApartmentId = useMemo(() => {
+        return router.query.apartmentId ?? null;
+    }, [router.query.apartmentId]) as string | null;
+
+    const selectedApartmentInfo = useMemo(() => {
+        return (
+            complexInfo.data?.buildings[0].apartments.find(
+                (apt) => apt.id === selectedApartmentId
+            ) ?? null
+        );
+    }, [complexInfo.data?.buildings, selectedApartmentId]);
+
+    const selectedFloorNumber = useMemo(() => {
+        if (selectedApartmentInfo && router.query.floorDetails) {
+            return selectedApartmentInfo.floorNumber;
+        }
+        return null;
+    }, [router.query.floorDetails, selectedApartmentInfo]);
 
     const rotateToApartment = useCallback(
         (id: string) => {
@@ -110,26 +95,52 @@ export default function ModelController({
     );
 
     useEffect(() => {
-        if (router.query.apartmentId) {
-            const id = decodeURIComponent(router.query.apartmentId as string);
-            selectApartment(id);
-            rotateToApartment(id);
-        } else {
-            selectApartment(null);
+        if (selectedApartmentId) {
+            rotateToApartment(selectedApartmentId);
         }
         hoverApartment(null);
-    }, [router.query.apartmentId, rotateToApartment]);
+    }, [rotateToApartment, selectedApartmentId]);
 
     useEffect(() => {
-        const floorDetails = router.query.floorDetails;
-        if (floorDetails !== undefined && !Number.isNaN(+floorDetails)) {
-            selectFloor(+floorDetails - 1);
+        if (selectedFloorNumber !== null) {
             rotateToFloor(true);
         } else {
-            selectFloor(null);
             rotateToFloor(false);
         }
-    }, [rotateToFloor, router.query.floorDetails]);
+    }, [rotateToFloor, selectedFloorNumber]);
+
+    const modelRef = useRef<BuildingRef>(null);
+
+    const handleBuildingSelect = useCallback(() => {
+        router.push('/search');
+    }, [router]);
+
+    const handleBuildingHover = useCallback(() => {
+        onHover?.(true);
+    }, [onHover]);
+    const handleBuildingUnhover = useCallback(() => {
+        onHover?.(false);
+    }, [onHover]);
+
+    useFrame((state, delta) => {
+        if (modelRef.current) {
+            for (let i = 0; i < modelRef.current.floorsCount; i++) {
+                const currentY = modelRef.current.floorsRef[i].position.y;
+
+                const initialY = modelRef.current.initialPositions[i];
+                const targetY =
+                    initialY +
+                    (selectedFloorNumber !== null && selectedFloorNumber < i + 1
+                        ? 100
+                        : 0);
+
+                if (currentY !== targetY) {
+                    modelRef.current.floorsRef[i].position.y =
+                        THREE.MathUtils.damp(currentY, targetY, 15, delta);
+                }
+            }
+        }
+    });
 
     const updateRouter = useCallback(
         (id?: string) => {
@@ -149,11 +160,10 @@ export default function ModelController({
     );
 
     const handleApartmentDeselect = useCallback(() => {
-        if (selectedApartment !== null) {
-            // selectFloor(null);
+        if (selectedApartmentId !== null) {
             updateRouter();
         }
-    }, [selectedApartment, updateRouter]);
+    }, [selectedApartmentId, updateRouter]);
     const handleApartmentSelect = useCallback(
         (e: ThreeEvent<MouseEvent>) => {
             e.stopPropagation();
@@ -161,10 +171,6 @@ export default function ModelController({
             if (name.startsWith('Flat')) {
                 updateRouter(e.object.name);
                 rotateToApartment(e.object.name);
-                const parentName = e.object.parent?.name;
-                if (parentName && !Number.isNaN(+parentName)) {
-                    // selectFloor(+parentName);
-                }
             } else {
                 handleApartmentDeselect();
             }
@@ -177,13 +183,13 @@ export default function ModelController({
             e.stopPropagation();
             if (
                 e.object.name.startsWith('Flat') &&
-                e.object.name !== selectedApartment
+                e.object.name !== selectedApartmentId
             ) {
                 hoverApartment(e.object.name);
                 onHover?.(true);
             }
         },
-        [onHover, selectedApartment]
+        [onHover, selectedApartmentId]
     );
     const handleApartmentUnhover = useCallback(
         (e: ThreeEvent<PointerEvent>) => {
@@ -200,8 +206,8 @@ export default function ModelController({
                 return {
                     showFloorLabels: true,
                     hoveredFlat: hoveredApartment,
-                    selectedApartment: selectedApartment,
-                    selectedFloor: selectedFloor,
+                    selectedApartment: selectedApartmentId,
+                    selectedFloor: selectedFloorNumber,
                     onClick: handleApartmentSelect,
                     onPointerMissed: handleApartmentDeselect,
                     onPointerOver: handleApartmentHover,
@@ -226,8 +232,8 @@ export default function ModelController({
     }, [
         mode,
         hoveredApartment,
-        selectedApartment,
-        selectedFloor,
+        selectedApartmentId,
+        selectedFloorNumber,
         handleApartmentSelect,
         handleApartmentDeselect,
         handleApartmentHover,
@@ -237,5 +243,5 @@ export default function ModelController({
         handleBuildingUnhover,
     ]);
 
-    return <Model {...modelProps} showApartmentLabels ref={modelRef} />;
+    return <Model {...modelProps} ref={modelRef} />;
 }

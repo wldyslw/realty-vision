@@ -58,7 +58,7 @@ export default function ApartmentInfo() {
                 <hr className="my-2" />
                 <button
                     onClick={toggleFloorDetails}
-                    className="rounded bg-gray-900 px-1 py-2 text-white"
+                    className="rounded bg-gray-900 px-4 py-2 text-white dark:bg-white dark:text-black"
                 >
                     {floorDetails ? 'Back' : 'Show floor plan'}
                 </button>
