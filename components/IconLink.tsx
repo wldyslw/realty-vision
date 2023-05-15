@@ -7,6 +7,8 @@ type IconLinkProps = LinkProps & {
     icon: string;
     children?: ReactNode | ReactNode[];
     collapsed?: boolean;
+    labelClass?: string;
+    iconClass?: string;
     href: string | UrlObject;
     className?: string;
     matchPath?: boolean;
@@ -22,6 +24,8 @@ export default function IconLink({
     href,
     className,
     matchPath,
+    labelClass,
+    iconClass,
     ...props
 }: IconLinkProps) {
     const router = useRouter();
@@ -47,11 +51,13 @@ export default function IconLink({
                 collapsed ? 'justify-center' : ''
             } inline-flex rounded-md px-2 py-1 text-primary-darker hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
         >
-            <span className="material-symbols-outlined text-center">
+            <span className={`material-symbols-outlined ${iconClass}`}>
                 {icon}
             </span>
             <span
-                className={`${collapsed ? 'hidden' : ''} ml-2 font-extrabold`}
+                className={`${collapsed ? 'hidden' : ''} ml-2 font-extrabold ${
+                    labelClass ?? ''
+                }`}
             >
                 {children}
             </span>
