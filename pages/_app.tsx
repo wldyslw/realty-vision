@@ -20,16 +20,16 @@ export default function App({ Component, pageProps, router }: AppProps) {
             value={{ data: data ?? null, isLoading, error }}
         >
             <main
-                className={`absolute inset-0 flex flex-col-reverse md:flex-row ${font.className}`}
+                className={`absolute inset-0 flex flex-col-reverse lg:flex-row ${font.className}`}
             >
                 <div
                     className={`${
-                        router.pathname === '/' ? 'md:w-60' : 'md:w-16'
+                        router.pathname === '/' ? 'lg:w-60' : 'lg:w-16'
                     } relative w-full shrink-0 dark:bg-gray-800`}
                 >
                     <MainNav />
                 </div>
-                <div className="flex h-full min-h-0 w-full min-w-0 flex-col-reverse md:flex-row">
+                <div className="flex h-full min-h-0 w-full min-w-0 flex-col-reverse lg:flex-row">
                     <Component {...pageProps} />
                     <Viewer />
                 </div>

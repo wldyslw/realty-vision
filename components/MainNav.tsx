@@ -14,7 +14,7 @@ export default function MainNav() {
     const router = useRouter();
 
     return (
-        <nav className="flex overflow-y-scroll md:flex-col">
+        <nav className="flex justify-center overflow-y-scroll lg:flex-col lg:justify-start">
             {links.map(({ href, icon, label }) => {
                 return (
                     <IconLink
