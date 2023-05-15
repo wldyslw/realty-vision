@@ -18,7 +18,7 @@ export default function Search() {
 
     return (
         <>
-            <div className="max-h-48 w-full max-w-full shrink-0 overflow-scroll p-3 dark:bg-gray-900 lg:h-full lg:max-h-full lg:w-128">
+            <div className="max-h-48 w-full max-w-full shrink-0 overflow-scroll bg-base-darker p-3 lg:h-full lg:max-h-full lg:w-128">
                 <div id="filters"></div>
                 <div id="data">
                     <table className="w-full">
@@ -35,7 +35,7 @@ export default function Search() {
                             {data?.buildings[0].apartments?.map((apt) => {
                                 return (
                                     <tr
-                                        className="hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800"
+                                        className="hover:cursor-pointer hover:bg-primary-hover"
                                         key={apt.id}
                                         onClick={handleApartmentSelect}
                                         role="link"

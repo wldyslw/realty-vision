@@ -81,8 +81,8 @@ export type BuildingRef = {
 
 // const hoverColor = 0x52b3fe;
 // const selectColor = 0x0b7ec6;
-const hoverColor = 0x52d960;
-const selectColor = 0x13af34;
+const hoverColor = 0x10b981;
+const selectColor = 0x047857;
 
 export const Model = forwardRef<BuildingRef, BuildingProps>(function Model(
     props,

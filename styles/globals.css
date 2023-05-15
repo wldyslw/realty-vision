@@ -5,28 +5,48 @@
 @tailwind utilities;
 
 :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
+    --color-foreground: 0, 0, 0;
+    --color-background-start: 214, 219, 220;
+    --color-background-end: 255, 255, 255;
+
+    --color-base: 244 244 245; /* zinc-100 */
+    --color-base-darker: 228 228 231; /* zinc-200 */
+    --color-typo-primary: 0 0 0;
+    --color-typo-secondary: 113 113 122; /* zink-500 */
+
+    --color-primary: 16 185 129; /* emerald-500 */
+    --color-primary-darker: 4 120 87; /* emerald-700 */
+    --color-primary-hover: 209 250 229; /* emerald-100 */
+    --color-primary-active: 167 243 208; /* emerald-200 */
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --foreground-rgb: 255, 255, 255;
-        --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
+        --color-foreground: 255, 255, 255;
+        --color-background-start: 0, 0, 0;
+        --color-background-end: 0, 0, 0;
+
+        --color-base: 24 24 27; /* zinc-900 */
+        --color-base-darker: 9 9 11; /* zinc-950 */
+        --color-typo-primary: 255 255 255;
+        --color-typo-secondary: 113 113 122; /* zink-500 */
+
+        --color-primary: 110 231 183; /* emerald-300 */
+        --color-primary-darker: 16 185 129; /* emerald-500 */
+        --color-primary-hover: 4 120 87; /* emerald-700 */
+        --color-primary-active: 6 95 70; /* emerald-800 */
     }
 }
 
 main {
     overflow: hidden;
-    color: rgb(var(--foreground-rgb));
+    color: rgb(var(--color-foreground));
     background: linear-gradient(
             to bottom,
             transparent,
-            rgb(var(--background-end-rgb))
+            rgb(var(--color-background-end))
         )
-        rgb(var(--background-start-rgb));
+        rgb(var(--color-background-start));
 }
 
 .floor-label {
@@ -48,5 +68,18 @@ main {
 }
 
 .apartment-label {
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 2px rgb(0 0 0 / 0.5);
+}
+
+.apartment-label::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -1rem;
+    display: block;
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: rgb(var(--color-primary-darker));
+    border-radius: 50%;
 }

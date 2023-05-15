@@ -25,7 +25,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 <div
                     className={`${
                         router.pathname === '/' ? 'lg:w-60' : 'lg:w-16'
-                    } relative w-full shrink-0 dark:bg-gray-800`}
+                    } relative w-full shrink-0 bg-base`}
                 >
                     <MainNav />
                 </div>

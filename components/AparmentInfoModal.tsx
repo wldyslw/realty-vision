@@ -1,8 +1,22 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { ComplexInfoContext } from '@/utils/globalContext';
+import IconLink from './IconLink';
+import type { Apartment } from '@/types';
+
+type Label = string;
+type Icon = string;
+type KeyType = keyof Apartment;
+
+const visibleApartmentProperties: [KeyType, Label, Icon][] = [
+    ['type', 'Type', 'dashboard'],
+    ['exposure', 'Exposure', 'explore'],
+    ['fullArea', 'Area, m²', 'square_foot'],
+    ['balconyArea', 'Balcony, m²', 'balcony'],
+    ['floorNumber', 'Floor', 'floor'],
+    ['roomNumber', 'Rooms', 'bed'],
+];
 
 export default function ApartmentInfo() {
     const router = useRouter();
@@ -19,49 +33,57 @@ export default function ApartmentInfo() {
 
     const floorDetails = !!router.query.floorDetails;
 
-    const toggleFloorDetails = useCallback(() => {
-        const query = { ...router.query };
-        if (floorDetails) {
-            delete query.floorDetails;
-        } else if (apartmentInfo) {
-            query.floorDetails = apartmentInfo.floorNumber.toString();
-        }
-        router.push({ query });
-    }, [apartmentInfo, floorDetails, router]);
-
-    useEffect(() => {
-        if (
-            router.query.floorDetails &&
-            +router.query.floorDetails !== apartmentInfo?.floorNumber
-        ) {
-            router.push({
-                query: {
-                    ...router.query,
-                    floorDetails: apartmentInfo?.floorNumber,
-                },
-            });
-        }
-    }, [apartmentInfo?.floorNumber, router]);
+    const detailsUrl = {
+        query: floorDetails ? { apartmentId } : { apartmentId, floorDetails },
+    };
 
     return (
-        <aside className="absolute right-4 top-4 z-10 w-64 rounded-md bg-white p-4 dark:bg-gray-900">
-            <div>
-                <Link href="/search">x</Link>
+        <aside className="absolute right-4 top-4 z-10 w-64 rounded-md bg-base p-4 ">
+            <div className="flex justify-between">
+                <h1 className="text-2xl font-extrabold">
+                    Apartment {apartmentInfo?.name ?? ''}
+                </h1>
+                <IconLink collapsed href="/search" icon="close"></IconLink>
             </div>
             <div>
-                <h1 className="text-2xl">{apartmentInfo?.name ?? ''}</h1>
-                <hr className="my-2" />
-                <h2>Floor: {apartmentInfo?.floorNumber}</h2>
-                <h2>Exposure: {apartmentInfo?.exposure.join(', ')}</h2>
-                <h2>Area: {apartmentInfo?.fullArea}</h2>
-                <h2>Balcony: {apartmentInfo?.balconyArea}</h2>
-                <hr className="my-2" />
-                <button
-                    onClick={toggleFloorDetails}
-                    className="rounded bg-gray-900 px-4 py-2 text-white dark:bg-white dark:text-black"
+                <hr className="my-2 border-zinc-200 dark:border-zinc-700" />
+                <div className="flex flex-wrap">
+                    {visibleApartmentProperties.map(([key, label, icon]) => {
+                        return (
+                            <div
+                                key={key}
+                                className="my-2 w-[33.333%] flex-col flex-wrap justify-between"
+                            >
+                                <div className="flex">
+                                    <span className="material-symbols-outlined mr-1">
+                                        {icon}
+                                    </span>
+                                    <span className="font-extrabold">
+                                        {apartmentInfo?.[key]}
+                                    </span>
+                                </div>
+                                <span className="text-xs text-typo-secondary">
+                                    {label}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+                <hr className="my-2 border-zinc-200 dark:border-zinc-700" />
+                <IconLink
+                    className="w-[50%]"
+                    href={detailsUrl}
+                    icon="grid_view"
                 >
-                    {floorDetails ? 'Back' : 'Show floor plan'}
-                </button>
+                    {floorDetails ? 'Back' : 'Key plan'}
+                </IconLink>
+                <IconLink
+                    className="w-[50%]"
+                    href={`/details/${apartmentId}`}
+                    icon="vrpano"
+                >
+                    Explore
+                </IconLink>
             </div>
         </aside>
     );
