@@ -55,9 +55,9 @@ export default function IconLink({
                 {icon}
             </span>
             <span
-                className={`${collapsed ? 'hidden' : ''} ml-2 font-extrabold ${
-                    labelClass ?? ''
-                }`}
+                className={`${
+                    collapsed ? 'hidden lg:hidden' : ''
+                } ml-2 font-extrabold ${labelClass ?? ''}`}
             >
                 {children}
             </span>
