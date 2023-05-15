@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { MathUtils } from 'three';
 import { useRouter } from 'next/router';
 import React, {
     useCallback,
@@ -15,6 +15,7 @@ import { BuildingProps, BuildingRef, Model } from '../models/Building';
 import { Exposure } from '@/types';
 import { ViewModes } from './Viewer';
 import { ComplexInfoContext } from '@/utils/globalContext';
+import { TAU } from '@/utils/constants';
 
 type ModelControllerProps = {
     mode?: ViewModes;
@@ -39,13 +40,20 @@ function circularMean(...angles: number[]) {
     );
 }
 
+function absoluteAngle(targetAngle: number, sourceAngle: number) {
+    const angle = targetAngle - sourceAngle;
+    return MathUtils.euclideanModulo(angle + Math.PI, TAU) - Math.PI;
+}
+
 export default function ModelController({
     mode = ViewModes.Overview,
     onHover,
 }: ModelControllerProps) {
     const router = useRouter();
     const [hoveredApartment, hoverApartment] = useState<string | null>(null);
-    const { controls }: { controls: CameraControls } = useThree();
+    const controls = useThree(
+        (state) => state.controls as CameraControls | null
+    );
     const complexInfo = useContext(ComplexInfoContext);
 
     const selectedApartmentId = useMemo(() => {
@@ -74,10 +82,12 @@ export default function ModelController({
                     (apt) => apt.id === id
                 )?.exposure;
                 if (exposure) {
-                    const angle = circularMean(
+                    const targetAngle = circularMean(
                         ...exposure.map((e) => ExposureToRotationMap[e])
                     );
-                    controls.rotateAzimuthTo(angle, true);
+                    const currentAngle = controls.azimuthAngle;
+                    const result = absoluteAngle(targetAngle, currentAngle);
+                    controls.rotateAzimuthTo(currentAngle + result, true);
                 }
             }
         },
@@ -87,7 +97,7 @@ export default function ModelController({
     const rotateToFloor = useCallback(
         (showDetails: boolean) => {
             controls?.rotatePolarTo(
-                (showDetails ? 30 : 60) * THREE.MathUtils.DEG2RAD,
+                (showDetails ? 30 : 60) * MathUtils.DEG2RAD,
                 true
             );
         },
@@ -135,8 +145,12 @@ export default function ModelController({
                         : 0);
 
                 if (currentY !== targetY) {
-                    modelRef.current.floorsRef[i].position.y =
-                        THREE.MathUtils.damp(currentY, targetY, 15, delta);
+                    modelRef.current.floorsRef[i].position.y = MathUtils.damp(
+                        currentY,
+                        targetY,
+                        15,
+                        delta
+                    );
                 }
             }
         }
