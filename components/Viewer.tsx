@@ -1,11 +1,5 @@
 import { Canvas } from '@react-three/fiber';
-import {
-    CameraControls,
-    PerformanceMonitor,
-    Sky,
-    Grid,
-    useHelper,
-} from '@react-three/drei';
+import { CameraControls, Sky, Grid } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
 import { RefObject, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -13,7 +7,7 @@ import { useRouter } from 'next/router';
 import ModelController from './ModelController';
 import { HALF_PI } from '@/utils/constants';
 import { Model as City } from '@/models/City';
-import { CameraHelper, type PointLight } from 'three';
+import { type PointLight } from 'three';
 
 export enum ViewModes {
     Overview,
@@ -31,13 +25,6 @@ type LightsProps = {
 
 function Lights(props: LightsProps) {
     const ref = useRef<PointLight>();
-    // useHelper(
-    //     ref.current?.shadow.camera
-    //         ? { current: ref.current?.shadow.camera }
-    //         : false,
-    //     CameraHelper
-    // );
-
     return (
         <>
             <pointLight
@@ -84,10 +71,13 @@ export default function Viewer(props: ViewerProps) {
             shadows
             camera={{ position: [60, 60, 60] }}
         >
-            {/* <axesHelper args={[50]} /> */}
+            {process.env.NODE_ENV === 'development' && (
+                <>
+                    <axesHelper args={[50]} />
+                    <Perf minimal position="top-right" />
+                </>
+            )}
             <ModelController mode={viewMode} onHover={hover} />
-            <Perf position="bottom-right" />
-            <PerformanceMonitor></PerformanceMonitor>
             <CameraControls
                 makeDefault
                 minDistance={30}
