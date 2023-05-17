@@ -34,7 +34,9 @@ export default function ApartmentInfo() {
     const floorDetails = !!router.query.floorDetails;
 
     const detailsUrl = {
-        query: floorDetails ? { apartmentId } : { apartmentId, floorDetails },
+        query: floorDetails
+            ? { apartmentId }
+            : { apartmentId, floorDetails: true },
     };
 
     return (
