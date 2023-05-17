@@ -7,6 +7,7 @@ import MainNav from '@/components/MainNav';
 import fetcher from '@/utils/fetcher';
 import { ComplexInfoContext } from '@/utils/globalContext';
 import type { Complex } from '@/types';
+import { useSpring, a } from '@react-spring/web';
 
 import '@/styles/globals.css';
 
@@ -15,6 +16,13 @@ const font = Roboto({ weight: ['400'], subsets: ['latin'] });
 export default function App({ Component, pageProps, router }: AppProps) {
     const { data, isLoading, error } = useSWR<Complex>('/api/meta', fetcher);
 
+    const [style] = useSpring(
+        {
+            width: router.pathname === '/' ? '15rem' : '4rem',
+        },
+        [router.pathname]
+    );
+
     return (
         <ComplexInfoContext.Provider
             value={{ data: data ?? null, isLoading, error }}
@@ -22,13 +30,12 @@ export default function App({ Component, pageProps, router }: AppProps) {
             <main
                 className={`absolute inset-0 flex flex-col-reverse lg:flex-row ${font.className}`}
             >
-                <div
-                    className={`${
-                        router.pathname === '/' ? 'lg:w-60' : 'lg:w-16'
-                    } relative w-full shrink-0 bg-base`}
+                <a.div
+                    style={style}
+                    className={`relative min-w-full shrink-0 bg-base lg:min-w-0`}
                 >
                     <MainNav />
-                </div>
+                </a.div>
                 <div className="flex h-full min-h-0 w-full min-w-0 flex-col-reverse lg:flex-row">
                     <Component {...pageProps} />
                     <Viewer />

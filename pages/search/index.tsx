@@ -18,9 +18,9 @@ export default function Search() {
 
     return (
         <>
-            <div className="max-h-48 w-full max-w-full shrink-0 overflow-scroll bg-base-darker p-3 lg:h-full lg:max-h-full lg:w-128">
+            <div className="max-h-48 w-full max-w-full shrink-0 overflow-hidden bg-base-darker p-3 lg:h-full lg:max-h-full lg:w-128">
                 <div id="filters"></div>
-                <div id="data">
+                <div id="data" className="overflow-y-scroll">
                     <table className="w-full">
                         <thead>
                             <tr>
