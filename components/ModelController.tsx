@@ -1,18 +1,11 @@
 import { MathUtils } from 'three';
 import { useRouter } from 'next/router';
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
-import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { type ThreeEvent, useThree } from '@react-three/fiber';
 import type { CameraControls } from '@react-three/drei';
 
-import { BuildingProps, BuildingRef, Model } from '../models/Building';
-import { Exposure } from '@/types';
+import { type BuildingProps, Model } from '../models/Building';
+import type { Exposure } from '@/types';
 import { ViewModes } from './Viewer';
 import { ComplexInfoContext } from '@/utils/globalContext';
 import { TAU } from '@/utils/constants';
@@ -119,8 +112,6 @@ export default function ModelController({
         }
     }, [rotateToFloor, selectedFloorNumber]);
 
-    const modelRef = useRef<BuildingRef>(null);
-
     const handleBuildingSelect = useCallback(() => {
         router.push('/search');
     }, [router]);
@@ -131,30 +122,6 @@ export default function ModelController({
     const handleBuildingUnhover = useCallback(() => {
         onHover?.(false);
     }, [onHover]);
-
-    useFrame((state, delta) => {
-        if (modelRef.current) {
-            for (let i = 0; i < modelRef.current.floorsCount; i++) {
-                const currentY = modelRef.current.floorsRef[i].position.y;
-
-                const initialY = modelRef.current.initialPositions[i];
-                const targetY =
-                    initialY +
-                    (selectedFloorNumber !== null && selectedFloorNumber < i + 1
-                        ? 100
-                        : 0);
-
-                if (currentY !== targetY) {
-                    modelRef.current.floorsRef[i].position.y = MathUtils.damp(
-                        currentY,
-                        targetY,
-                        15,
-                        delta
-                    );
-                }
-            }
-        }
-    });
 
     const updateRouter = useCallback(
         (id?: string) => {
@@ -182,9 +149,10 @@ export default function ModelController({
         (e: ThreeEvent<MouseEvent>) => {
             e.stopPropagation();
             const { name } = e.object;
-            if (name.startsWith('Flat')) {
-                updateRouter(e.object.name);
-                rotateToApartment(e.object.name);
+            if (name.startsWith('SelectionBox')) {
+                const aptId = 'Flat' + e.object.name.slice(-3);
+                updateRouter(aptId);
+                rotateToApartment(aptId);
             } else {
                 handleApartmentDeselect();
             }
@@ -195,11 +163,12 @@ export default function ModelController({
     const handleApartmentHover = useCallback(
         (e: ThreeEvent<PointerEvent>) => {
             e.stopPropagation();
+            const aptId = 'Flat' + e.object.name.slice(-3);
             if (
-                e.object.name.startsWith('Flat') &&
-                e.object.name !== selectedApartmentId
+                e.object.name.startsWith('SelectionBox') &&
+                aptId !== selectedApartmentId
             ) {
-                hoverApartment(e.object.name);
+                hoverApartment(aptId);
                 onHover?.(true);
             }
         },
@@ -214,14 +183,16 @@ export default function ModelController({
         [onHover]
     );
 
-    const modelProps = useMemo<Partial<BuildingProps>>(() => {
+    const modelProps = useMemo<BuildingProps>(() => {
         switch (mode) {
             case ViewModes.Search: {
                 return {
+                    showSelectionBoxes: true,
                     showFloorLabels: true,
-                    hoveredFlat: hoveredApartment,
+                    hoveredApartment: hoveredApartment,
                     selectedApartment: selectedApartmentId,
-                    selectedFloor: selectedFloorNumber,
+                    selectedFloorNumber: selectedFloorNumber,
+                    availableSelectionBoxes: null,
                     onClick: handleApartmentSelect,
                     onPointerMissed: handleApartmentDeselect,
                     onPointerOver: handleApartmentHover,
@@ -230,17 +201,26 @@ export default function ModelController({
             }
             case ViewModes.Overview: {
                 return {
+                    showSelectionBoxes: false,
                     showFloorLabels: false,
-                    hoveredFlat: null,
+                    hoveredApartment: null,
                     selectedApartment: null,
-                    selectedFloor: null,
+                    selectedFloorNumber: null,
+                    availableSelectionBoxes: null,
                     onClick: handleBuildingSelect,
                     onPointerOver: handleBuildingHover,
                     onPointerOut: handleBuildingUnhover,
                 };
             }
             default: {
-                return {};
+                return {
+                    showSelectionBoxes: false,
+                    showFloorLabels: false,
+                    hoveredApartment: null,
+                    selectedApartment: null,
+                    selectedFloorNumber: null,
+                    availableSelectionBoxes: null,
+                };
             }
         }
     }, [
@@ -257,5 +237,5 @@ export default function ModelController({
         handleBuildingUnhover,
     ]);
 
-    return <Model {...modelProps} ref={modelRef} />;
+    return <Model {...modelProps} />;
 }

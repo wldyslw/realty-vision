@@ -50,7 +50,8 @@ main {
 }
 
 .floor-label {
-    transform: translate3d(-220px, -50%, 0);
+    transform: translate3d(-450px, -50%, 0);
+    font-size: 2rem;
 }
 
 .floor-label::before {
@@ -58,8 +59,8 @@ main {
     position: absolute;
     top: 100%;
     left: 0;
-    height: 1px;
-    width: 120px;
+    height: 3px;
+    width: 250px;
     background: #fafafa55;
 }
 
