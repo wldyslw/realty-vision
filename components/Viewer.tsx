@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import ModelController from './ModelController';
 import { HALF_PI } from '@/utils/constants';
-import { Model as City } from '@/models/City';
+import { Model as City } from '@/models/City_001';
 import { type PointLight } from 'three';
 
 export enum ViewModes {
@@ -64,6 +64,7 @@ export default function Viewer(props: ViewerProps) {
 
     return (
         <Canvas
+            resize={{ debounce: 5 }}
             className={
                 (props.className ?? '') +
                 (hovered ? 'cursor-pointer' : 'cursor-default')
@@ -96,9 +97,13 @@ export default function Viewer(props: ViewerProps) {
                 />
             )}
 
+            <City
+                visible={viewMode === ViewModes.Overview}
+                scale={2}
+                position={[-1.3, 0, 0.5]}
+            />
             {viewMode === ViewModes.Overview && (
                 <>
-                    <City />
                     <Sky
                         distance={1000}
                         turbidity={8}

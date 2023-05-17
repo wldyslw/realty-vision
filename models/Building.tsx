@@ -4,7 +4,7 @@ Command: npx gltfjsx@6.1.11 ./building.glb --types --keepnames --shadows
 */
 
 import * as THREE from 'three';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { a, useSpring, useSprings } from '@react-spring/three';
@@ -103,8 +103,33 @@ export type BuildingProps = JSX.IntrinsicElements['group'] & {
     availableSelectionBoxes: string[] | null;
 };
 
+// TODO: handle envMap in more proper way
+const loader = new THREE.CubeTextureLoader();
+const envMap = loader.loadAsync([
+    '/environment/px.png',
+    '/environment/nx.png',
+    '/environment/py.png',
+    '/environment/ny.png',
+    '/environment/pz.png',
+    '/environment/nz.png',
+]);
+
 export function Model(props: BuildingProps) {
     const { nodes, materials } = useGLTF('/building.glb') as GLTFResult;
+
+    useEffect(() => {
+        envMap.then((map) => {
+            materials.ApartmentMaterial.envMap = map;
+            materials.ApartmentMaterial.metalness = 0.7;
+            materials.CommonAreaMaterial.envMap = map;
+            materials.CommonAreaMaterial.metalness = 0.7;
+            materials.ConcreteMaterial.envMap = map;
+        });
+    }, [
+        materials.ApartmentMaterial,
+        materials.CommonAreaMaterial,
+        materials.ConcreteMaterial,
+    ]);
 
     const [{ y: roofY }] = useSpring(
         {
