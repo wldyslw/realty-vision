@@ -69,7 +69,8 @@ main {
 }
 
 .apartment-label {
-    text-shadow: 0 0 2px rgb(0 0 0 / 0.5);
+    text-shadow: 0 0 0.5rem rgb(0 0 0 / 0.5);
+    font-size: 2rem;
 }
 
 .apartment-label::before {

@@ -168,7 +168,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor001"
                 // position={[0, 4, 0]}
-                position-y={springs[1 - 1].y}
+                position-y={springs[0].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -197,7 +197,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat001.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 1 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">001</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat002"
                     castShadow
@@ -205,7 +211,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat002.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 1 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">002</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat003"
                     castShadow
@@ -213,7 +225,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat003.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 1 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">003</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat004"
                     castShadow
@@ -221,7 +239,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat004.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 1 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">004</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="SelectionBox001"
                     visible={props.showSelectionBoxes}
@@ -266,7 +290,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor002"
                 // position={[0, 8.2, 0]}
-                position-y={springs[2 - 1].y}
+                position-y={springs[1].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -288,7 +312,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat005.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 2 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">005</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat006"
                     castShadow
@@ -296,7 +326,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat006.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 2 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">006</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat007"
                     castShadow
@@ -304,7 +340,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat007.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 2 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">007</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat008"
                     castShadow
@@ -312,7 +354,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat008.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 2 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">008</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base001"
                     castShadow
@@ -364,7 +412,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor003"
                 // position={[0, 12.4, 0]}
-                position-y={springs[3 - 1].y}
+                position-y={springs[2].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -386,7 +434,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat009.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 3 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">009</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat010"
                     castShadow
@@ -394,7 +448,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat010.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 3 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">010</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat011"
                     castShadow
@@ -402,7 +462,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat011.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 3 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">011</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat012"
                     castShadow
@@ -410,7 +476,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat012.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 3 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">012</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base002"
                     castShadow
@@ -462,7 +534,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor004"
                 // position={[0, 16.6, 0]}
-                position-y={springs[4 - 1].y}
+                position-y={springs[3].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -484,7 +556,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat013.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 4 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">013</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat014"
                     castShadow
@@ -492,7 +570,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat014.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 4 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">014</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat015"
                     castShadow
@@ -500,7 +584,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat015.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 4 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">015</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat016"
                     castShadow
@@ -508,7 +598,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat016.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 4 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">016</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base003"
                     castShadow
@@ -560,7 +656,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor005"
                 // position={[0, 20.8, 0]}
-                position-y={springs[5 - 1].y}
+                position-y={springs[4].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -582,7 +678,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat017.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 5 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">017</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat018"
                     castShadow
@@ -590,7 +692,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat018.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 5 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">018</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat019"
                     castShadow
@@ -598,7 +706,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat019.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 5 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">019</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat020"
                     castShadow
@@ -606,7 +720,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat020.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 5 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">020</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base004"
                     castShadow
@@ -658,7 +778,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor006"
                 // position={[0, 25, 0]}
-                position-y={springs[6 - 1].y}
+                position-y={springs[5].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -680,7 +800,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat021.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 6 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">021</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat022"
                     castShadow
@@ -688,7 +814,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat022.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 6 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">022</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat023"
                     castShadow
@@ -696,7 +828,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat023.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 6 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">023</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat024"
                     castShadow
@@ -704,7 +842,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat024.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 6 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">024</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base005"
                     castShadow
@@ -756,7 +900,7 @@ export function Model(props: BuildingProps) {
             <a.group
                 name="Floor007"
                 // position={[0, 29.2, 0]}
-                position-y={springs[7 - 1].y}
+                position-y={springs[6].y}
             >
                 {props.showFloorLabels && (
                     <Html transform sprite distanceFactor={15}>
@@ -778,7 +922,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat025.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 7 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">025</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat026"
                     castShadow
@@ -786,7 +936,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat026.geometry}
                     material={materials.ApartmentMaterial}
                     position={[5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 7 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">026</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat027"
                     castShadow
@@ -794,7 +950,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat027.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, -4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 7 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">027</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Flat028"
                     castShadow
@@ -802,7 +964,13 @@ export function Model(props: BuildingProps) {
                     geometry={nodes.Flat028.geometry}
                     material={materials.ApartmentMaterial}
                     position={[-5.5, 0.2, 4.5]}
-                />
+                >
+                    {props.selectedFloorNumber === 7 && (
+                        <Html transform sprite distanceFactor={15}>
+                            <div className="apartment-label">028</div>
+                        </Html>
+                    )}
+                </mesh>
                 <mesh
                     name="Base006"
                     castShadow
