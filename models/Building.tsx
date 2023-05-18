@@ -4,8 +4,8 @@ Command: npx gltfjsx@6.1.11 ./building.glb --types --keepnames --shadows
 */
 
 import * as THREE from 'three';
-import { useCallback, useEffect } from 'react';
-import { useGLTF, Html } from '@react-three/drei';
+import { useCallback } from 'react';
+import { useGLTF, Html, useCubeTexture } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { a, useSpring, useSprings } from '@react-spring/three';
 
@@ -103,33 +103,12 @@ export type BuildingProps = JSX.IntrinsicElements['group'] & {
     availableSelectionBoxes: string[] | null;
 };
 
-// TODO: handle envMap in more proper way
-const loader = new THREE.CubeTextureLoader();
-const envMap = loader.loadAsync([
-    '/environment/px.png',
-    '/environment/nx.png',
-    '/environment/py.png',
-    '/environment/ny.png',
-    '/environment/pz.png',
-    '/environment/nz.png',
-]);
-
 export function Model(props: BuildingProps) {
     const { nodes, materials } = useGLTF('/building.glb') as GLTFResult;
-
-    useEffect(() => {
-        envMap.then((map) => {
-            materials.ApartmentMaterial.envMap = map;
-            materials.ApartmentMaterial.metalness = 0.7;
-            materials.CommonAreaMaterial.envMap = map;
-            materials.CommonAreaMaterial.metalness = 0.7;
-            materials.ConcreteMaterial.envMap = map;
-        });
-    }, [
-        materials.ApartmentMaterial,
-        materials.CommonAreaMaterial,
-        materials.ConcreteMaterial,
-    ]);
+    const envMap = useCubeTexture(
+        ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'],
+        { path: '/environment/' }
+    );
 
     const [{ y: roofY }] = useSpring(
         {
@@ -206,6 +185,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="Common"
@@ -213,6 +193,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -221,6 +203,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat001.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 1 && (
@@ -235,6 +218,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat002.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 1 && (
@@ -249,6 +233,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat003.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 1 && (
@@ -263,6 +248,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat004.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 1 && (
@@ -328,6 +314,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common001.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -336,6 +324,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat005.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 2 && (
@@ -350,6 +339,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat006.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 2 && (
@@ -364,6 +354,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat007.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 2 && (
@@ -378,6 +369,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat008.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 2 && (
@@ -392,6 +384,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base001.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox005"
@@ -450,6 +443,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common002.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -458,6 +453,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat009.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 3 && (
@@ -472,6 +468,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat010.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 3 && (
@@ -486,6 +483,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat011.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 3 && (
@@ -500,6 +498,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat012.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 3 && (
@@ -514,6 +513,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base002.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox009"
@@ -572,6 +572,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common003.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -580,6 +582,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat013.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 4 && (
@@ -594,6 +597,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat014.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 4 && (
@@ -608,6 +612,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat015.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 4 && (
@@ -622,6 +627,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat016.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 4 && (
@@ -636,6 +642,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base003.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox013"
@@ -694,6 +701,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common004.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -702,6 +711,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat017.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 5 && (
@@ -716,6 +726,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat018.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 5 && (
@@ -730,6 +741,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat019.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 5 && (
@@ -744,6 +756,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat020.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 5 && (
@@ -758,6 +771,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base004.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox017"
@@ -816,6 +830,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common005.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -824,6 +840,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat021.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 6 && (
@@ -838,6 +855,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat022.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 6 && (
@@ -852,6 +870,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat023.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 6 && (
@@ -866,6 +885,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat024.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 6 && (
@@ -880,6 +900,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base005.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox021"
@@ -938,6 +959,8 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Common006.geometry}
                     material={materials.CommonAreaMaterial}
+                    material-metalness={0.7}
+                    material-envMap={envMap}
                     position={[0, 0.2, 0]}
                 />
                 <mesh
@@ -946,6 +969,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat025.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 7 && (
@@ -960,6 +984,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat026.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 7 && (
@@ -974,6 +999,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat027.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
                     {props.selectedFloorNumber === 7 && (
@@ -988,6 +1014,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat028.geometry}
                     material={materials.ApartmentMaterial}
+                    material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
                     {props.selectedFloorNumber === 7 && (
@@ -1002,6 +1029,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Base006.geometry}
                     material={materials.ConcreteMaterial}
+                    material-envMap={envMap}
                 />
                 <mesh
                     name="SelectionBox025"
@@ -1050,6 +1078,7 @@ export function Model(props: BuildingProps) {
                 receiveShadow
                 geometry={nodes.Basement.geometry}
                 material={materials.ConcreteMaterial}
+                material-envMap={envMap}
             />
             <a.mesh
                 name="Roof"
@@ -1057,6 +1086,7 @@ export function Model(props: BuildingProps) {
                 receiveShadow
                 geometry={nodes.Roof.geometry}
                 material={materials.ConcreteMaterial}
+                material-envMap={envMap}
                 position={[0, 33.4, 0]}
                 position-y={roofY}
             />
