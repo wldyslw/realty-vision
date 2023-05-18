@@ -77,7 +77,7 @@ const getTreeHelper = () => {
     return Array.from({ length: 20 }).map(() => {
         const baseAngle = (Math.PI / 3) * Math.random() + Math.PI / 12;
         const angle = (Math.PI / 2) * Math.round(Math.random() * 4) + baseAngle;
-        const radius = 10 * Math.random() + 10;
+        const radius = 11 * Math.random() + 10;
 
         const x = Math.sin(angle) * radius;
         const y = 0.7;
