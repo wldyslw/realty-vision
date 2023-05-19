@@ -203,6 +203,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat001.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -218,6 +219,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat002.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -233,6 +235,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat003.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -248,6 +251,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat004.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -324,6 +328,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat005.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -339,6 +344,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat006.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -354,6 +360,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat007.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -369,6 +376,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat008.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -453,6 +461,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat009.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -468,6 +477,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat010.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -483,6 +493,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat011.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -498,6 +509,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat012.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -582,6 +594,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat013.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -597,6 +610,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat014.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -612,6 +626,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat015.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -627,6 +642,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat016.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -711,6 +727,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat017.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -726,6 +743,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat018.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -741,6 +759,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat019.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -756,6 +775,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat020.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -840,6 +860,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat021.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -855,6 +876,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat022.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -870,6 +892,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat023.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -885,6 +908,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat024.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
@@ -969,6 +993,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat025.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, 4.5]}
                 >
@@ -984,6 +1009,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat026.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[5.5, 0.2, -4.5]}
                 >
@@ -999,6 +1025,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat027.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, -4.5]}
                 >
@@ -1014,6 +1041,7 @@ export function Model(props: BuildingProps) {
                     receiveShadow
                     geometry={nodes.Flat028.geometry}
                     material={materials.ApartmentMaterial}
+                    material-metalness={0.7}
                     material-envMap={envMap}
                     position={[-5.5, 0.2, 4.5]}
                 >
