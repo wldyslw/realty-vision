@@ -1,13 +1,13 @@
 import { Canvas } from '@react-three/fiber';
-import { CameraControls, Sky, Grid } from '@react-three/drei';
+import { CameraControls, Sky, Grid, useHelper } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
-import { RefObject, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import ModelController from './ModelController';
 import { HALF_PI } from '@/utils/constants';
 import { Model as City } from '@/models/City_001';
-import { type PointLight } from 'three';
+import { CameraHelper, type OrthographicCamera } from 'three';
 
 export enum ViewModes {
     Overview,
@@ -23,32 +23,45 @@ type LightsProps = {
     viewMode: ViewModes;
 };
 
+const shadowCameraArgs: Record<
+    ViewModes,
+    ConstructorParameters<typeof OrthographicCamera>
+> = {
+    [ViewModes.Overview]: [-120, 120, 100, -80, 1, 300],
+    [ViewModes.Search]: [-50, 50, 50, -30, 120, 200],
+    [ViewModes.CrossSection]: [-50, 50, 50, -30, 120, 200],
+};
+
 function Lights(props: LightsProps) {
-    const ref = useRef<PointLight>();
+    const ref = useRef<OrthographicCamera>(null);
+    useHelper(
+        ref.current && process.env.NODE_ENV !== 'production'
+            ? (ref as React.MutableRefObject<OrthographicCamera>)
+            : false,
+        CameraHelper
+    );
+
     return (
         <>
-            <pointLight
-                ref={ref as RefObject<PointLight>}
+            <directionalLight
                 shadow-mapSize={[2048, 2048]}
-                shadow-camera-far={500}
                 castShadow
                 intensity={2}
                 position={[-100, 100, -100]}
                 shadow-bias={-0.001}
-            />
-            {props.viewMode !== ViewModes.Overview && (
-                <pointLight
-                    shadow-mapSize={[2048, 2048]}
-                    castShadow
-                    intensity={2}
-                    position={[100, 100, 100]}
-                    shadow-bias={-0.001}
+            >
+                <orthographicCamera
+                    ref={ref}
+                    attach="shadow-camera"
+                    args={shadowCameraArgs[props.viewMode]}
                 />
-            )}
+            </directionalLight>
             <ambientLight intensity={0.2} />
         </>
     );
 }
+
+const maxDistance = process.env.NODE_ENV === 'development' ? 500 : 70;
 
 // TODO: Solve limitation: CameraControls doesn't allow to truck&rotate on the same mouse button
 export default function Viewer(props: ViewerProps) {
@@ -75,14 +88,15 @@ export default function Viewer(props: ViewerProps) {
             {process.env.NODE_ENV === 'development' && (
                 <>
                     <axesHelper args={[50]} />
-                    <Perf minimal position="top-right" />
+                    <Perf minimal position="bottom-right" />
                 </>
             )}
             <ModelController mode={viewMode} onHover={hover} />
             <CameraControls
                 makeDefault
+                distance={70}
                 minDistance={30}
-                maxDistance={100}
+                maxDistance={maxDistance}
                 maxPolarAngle={HALF_PI}
             />
 
