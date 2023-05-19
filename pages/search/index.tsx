@@ -1,6 +1,6 @@
 import ApartmentInfo from '@/components/AparmentInfoModal';
 import { Availability } from '@/types';
-import { ComplexInfoContext } from '@/utils/globalContext';
+import { ComplexInfoContext } from '@/utils/contexts';
 import { useRouter } from 'next/router';
 import { useCallback, useContext } from 'react';
 

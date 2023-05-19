@@ -7,7 +7,7 @@ import type { CameraControls } from '@react-three/drei';
 import { type BuildingProps, Model } from '../models/Building';
 import type { Exposure } from '@/types';
 import { ViewModes } from './Viewer';
-import { ComplexInfoContext } from '@/utils/globalContext';
+import { ComplexInfoContext } from '@/utils/contexts';
 import { TAU } from '@/utils/constants';
 
 type ModelControllerProps = {

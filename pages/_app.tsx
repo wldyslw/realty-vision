@@ -1,13 +1,13 @@
 import { type AppProps } from 'next/app';
 import { Roboto } from 'next/font/google';
 import useSWR from 'swr';
+import { useSpring, a } from '@react-spring/web';
 
 import Viewer from '@/components/Viewer';
 import MainNav from '@/components/MainNav';
 import fetcher from '@/utils/fetcher';
-import { ComplexInfoContext } from '@/utils/globalContext';
+import { ComplexInfoContext } from '@/utils/contexts';
 import type { Complex } from '@/types';
-import { useSpring, a } from '@react-spring/web';
 
 import '@/styles/globals.css';
 

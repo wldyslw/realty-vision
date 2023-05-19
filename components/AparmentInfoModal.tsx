@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useContext, useMemo } from 'react';
 
-import { ComplexInfoContext } from '@/utils/globalContext';
+import { ComplexInfoContext } from '@/utils/contexts';
 import IconLink from './IconLink';
 import type { Apartment } from '@/types';
 
