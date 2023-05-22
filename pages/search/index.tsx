@@ -1,8 +1,9 @@
+import { useRouter } from 'next/router';
+import { useCallback, useContext } from 'react';
+
 import ApartmentInfo from '@/components/AparmentInfoModal';
 import { Availability } from '@/types';
 import { ComplexInfoContext } from '@/utils/contexts';
-import { useRouter } from 'next/router';
-import { useCallback, useContext } from 'react';
 
 export default function Search() {
     const router = useRouter();

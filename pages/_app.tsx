@@ -14,7 +14,7 @@ import '@/styles/globals.css';
 const font = Roboto({ weight: ['400'], subsets: ['latin'] });
 
 export default function App({ Component, pageProps, router }: AppProps) {
-    const { data, isLoading, error } = useSWR<Complex>('/api/meta', fetcher);
+    const { data, isValidating, error } = useSWR<Complex>('/api/meta', fetcher);
 
     const [style] = useSpring(
         {
@@ -25,7 +25,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
 
     return (
         <ComplexInfoContext.Provider
-            value={{ data: data ?? null, isLoading, error }}
+            value={{ data: data ?? null, isLoading: isValidating, error }}
         >
             <main
                 className={`absolute inset-0 flex flex-col-reverse lg:flex-row ${font.className}`}

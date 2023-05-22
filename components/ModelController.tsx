@@ -1,14 +1,14 @@
 import { MathUtils } from 'three';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type ThreeEvent, useThree } from '@react-three/fiber';
 import type { CameraControls } from '@react-three/drei';
 
 import { type BuildingProps, Model } from '../models/Building';
-import type { Exposure } from '@/types';
 import { ViewModes } from './Viewer';
-import { ComplexInfoContext } from '@/utils/contexts';
-import { TAU } from '@/utils/constants';
+import { ExposureToRotationMap } from '@/utils/constants';
+import useApartment from '@/utils/useApartment';
+import { absoluteAngle, circularMean } from '@/utils/math';
 
 type ModelControllerProps = {
     mode?: ViewModes;
@@ -19,25 +19,6 @@ type ModelControllerProps = {
     onHover?: (isHovered: boolean) => void;
 };
 
-const ExposureToRotationMap: Record<Exposure, number> = {
-    N: 0,
-    W: Math.PI / 2,
-    S: Math.PI,
-    E: (Math.PI * 3) / 2,
-};
-
-function circularMean(...angles: number[]) {
-    return Math.atan2(
-        angles.reduce((acc, a) => acc + Math.sin(a), 0),
-        angles.reduce((acc, a) => acc + Math.cos(a), 0)
-    );
-}
-
-function absoluteAngle(targetAngle: number, sourceAngle: number) {
-    const angle = targetAngle - sourceAngle;
-    return MathUtils.euclideanModulo(angle + Math.PI, TAU) - Math.PI;
-}
-
 export default function ModelController({
     mode = ViewModes.Overview,
     onHover,
@@ -47,19 +28,12 @@ export default function ModelController({
     const controls = useThree(
         (state) => state.controls as CameraControls | null
     );
-    const complexInfo = useContext(ComplexInfoContext);
 
     const selectedApartmentId = useMemo(() => {
         return router.query.apartmentId ?? null;
     }, [router.query.apartmentId]) as string | null;
 
-    const selectedApartmentInfo = useMemo(() => {
-        return (
-            complexInfo.data?.buildings[0].apartments.find(
-                (apt) => apt.id === selectedApartmentId
-            ) ?? null
-        );
-    }, [complexInfo.data?.buildings, selectedApartmentId]);
+    const selectedApartmentInfo = useApartment(selectedApartmentId);
 
     const selectedFloorNumber = useMemo(() => {
         if (selectedApartmentInfo && router.query.floorDetails) {
@@ -68,24 +42,19 @@ export default function ModelController({
         return null;
     }, [router.query.floorDetails, selectedApartmentInfo]);
 
-    const rotateToApartment = useCallback(
-        (id: string) => {
-            if (controls) {
-                const exposure = complexInfo.data?.buildings[0].apartments.find(
-                    (apt) => apt.id === id
-                )?.exposure;
-                if (exposure) {
-                    const targetAngle = circularMean(
-                        ...exposure.map((e) => ExposureToRotationMap[e])
-                    );
-                    const currentAngle = controls.azimuthAngle;
-                    const result = absoluteAngle(targetAngle, currentAngle);
-                    controls.rotateAzimuthTo(currentAngle + result, true);
-                }
+    const rotateToSelectedApartment = useCallback(() => {
+        if (controls) {
+            const exposure = selectedApartmentInfo?.exposure;
+            if (exposure) {
+                const targetAngle = circularMean(
+                    ...exposure.map((e) => ExposureToRotationMap[e])
+                );
+                const currentAngle = controls.azimuthAngle;
+                const result = absoluteAngle(targetAngle, currentAngle);
+                controls.rotateAzimuthTo(currentAngle + result, true);
             }
-        },
-        [complexInfo.data?.buildings, controls]
-    );
+        }
+    }, [controls, selectedApartmentInfo?.exposure]);
 
     const rotateToFloor = useCallback(
         (showDetails: boolean) => {
@@ -99,10 +68,10 @@ export default function ModelController({
 
     useEffect(() => {
         if (selectedApartmentId) {
-            rotateToApartment(selectedApartmentId);
+            rotateToSelectedApartment();
         }
         hoverApartment(null);
-    }, [rotateToApartment, selectedApartmentId]);
+    }, [rotateToSelectedApartment, selectedApartmentId]);
 
     useEffect(() => {
         if (selectedFloorNumber !== null) {
@@ -150,26 +119,25 @@ export default function ModelController({
             e.stopPropagation();
             const { name } = e.object;
             if (name.startsWith('SelectionBox')) {
-                const aptId = 'Flat' + e.object.name.slice(-3);
+                const aptId = name.slice(-3);
                 updateRouter(aptId);
-                rotateToApartment(aptId);
             } else {
                 handleApartmentDeselect();
             }
         },
-        [handleApartmentDeselect, rotateToApartment, updateRouter]
+        [handleApartmentDeselect, updateRouter]
     );
 
     const handleApartmentHover = useCallback(
         (e: ThreeEvent<PointerEvent>) => {
             e.stopPropagation();
-            const aptId = 'Flat' + e.object.name.slice(-3);
-            if (
-                e.object.name.startsWith('SelectionBox') &&
-                aptId !== selectedApartmentId
-            ) {
-                hoverApartment(aptId);
+            const { name } = e.object;
+            if (name.startsWith('SelectionBox')) {
+                const aptId = name.slice(-3);
                 onHover?.(true);
+                if (aptId !== selectedApartmentId) {
+                    hoverApartment(aptId);
+                }
             }
         },
         [onHover, selectedApartmentId]

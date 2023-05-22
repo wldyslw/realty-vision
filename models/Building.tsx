@@ -149,7 +149,6 @@ export function Model(props: BuildingProps) {
 
     const getMaterial = useCallback(
         (id: string) => {
-            id = 'Flat' + id;
             if (props.selectedApartment === id) {
                 return materials.SelectionSelect;
             }

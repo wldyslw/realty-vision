@@ -1,14 +1,10 @@
 import { Apartment, Availability, Building, Complex, Exposure } from '../types';
 
-const aptIds = [
-    ['Flat001', 'Flat002', 'Flat003', 'Flat004'],
-    ['Flat005', 'Flat006', 'Flat007', 'Flat008'],
-    ['Flat009', 'Flat010', 'Flat011', 'Flat012'],
-    ['Flat013', 'Flat014', 'Flat015', 'Flat016'],
-    ['Flat017', 'Flat018', 'Flat019', 'Flat020'],
-    ['Flat021', 'Flat022', 'Flat023', 'Flat024'],
-    ['Flat025', 'Flat026', 'Flat027', 'Flat028'],
-];
+const aptIds = Array.from({ length: 7 }).map((_, floorIndex) => {
+    return Array.from({ length: 4 }).map((_, aptIndex) => {
+        return (floorIndex * 4 + aptIndex + 1).toString().padStart(3, '0');
+    });
+});
 
 const exposures: Exposure[][] = [
     ['N', 'W'],
@@ -23,7 +19,7 @@ export const apartments = aptIds.reduce((acc, floor, floorNumber) => {
     const flats: Apartment[] = floor.map((id, index) => {
         return {
             id,
-            name: id.slice(4),
+            name: id,
             type: types[index],
             floorNumber: floorNumber + 1,
             fullArea: Math.round(Math.random() * 120 + 30),

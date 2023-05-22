@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router';
-import { useContext, useMemo } from 'react';
 
-import { ComplexInfoContext } from '@/utils/contexts';
 import IconLink from './IconLink';
 import type { Apartment } from '@/types';
+import useApartment from '@/utils/useApartment';
 
 type Label = string;
 type Icon = string;
@@ -21,15 +20,7 @@ const visibleApartmentProperties: [KeyType, Label, Icon][] = [
 export default function ApartmentInfo() {
     const router = useRouter();
     const apartmentId = router.query.apartmentId as string;
-
-    const complexInfo = useContext(ComplexInfoContext);
-    const apartmentInfo = useMemo(() => {
-        return (
-            complexInfo.data?.buildings[0].apartments.find(
-                (apt) => apt.id === apartmentId
-            ) ?? null
-        );
-    }, [apartmentId, complexInfo.data?.buildings]);
+    const apartmentInfo = useApartment(apartmentId);
 
     const floorDetails = !!router.query.floorDetails;
 
