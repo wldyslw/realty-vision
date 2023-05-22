@@ -26,7 +26,7 @@ export const apartments = aptIds.reduce((acc, floor, floorNumber) => {
             balconyArea: Math.round(Math.random() * 10 + 5),
             exposure: exposures[index],
             availability:
-                Math.random() > 0.1
+                Math.random() > 0.2
                     ? Availability.Available
                     : Availability.Sold,
             roomNumber: Math.round(Math.random() * 3 + 1),

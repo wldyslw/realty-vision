@@ -91,6 +91,8 @@ type GLTFResult = GLTF & {
         SelectionHover: THREE.MeshStandardMaterial;
         SelectionSelect: THREE.MeshStandardMaterial;
         SelectionDefault: THREE.MeshStandardMaterial;
+        SelectionUnavailableHover: THREE.MeshStandardMaterial;
+        SelectionUnavailableSelect: THREE.MeshStandardMaterial;
     };
 };
 
@@ -100,8 +102,14 @@ export type BuildingProps = JSX.IntrinsicElements['group'] & {
     hoveredApartment: string | null;
     showFloorLabels: boolean;
     showSelectionBoxes: boolean;
-    availableSelectionBoxes: string[] | null;
+    availableSelectionBoxes: Set<string>;
 };
+
+const SelectionEmptyMaterial = new THREE.MeshBasicMaterial({
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide,
+});
 
 export function Model(props: BuildingProps) {
     const { nodes, materials } = useGLTF('/building.glb') as GLTFResult;
@@ -149,18 +157,29 @@ export function Model(props: BuildingProps) {
 
     const getMaterial = useCallback(
         (id: string) => {
+            const available = props.availableSelectionBoxes.has(id);
+
             if (props.selectedApartment === id) {
-                return materials.SelectionSelect;
+                return available
+                    ? materials.SelectionSelect
+                    : materials.SelectionUnavailableSelect;
             }
             if (props.hoveredApartment === id) {
-                return materials.SelectionHover;
+                return available
+                    ? materials.SelectionHover
+                    : materials.SelectionUnavailableHover;
             }
-            return materials.SelectionDefault;
+            return available
+                ? materials.SelectionDefault
+                : SelectionEmptyMaterial;
         },
         [
             materials.SelectionDefault,
             materials.SelectionHover,
             materials.SelectionSelect,
+            materials.SelectionUnavailableHover,
+            materials.SelectionUnavailableSelect,
+            props.availableSelectionBoxes,
             props.hoveredApartment,
             props.selectedApartment,
         ]
@@ -263,8 +282,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox001"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox001.geometry}
                     material={getMaterial('001')}
                     position={[6, 0.22, 5]}
@@ -273,8 +290,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox002"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox002.geometry}
                     material={getMaterial('002')}
                     position={[6, 0.22, -5]}
@@ -283,8 +298,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox003"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox003.geometry}
                     material={getMaterial('003')}
                     position={[-6, 0.22, -5]}
@@ -293,8 +306,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox004"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox004.geometry}
                     material={getMaterial('004')}
                     position={[-6, 0.22, 5]}
@@ -396,8 +407,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox005"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox005.geometry}
                     material={getMaterial('005')}
                     position={[6, 0.22, 5]}
@@ -406,8 +415,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox006"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox006.geometry}
                     material={getMaterial('006')}
                     position={[6, 0.22, -5]}
@@ -416,8 +423,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox007"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox007.geometry}
                     material={getMaterial('007')}
                     position={[-6, 0.22, -5]}
@@ -426,8 +431,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox008"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox008.geometry}
                     material={getMaterial('008')}
                     position={[-6, 0.22, 5]}
@@ -529,8 +532,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox009"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox009.geometry}
                     material={getMaterial('009')}
                     position={[6, 0.22, 5]}
@@ -539,8 +540,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox010"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox010.geometry}
                     material={getMaterial('010')}
                     position={[6, 0.22, -5]}
@@ -549,8 +548,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox011"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox011.geometry}
                     material={getMaterial('011')}
                     position={[-6, 0.22, -5]}
@@ -559,8 +556,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox012"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox012.geometry}
                     material={getMaterial('012')}
                     position={[-6, 0.22, 5]}
@@ -662,8 +657,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox013"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox013.geometry}
                     material={getMaterial('013')}
                     position={[6, 0.22, 5]}
@@ -672,8 +665,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox014"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox014.geometry}
                     material={getMaterial('014')}
                     position={[6, 0.22, -5]}
@@ -682,8 +673,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox015"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox015.geometry}
                     material={getMaterial('015')}
                     position={[-6, 0.22, -5]}
@@ -692,8 +681,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox016"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox016.geometry}
                     material={getMaterial('016')}
                     position={[-6, 0.22, 5]}
@@ -795,8 +782,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox017"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox017.geometry}
                     material={getMaterial('017')}
                     position={[6, 0.22, 5]}
@@ -805,8 +790,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox018"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox018.geometry}
                     material={getMaterial('018')}
                     position={[6, 0.22, -5]}
@@ -815,8 +798,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox019"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox019.geometry}
                     material={getMaterial('019')}
                     position={[-6, 0.22, -5]}
@@ -825,8 +806,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox020"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox020.geometry}
                     material={getMaterial('020')}
                     position={[-6, 0.22, 5]}
@@ -928,8 +907,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox021"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox021.geometry}
                     material={getMaterial('021')}
                     position={[6, 0.22, 5]}
@@ -938,8 +915,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox022"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox022.geometry}
                     material={getMaterial('022')}
                     position={[6, 0.22, -5]}
@@ -948,8 +923,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox023"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox023.geometry}
                     material={getMaterial('023')}
                     position={[-6, 0.22, -5]}
@@ -958,8 +931,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox024"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox024.geometry}
                     material={getMaterial('024')}
                     position={[-6, 0.22, 5]}
@@ -1061,8 +1032,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox025"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox025.geometry}
                     material={getMaterial('025')}
                     position={[6, 0.22, 5]}
@@ -1071,8 +1040,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox026"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox026.geometry}
                     material={getMaterial('026')}
                     position={[6, 0.22, -5]}
@@ -1081,8 +1048,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox027"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox027.geometry}
                     material={getMaterial('027')}
                     position={[-6, 0.22, -5]}
@@ -1091,8 +1056,6 @@ export function Model(props: BuildingProps) {
                 <mesh
                     name="SelectionBox028"
                     visible={props.showSelectionBoxes}
-                    castShadow
-                    receiveShadow
                     geometry={nodes.SelectionBox028.geometry}
                     material={getMaterial('028')}
                     position={[-6, 0.22, 5]}

@@ -9,8 +9,11 @@ import { ViewModes } from './Viewer';
 import { ExposureToRotationMap } from '@/utils/constants';
 import useApartment from '@/utils/useApartment';
 import { absoluteAngle, circularMean } from '@/utils/math';
+import useBuilding from '@/utils/useBuilding';
+import { Availability } from '@/types';
 
 type ModelControllerProps = {
+    buildingId: string;
     mode?: ViewModes;
     /**
      * Callback for updating cursor styling when something is hovered
@@ -20,6 +23,7 @@ type ModelControllerProps = {
 };
 
 export default function ModelController({
+    buildingId,
     mode = ViewModes.Overview,
     onHover,
 }: ModelControllerProps) {
@@ -28,6 +32,14 @@ export default function ModelController({
     const controls = useThree(
         (state) => state.controls as CameraControls | null
     );
+
+    const buildingInfo = useBuilding(buildingId);
+    const availableSelectionBoxes = useMemo(() => {
+        const filteredIds = buildingInfo?.apartments
+            .filter((apt) => apt.availability === Availability.Available)
+            .map((apt) => apt.id);
+        return new Set<string>(filteredIds);
+    }, [buildingInfo?.apartments]);
 
     const selectedApartmentId = useMemo(() => {
         return router.query.apartmentId ?? null;
@@ -160,7 +172,7 @@ export default function ModelController({
                     hoveredApartment: hoveredApartment,
                     selectedApartment: selectedApartmentId,
                     selectedFloorNumber: selectedFloorNumber,
-                    availableSelectionBoxes: null,
+                    availableSelectionBoxes: availableSelectionBoxes,
                     onClick: handleApartmentSelect,
                     onPointerMissed: handleApartmentDeselect,
                     onPointerOver: handleApartmentHover,
@@ -174,7 +186,7 @@ export default function ModelController({
                     hoveredApartment: null,
                     selectedApartment: null,
                     selectedFloorNumber: null,
-                    availableSelectionBoxes: null,
+                    availableSelectionBoxes: availableSelectionBoxes,
                     onClick: handleBuildingSelect,
                     onPointerOver: handleBuildingHover,
                     onPointerOut: handleBuildingUnhover,
@@ -187,22 +199,23 @@ export default function ModelController({
                     hoveredApartment: null,
                     selectedApartment: null,
                     selectedFloorNumber: null,
-                    availableSelectionBoxes: null,
+                    availableSelectionBoxes: availableSelectionBoxes,
                 };
             }
         }
     }, [
-        mode,
-        hoveredApartment,
-        selectedApartmentId,
-        selectedFloorNumber,
-        handleApartmentSelect,
+        availableSelectionBoxes,
         handleApartmentDeselect,
         handleApartmentHover,
+        handleApartmentSelect,
         handleApartmentUnhover,
-        handleBuildingSelect,
         handleBuildingHover,
+        handleBuildingSelect,
         handleBuildingUnhover,
+        hoveredApartment,
+        mode,
+        selectedApartmentId,
+        selectedFloorNumber,
     ]);
 
     return <Model {...modelProps} />;

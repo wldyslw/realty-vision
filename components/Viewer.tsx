@@ -91,7 +91,11 @@ export default function Viewer(props: ViewerProps) {
                     <Perf minimal position="bottom-right" />
                 </>
             )}
-            <ModelController mode={viewMode} onHover={hover} />
+            <ModelController
+                buildingId="test_tower"
+                mode={viewMode}
+                onHover={hover}
+            />
             <CameraControls
                 makeDefault
                 distance={70}
