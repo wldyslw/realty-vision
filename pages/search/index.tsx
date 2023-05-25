@@ -278,7 +278,7 @@ function Search() {
                                             className={`${
                                                 router.query.apartmentId ===
                                                 apt.id
-                                                    ? 'bg-primary-active'
+                                                    ? 'bg-primary-focus'
                                                     : ''
                                             } border-b-[1px] border-divider last:border-b-0 hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active`}
                                             key={apt.id}

@@ -53,9 +53,9 @@ export default function IconLink({
                 collapsed ? 'justify-center' : ''
             } ${
                 type === 'filled'
-                    ? 'bg-primary px-4 py-2 text-center text-white'
+                    ? 'justify-center bg-primary px-4 py-2 text-center text-white'
                     : 'px-2 py-1 text-primary-darker'
-            } inline-flex justify-center rounded-xl font-bold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
+            } inline-flex rounded-xl font-bold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
         >
             <span
                 className={`material-symbols-outlined inline ${

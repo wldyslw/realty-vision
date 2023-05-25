@@ -87,7 +87,6 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
             </div>
             <div className="flex">
                 <IconLink
-                    type="filled"
                     className="mr-2 w-full"
                     href={detailsUrl}
                     icon="grid_view"
@@ -95,7 +94,6 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
                     {floorDetails ? 'Back' : 'Key plan'}
                 </IconLink>
                 <IconLink
-                    type="filled"
                     className="w-full"
                     href={`/details/${apartmentId}`}
                     icon="vrpano"
