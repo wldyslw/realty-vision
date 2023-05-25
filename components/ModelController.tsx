@@ -1,6 +1,6 @@
 import { MathUtils } from 'three';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { type ThreeEvent, useThree } from '@react-three/fiber';
 import type { CameraControls } from '@react-three/drei';
 
@@ -10,7 +10,7 @@ import { ExposureToRotationMap } from '@/utils/constants';
 import useApartment from '@/utils/useApartment';
 import { absoluteAngle, circularMean } from '@/utils/math';
 import useBuilding from '@/utils/useBuilding';
-import { Availability } from '@/types';
+import useFilteredApartments from '@/utils/useFilteredApartment';
 
 type ModelControllerProps = {
     buildingId: string;
@@ -22,7 +22,7 @@ type ModelControllerProps = {
     onHover?: (isHovered: boolean) => void;
 };
 
-export default function ModelController({
+function ModelController({
     buildingId,
     mode = ViewModes.Overview,
     onHover,
@@ -34,12 +34,20 @@ export default function ModelController({
     );
 
     const buildingInfo = useBuilding(buildingId);
+
+    const { filteredApartments, availableApartments } = useFilteredApartments(
+        buildingInfo?.apartments
+    );
+
     const availableSelectionBoxes = useMemo(() => {
-        const filteredIds = buildingInfo?.apartments
-            .filter((apt) => apt.availability === Availability.Available)
-            .map((apt) => apt.id);
+        const availableIds = availableApartments?.map((apt) => apt.id);
+        return new Set<string>(availableIds);
+    }, [availableApartments]);
+
+    const visibleSelectionBoxes = useMemo(() => {
+        const filteredIds = filteredApartments?.map((apt) => apt.id);
         return new Set<string>(filteredIds);
-    }, [buildingInfo?.apartments]);
+    }, [filteredApartments]);
 
     const selectedApartmentId = useMemo(() => {
         return router.query.apartmentId ?? null;
@@ -106,14 +114,17 @@ export default function ModelController({
 
     const updateRouter = useCallback(
         (id?: string) => {
-            const { apartmentId } = router.query;
+            const { apartmentId, floorDetails, ...restParams } = router.query;
             if (id === undefined) {
-                router.push('/search');
+                router.push({
+                    pathname: '/search',
+                    query: restParams,
+                });
             } else if (apartmentId !== id) {
                 router.push({
                     query: {
                         ...router.query,
-                        apartmentId: encodeURIComponent(id),
+                        apartmentId: id,
                     },
                 });
             }
@@ -173,6 +184,7 @@ export default function ModelController({
                     selectedApartment: selectedApartmentId,
                     selectedFloorNumber: selectedFloorNumber,
                     availableSelectionBoxes: availableSelectionBoxes,
+                    visibleSelectionBoxes: visibleSelectionBoxes,
                     onClick: handleApartmentSelect,
                     onPointerMissed: handleApartmentDeselect,
                     onPointerOver: handleApartmentHover,
@@ -187,6 +199,7 @@ export default function ModelController({
                     selectedApartment: null,
                     selectedFloorNumber: null,
                     availableSelectionBoxes: availableSelectionBoxes,
+                    visibleSelectionBoxes: visibleSelectionBoxes,
                     onClick: handleBuildingSelect,
                     onPointerOver: handleBuildingHover,
                     onPointerOut: handleBuildingUnhover,
@@ -200,6 +213,7 @@ export default function ModelController({
                     selectedApartment: null,
                     selectedFloorNumber: null,
                     availableSelectionBoxes: availableSelectionBoxes,
+                    visibleSelectionBoxes: visibleSelectionBoxes,
                 };
             }
         }
@@ -216,7 +230,10 @@ export default function ModelController({
         mode,
         selectedApartmentId,
         selectedFloorNumber,
+        visibleSelectionBoxes,
     ]);
 
     return <Model {...modelProps} />;
 }
+
+export default memo(ModelController);

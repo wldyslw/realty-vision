@@ -19,6 +19,7 @@ module.exports = {
                     'rgb(var(--color-typo-primary) / <alpha-value>)',
                 'typo-secondary':
                     'rgb(var(--color-typo-secondary) / <alpha-value>)',
+                divider: 'rgb(var(--color-divider) / <alpha-value>)',
                 primary: 'rgb(var(--color-primary) / <alpha-value>)',
                 'primary-darker':
                     'rgb(var(--color-primary-darker) / <alpha-value>)',
@@ -26,6 +27,8 @@ module.exports = {
                     'rgb(var(--color-primary-hover) / <alpha-value>)',
                 'primary-active':
                     'rgb(var(--color-primary-active) / <alpha-value>)',
+                'primary-focus':
+                    'rgb(var(--color-primary-focus) / <alpha-value>)',
             },
             width: {
                 128: '32rem',

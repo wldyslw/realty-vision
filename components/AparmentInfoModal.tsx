@@ -14,32 +14,54 @@ const visibleApartmentProperties: [KeyType, Label, Icon][] = [
     ['fullArea', 'Area, m²', 'square_foot'],
     ['balconyArea', 'Balcony, m²', 'balcony'],
     ['floorNumber', 'Floor', 'floor'],
-    ['roomNumber', 'Rooms', 'bed'],
+    ['roomsNumber', 'Rooms', 'bed'],
 ];
 
-export default function ApartmentInfo() {
+type ApartmentInfoProps = {
+    onClose: () => void;
+};
+
+/**
+ * It is used in presentational purposes to have an info while ApartementInfo card discard animation going on
+ */
+let apartmentInfo: Apartment;
+
+export default function ApartmentInfo(props: ApartmentInfoProps) {
     const router = useRouter();
-    const apartmentId = router.query.apartmentId as string;
-    const apartmentInfo = useApartment(apartmentId);
+    const apartmentId = router.query.apartmentId as string | undefined;
+    const _apartmentInfo = useApartment(apartmentId ?? null);
+    apartmentInfo = _apartmentInfo ?? apartmentInfo;
 
     const floorDetails = !!router.query.floorDetails;
 
+    const { apartmentId: _1, floorDetails: _2, ...restParams } = router.query;
+
     const detailsUrl = {
         query: floorDetails
-            ? { apartmentId }
-            : { apartmentId, floorDetails: true },
+            ? { ...restParams, apartmentId }
+            : { ...restParams, apartmentId, floorDetails: true },
     };
 
     return (
-        <aside className="absolute right-4 top-4 z-10 w-64 rounded-md bg-base p-4 ">
-            <div className="flex justify-between">
-                <h1 className="text-2xl font-extrabold">
+        <aside
+            className={`${
+                apartmentId
+                    ? 'bottom-0 lg:right-4'
+                    : '-bottom-full lg:-right-full'
+            } bottom-sheet absolute z-[10000000000] w-full rounded-md bg-base-darker p-3 transition-all lg:bottom-auto lg:top-4 lg:z-10 lg:w-72 `}
+        >
+            <div className="flex justify-between rounded-md px-4 py-2">
+                <h2 className="text-2xl font-bold">
                     Apartment {apartmentInfo?.name ?? ''}
-                </h1>
-                <IconLink collapsed href="/search" icon="close"></IconLink>
+                </h2>
+                <IconLink
+                    collapsed
+                    onClick={props?.onClose}
+                    href={{ pathname: '/search', query: restParams }}
+                    icon="close"
+                ></IconLink>
             </div>
-            <div>
-                <hr className="my-2 border-zinc-200 dark:border-zinc-700" />
+            <div className="mb-2 rounded-md bg-base px-4 py-2">
                 <div className="flex flex-wrap">
                     {visibleApartmentProperties.map(([key, label, icon]) => {
                         return (
@@ -51,7 +73,7 @@ export default function ApartmentInfo() {
                                     <span className="material-symbols-outlined mr-1">
                                         {icon}
                                     </span>
-                                    <span className="font-extrabold">
+                                    <span className="font-bold">
                                         {apartmentInfo?.[key]}
                                     </span>
                                 </div>
@@ -62,16 +84,19 @@ export default function ApartmentInfo() {
                         );
                     })}
                 </div>
-                <hr className="my-2 border-zinc-200 dark:border-zinc-700" />
+            </div>
+            <div className="flex">
                 <IconLink
-                    className="w-[50%]"
+                    type="filled"
+                    className="mr-2 w-full"
                     href={detailsUrl}
                     icon="grid_view"
                 >
                     {floorDetails ? 'Back' : 'Key plan'}
                 </IconLink>
                 <IconLink
-                    className="w-[50%]"
+                    type="filled"
+                    className="w-full"
                     href={`/details/${apartmentId}`}
                     icon="vrpano"
                 >

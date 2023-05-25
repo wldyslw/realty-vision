@@ -103,6 +103,7 @@ export type BuildingProps = JSX.IntrinsicElements['group'] & {
     showFloorLabels: boolean;
     showSelectionBoxes: boolean;
     availableSelectionBoxes: Set<string>;
+    visibleSelectionBoxes: Set<string>;
 };
 
 const SelectionEmptyMaterial = new THREE.MeshBasicMaterial({
@@ -169,7 +170,7 @@ export function Model(props: BuildingProps) {
                     ? materials.SelectionHover
                     : materials.SelectionUnavailableHover;
             }
-            return available
+            return available && props.visibleSelectionBoxes.has(id)
                 ? materials.SelectionDefault
                 : SelectionEmptyMaterial;
         },
@@ -182,6 +183,7 @@ export function Model(props: BuildingProps) {
             props.availableSelectionBoxes,
             props.hoveredApartment,
             props.selectedApartment,
+            props.visibleSelectionBoxes,
         ]
     );
 

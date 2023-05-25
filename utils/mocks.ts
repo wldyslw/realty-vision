@@ -29,7 +29,7 @@ export const apartments = aptIds.reduce((acc, floor, floorNumber) => {
                 Math.random() > 0.2
                     ? Availability.Available
                     : Availability.Sold,
-            roomNumber: Math.round(Math.random() * 3 + 1),
+            roomsNumber: Math.round(Math.random() * 3 + 1),
         } as Apartment;
     });
     return [...acc, ...flats];

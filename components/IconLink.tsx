@@ -1,21 +1,27 @@
 import { useMemo, type ReactNode } from 'react';
 import Link, { type LinkProps } from 'next/link';
-import { useRouter } from 'next/router';
+import { type NextRouter, useRouter } from 'next/router';
 import type { UrlObject } from 'url';
 
 type IconLinkProps = LinkProps & {
     icon: string;
+    href: string | UrlObject;
     children?: ReactNode | ReactNode[];
     collapsed?: boolean;
     labelClass?: string;
     iconClass?: string;
-    href: string | UrlObject;
     className?: string;
     matchPath?: boolean;
+    type?: 'default' | 'filled';
+    pathMatcher?: (router: NextRouter, href: string | UrlObject) => boolean;
 };
 
-const pathMatcher = (currentPath: string, href: string) =>
-    href === '/' ? currentPath === href : currentPath.includes(href);
+const defaultPathMatcher = (router: NextRouter, href: string | UrlObject) => {
+    const hrefStr = typeof href === 'string' ? href : (href.pathname as string);
+    return href === '/'
+        ? router.pathname === hrefStr
+        : router.pathname.includes(hrefStr);
+};
 
 export default function IconLink({
     children,
@@ -26,6 +32,8 @@ export default function IconLink({
     matchPath,
     labelClass,
     iconClass,
+    pathMatcher = defaultPathMatcher,
+    type = 'default',
     ...props
 }: IconLinkProps) {
     const router = useRouter();
@@ -34,30 +42,32 @@ export default function IconLink({
         if (!matchPath) {
             return false;
         }
-        if (typeof href === 'string') {
-            return pathMatcher(router.pathname, href);
-        }
-        if (href.pathname) {
-            return pathMatcher(router.pathname, href.pathname);
-        }
-        return false;
-    }, [href, matchPath, router.pathname]);
+        return pathMatcher(router, href);
+    }, [href, matchPath, pathMatcher, router]);
 
     return (
         <Link
             {...props}
             href={href}
-            className={`${matches ? 'bg-primary-active' : ''} ${
+            className={`${matches ? 'bg-primary-focus' : ''} ${
                 collapsed ? 'justify-center' : ''
-            } inline-flex rounded-md px-2 py-1 text-primary-darker hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
+            } ${
+                type === 'filled'
+                    ? 'bg-primary px-4 py-2 text-center text-white'
+                    : 'px-2 py-1 text-primary-darker'
+            } inline-flex justify-center rounded-xl font-bold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
         >
-            <span className={`material-symbols-outlined ${iconClass}`}>
+            <span
+                className={`material-symbols-outlined inline ${
+                    iconClass ?? ''
+                }`}
+            >
                 {icon}
             </span>
             <span
                 className={`${
                     collapsed ? 'hidden lg:hidden' : ''
-                } ml-2 font-extrabold ${labelClass ?? ''}`}
+                } ml-1 inline ${labelClass ?? ''}`}
             >
                 {children}
             </span>

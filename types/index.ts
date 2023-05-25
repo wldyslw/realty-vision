@@ -12,7 +12,7 @@ export type Apartment = {
     balconyArea: number;
     exposure: Exposure[];
     availability: Availability;
-    roomNumber: number;
+    roomsNumber: number;
 };
 export type Building = {
     id: string;
