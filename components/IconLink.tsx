@@ -58,9 +58,7 @@ export default function IconLink({
             } inline-flex rounded-xl font-bold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
         >
             <span
-                className={`material-symbols-outlined inline ${
-                    iconClass ?? ''
-                }`}
+                className={`material-symbols-rounded inline ${iconClass ?? ''}`}
             >
                 {icon}
             </span>

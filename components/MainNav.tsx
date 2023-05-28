@@ -7,14 +7,14 @@ const links = [
     { href: '/about', icon: 'info', label: 'About' },
     { href: '/gallery', icon: 'image', label: 'Gallery' },
     { href: '/map', icon: 'location_on', label: 'Map' },
-    { href: '/contacts', icon: 'call', label: 'Contact Us' },
+    { href: '/contacts', icon: 'call', label: 'Contacts' },
 ];
 
 export default function MainNav() {
     const router = useRouter();
 
     return (
-        <nav className="flex justify-center overflow-y-scroll p-2 lg:flex-col lg:justify-start">
+        <nav className="flex justify-center overflow-y-auto p-2 lg:flex-col lg:justify-start">
             {links.map(({ href, icon, label }) => {
                 return (
                     <IconLink

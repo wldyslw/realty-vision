@@ -48,7 +48,7 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
                 apartmentId
                     ? 'bottom-0 lg:right-4'
                     : '-bottom-full lg:-right-full'
-            } bottom-sheet absolute z-[10000000000] w-full rounded-md bg-base-darker p-3 transition-all lg:bottom-auto lg:top-4 lg:z-10 lg:w-72 `}
+            } bottom-sheet absolute z-[10000000000] w-full rounded-md rounded-t-3xl bg-base-darker p-3 drop-shadow transition-all lg:bottom-auto lg:top-4 lg:z-10 lg:w-72 lg:rounded-t-none `}
         >
             <div className="flex justify-between rounded-md px-4 py-2">
                 <h2 className="text-2xl font-bold">
@@ -70,7 +70,7 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
                                 className="my-2 w-[33.333%] flex-col flex-wrap justify-between"
                             >
                                 <div className="flex">
-                                    <span className="material-symbols-outlined mr-1">
+                                    <span className="material-symbols-rounded mr-1">
                                         {icon}
                                     </span>
                                     <span className="font-bold">
@@ -85,16 +85,12 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
                     })}
                 </div>
             </div>
-            <div className="flex">
-                <IconLink
-                    className="mr-2 w-full"
-                    href={detailsUrl}
-                    icon="grid_view"
-                >
+            <div className="mb-8 flex lg:mb-0">
+                <IconLink className="mr-2" href={detailsUrl} icon="grid_view">
                     {floorDetails ? 'Back' : 'Key plan'}
                 </IconLink>
                 <IconLink
-                    className="w-full"
+                    className=""
                     href={`/details/${apartmentId}`}
                     icon="vrpano"
                 >

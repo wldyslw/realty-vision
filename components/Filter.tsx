@@ -14,7 +14,7 @@ export function Filter({ children, label, icon }: FilterProps) {
                 id={`${icon}_filter_legend`}
                 className="mr-4 flex items-center text-lg lg:text-xl"
             >
-                <span className="material-symbols-outlined mr-2">{icon}</span>
+                <span className="material-symbols-rounded mr-2">{icon}</span>
                 {label}
             </div>
             <div className="flex w-full items-center justify-end">

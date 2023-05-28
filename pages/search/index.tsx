@@ -6,6 +6,7 @@ import {
     useRef,
     useState,
     type ChangeEvent,
+    type PointerEvent,
 } from 'react';
 
 import ApartmentInfo from '@/components/AparmentInfoModal';
@@ -46,9 +47,7 @@ function Search() {
                 setPersistedScroll(
                     scrollContainerRef.current?.scrollTop ?? null
                 );
-                scrollContainerRef.current?.scrollTo({
-                    top: 0,
-                });
+                scrollContainerRef.current?.scrollTo(0, 0);
                 expand(false);
             }
         },
@@ -67,8 +66,6 @@ function Search() {
         const value = router.query.floorNumberFilter as string[] | undefined;
         return value?.map((e) => +e) ?? [1, building?.floorsNumber ?? 2];
     }, [building?.floorsNumber, router.query.floorNumberFilter]);
-
-    // const [floorRange, setFloorRange] = useState<[number, number]>([0, 7]);
 
     const handleFloorRangeChange = useCallback(
         (event: Event, val: number | number[]) => {
@@ -126,14 +123,8 @@ function Search() {
         (e: React.SyntheticEvent<HTMLDivElement>) => {
             if (window.innerWidth < 1024) {
                 const { scrollTop } = e.currentTarget;
-                if (scrollTop < -60) {
-                    if (expanded) {
-                        expand(false);
-                    }
-                } else if (scrollTop > 60) {
-                    if (!expanded) {
-                        expand(true);
-                    }
+                if (scrollTop < -60 && expanded) {
+                    expand(false);
                 }
             }
         },
@@ -158,27 +149,84 @@ function Search() {
         expand((v) => !v);
     }, [expanded]);
 
+    const [origin, setOrigin] = useState<number | null>(null);
+    const [transform, setTransform] = useState<number>(0);
+
+    const handlePointerDown = useCallback((e: PointerEvent<HTMLDivElement>) => {
+        const scrollTop = scrollContainerRef.current?.scrollTop;
+        if (
+            window.innerWidth < 1024 &&
+            scrollTop !== undefined &&
+            scrollTop <= 0
+        ) {
+            setOrigin(e.pageY);
+        }
+    }, []);
+
+    const handlePointerMove = useCallback(
+        (e: PointerEvent<HTMLDivElement>) => {
+            if (origin !== null) {
+                const delta = e.pageY - origin;
+                if (expanded && delta >= 0) {
+                    setTransform(delta);
+                } else if (!expanded && delta <= 100) {
+                    // TODO: apply a better function for overscroll
+                    setTransform(
+                        delta <= 0 ? delta : delta / (delta / 100 + 1)
+                    );
+                }
+            }
+        },
+        [expanded, origin]
+    );
+
+    const handlePointerUp = useCallback(() => {
+        if (transform > 50) {
+            expand(false);
+        } else if (transform < -50) {
+            expand(true);
+        }
+        setOrigin(null);
+        setTransform(0);
+    }, [transform]);
+
+    const handlePointerCancel = useCallback(() => {
+        setOrigin(null);
+        setTransform(0);
+    }, []);
+
     return (
         <>
             <div
+                style={{
+                    transform: `translateY(${
+                        expanded
+                            ? 'var(--search-sheet-translate-expanded)'
+                            : 'var(--search-sheet-translate-collapsed)'
+                    }) translateY(${transform}px)`,
+                }}
                 className={`${
-                    expanded ? 'h-full' : 'h-40'
-                } bottom-sheet absolute inset-x-0 bottom-0 z-[10000000000] flex w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
+                    origin === null ? 'bottom-sheet' : ''
+                } absolute inset-x-0 -bottom-full z-[10000000000] flex h-full w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
                     expanded ? 'rounded-t-none' : ''
-                } bg-base-darker lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none`}
+                } bg-base-darker drop-shadow lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none`}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerCancel}
             >
                 <div
                     role="button"
                     onClick={toggleExpansion}
-                    className="flex shrink-0 cursor-pointer justify-center p-1 lg:hidden"
+                    className="flex shrink-0 cursor-pointer justify-center pb-1 pt-2 lg:hidden"
                 >
-                    <span className="material-symbols-outlined font-bold text-typo-secondary">
-                        {expanded ? 'expand_more' : 'expand_less'}
-                    </span>
+                    <span className="h-1 w-8 rounded-full bg-typo-secondary"></span>
                 </div>
                 <div
                     ref={scrollContainerRef}
-                    className="h-full overflow-y-scroll px-3 lg:h-full"
+                    className={`h-full ${
+                        expanded ? '' : 'touch-none'
+                    } overflow-y-auto px-3 lg:h-full lg:touch-auto`}
                     onScroll={handleScroll}
                 >
                     <div
@@ -233,12 +281,15 @@ function Search() {
                             <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
                                 <tr className="text-sm font-bold">
                                     <td className="py-2">
-                                        <span className="material-symbols-outlined mr-2 text-2xl">
+                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
                                             tag
+                                        </span>
+                                        <span className="hidden lg:inline">
+                                            Number
                                         </span>
                                     </td>
                                     <td className="py-2">
-                                        <span className="material-symbols-outlined mr-2 text-2xl lg:hidden">
+                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
                                             explore
                                         </span>
                                         <span className="hidden lg:inline">
@@ -246,7 +297,7 @@ function Search() {
                                         </span>
                                     </td>
                                     <td className="py-2">
-                                        <span className="material-symbols-outlined mr-2 text-2xl lg:hidden">
+                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
                                             floor
                                         </span>{' '}
                                         <span className="hidden lg:inline">
@@ -254,7 +305,7 @@ function Search() {
                                         </span>
                                     </td>
                                     <td className="py-2">
-                                        <span className="material-symbols-outlined mr-2 text-2xl lg:hidden">
+                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
                                             bed
                                         </span>
                                         <span className="hidden lg:inline">
@@ -262,7 +313,7 @@ function Search() {
                                         </span>
                                     </td>
                                     <td className="py-2">
-                                        <span className="material-symbols-outlined mr-2 text-2xl lg:hidden">
+                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
                                             square_foot
                                         </span>
                                         <span className="hidden lg:inline">
