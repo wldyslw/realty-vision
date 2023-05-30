@@ -2,6 +2,7 @@ import { type AppProps } from 'next/app';
 import { Roboto } from 'next/font/google';
 import useSWR from 'swr';
 import { useSpring, a } from '@react-spring/web';
+import { Leva } from 'leva';
 
 import Viewer from '@/components/Viewer';
 import MainNav from '@/components/MainNav';
@@ -41,6 +42,12 @@ export default function App({ Component, pageProps, router }: AppProps) {
                     <Viewer />
                 </div>
             </main>
+            <Leva
+                hidden={
+                    process.env.NODE_ENV === 'production' &&
+                    window.location.hash !== '#debug'
+                }
+            />
         </ComplexInfoContext.Provider>
     );
 }

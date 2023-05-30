@@ -1,13 +1,14 @@
 import { Canvas } from '@react-three/fiber';
+import { CameraHelper, type OrthographicCamera } from 'three';
 import { CameraControls, Sky, Grid, useHelper } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
 import { useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useControls } from 'leva';
 
 import ModelController from './ModelController';
-import { HALF_PI } from '@/utils/constants';
-import { Model as City } from '@/models/City_001';
-import { CameraHelper, type OrthographicCamera } from 'three';
+import { HALF_PI, TAU } from '@/utils/constants';
+import CityTiles from './CityTiles';
 
 export enum ViewModes {
     Overview,
@@ -21,21 +22,31 @@ type ViewerProps = {
 
 type LightsProps = {
     viewMode: ViewModes;
+    azimuth: number;
 };
+
+const showHelpers = process.env.NODE_ENV !== 'production';
 
 const shadowCameraArgs: Record<
     ViewModes,
     ConstructorParameters<typeof OrthographicCamera>
 > = {
-    [ViewModes.Overview]: [-120, 120, 100, -80, 1, 300],
-    [ViewModes.Search]: [-50, 50, 50, -30, 120, 200],
-    [ViewModes.CrossSection]: [-50, 50, 50, -30, 120, 200],
+    [ViewModes.Overview]: [-30, 30, 50, -20, 50, 200],
+    [ViewModes.Search]: [-30, 30, 50, -20, 70, 150],
+    [ViewModes.CrossSection]: [-30, 30, 50, -20, 70, 100],
 };
 
 function Lights(props: LightsProps) {
     const ref = useRef<OrthographicCamera>(null);
+    const { showLightHelpers } = useControls({
+        showLightHelpers: {
+            label: 'Show light helper',
+            value: showHelpers,
+        },
+    });
+
     useHelper(
-        ref.current && process.env.NODE_ENV !== 'production'
+        ref.current && showLightHelpers
             ? (ref as React.MutableRefObject<OrthographicCamera>)
             : false,
         CameraHelper
@@ -47,7 +58,9 @@ function Lights(props: LightsProps) {
                 shadow-mapSize={[2048, 2048]}
                 castShadow
                 intensity={2}
-                position={[-100, 100, -100]}
+                position-x={-100 * Math.cos(props.azimuth)}
+                position-y={60}
+                position-z={-100 * Math.sin(props.azimuth)}
                 shadow-bias={-0.001}
             >
                 <orthographicCamera
@@ -61,12 +74,23 @@ function Lights(props: LightsProps) {
     );
 }
 
-const maxDistance = process.env.NODE_ENV === 'development' ? 500 : 70;
+const maxDistance = process.env.NODE_ENV === 'development' ? 5000 : 70;
+const sunAzimuth = 3.7;
 
 // TODO: Solve limitation: CameraControls doesn't allow to truck&rotate on the same mouse button
 export default function Viewer(props: ViewerProps) {
     const router = useRouter();
     const [hovered, hover] = useState(false);
+    const { showAxesHelper, showPerformance } = useControls({
+        showAxesHelper: {
+            label: 'Show axes helper',
+            value: showHelpers,
+        },
+        showPerformance: {
+            label: 'Show performance monitor',
+            value: showHelpers,
+        },
+    });
 
     const viewMode: ViewModes = useMemo(() => {
         if (router.pathname.includes('search')) {
@@ -85,12 +109,8 @@ export default function Viewer(props: ViewerProps) {
             shadows
             camera={{ position: [60, 60, 60] }}
         >
-            {process.env.NODE_ENV === 'development' && (
-                <>
-                    <axesHelper args={[50]} />
-                    <Perf minimal position="bottom-right" />
-                </>
-            )}
+            {showAxesHelper && <axesHelper args={[50]} />}
+            {showPerformance && <Perf minimal position="bottom-right" />}
             <ModelController
                 buildingId="test_tower"
                 mode={viewMode}
@@ -103,23 +123,15 @@ export default function Viewer(props: ViewerProps) {
                 maxDistance={maxDistance}
                 maxPolarAngle={HALF_PI}
             />
-
-            <Lights viewMode={viewMode} />
-
-            {viewMode !== ViewModes.Overview && (
-                <Grid
-                    cellColor="white"
-                    args={[1000, 1000]}
-                    sectionSize={10}
-                    cellSize={0}
-                />
-            )}
-
-            <City
-                visible={viewMode === ViewModes.Overview}
-                scale={2}
-                position={[-1.3, 0, 0.5]}
+            <Lights azimuth={sunAzimuth} viewMode={viewMode} />
+            <Grid
+                visible={viewMode === ViewModes.Search}
+                cellColor="white"
+                args={[1000, 1000]}
+                sectionSize={10}
+                cellSize={0}
             />
+            <CityTiles viewMode={viewMode} />
             {viewMode === ViewModes.Overview && (
                 <>
                     <Sky
@@ -129,8 +141,9 @@ export default function Viewer(props: ViewerProps) {
                         mieCoefficient={0.0001}
                         mieDirectionalG={0.9}
                         inclination={0.7}
+                        azimuth={sunAzimuth / TAU}
                     />
-                    <fogExp2 attach="fog" args={[0xd2e0ea, 0.007]} />
+                    <fogExp2 attach="fog" args={[0xd2e0ea, 0.002]} />
                 </>
             )}
         </Canvas>

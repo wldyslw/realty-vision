@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  3d-tiles-renderer:
+    specifier: ^0.3.18
+    version: 0.3.18(three@0.151.3)
   '@mui/base':
     specifier: 5.0.0-beta.2
     version: 5.0.0-beta.2(@types/react@18.0.38)(react-dom@18.2.0)(react@18.2.0)
@@ -107,6 +110,14 @@ devDependencies:
     version: 0.2.7(prettier@2.8.8)
 
 packages:
+
+  /3d-tiles-renderer@0.3.18(three@0.151.3):
+    resolution: {integrity: sha512-aAUjRP9j2IUi0ZQYRdfUN/6Jso6z/cQHX7FMaIP3ZIUMO4H7B/cPsZfs4lrgXCmeONp8RX0PvhoexpSoqKy4QQ==}
+    peerDependencies:
+      three: '>=0.123.0'
+    dependencies:
+      three: 0.151.3
+    dev: false
 
   /@babel/runtime@7.21.0:
     resolution: {integrity: sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==}
