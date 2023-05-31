@@ -18,7 +18,7 @@ const visibleApartmentProperties: [KeyType, Label, Icon][] = [
 ];
 
 type ApartmentInfoProps = {
-    onClose: () => void;
+    onClose?: () => void;
 };
 
 /**

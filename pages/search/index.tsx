@@ -1,13 +1,5 @@
 import { useRouter } from 'next/router';
-import {
-    memo,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type PointerEvent,
-} from 'react';
+import { memo, useCallback, useMemo, useRef, type ChangeEvent } from 'react';
 
 import ApartmentInfo from '@/components/AparmentInfoModal';
 import { type Exposure } from '@/types';
@@ -16,6 +8,7 @@ import useBuilding from '@/utils/useBuilding';
 import { Filter } from '@/components/Filter';
 import Slider from '@/components/Slider';
 import ButtonGroup from '@/components/ButtonGroup';
+import Sheet, { type SheetRef } from '@/components/Sheet';
 
 const ExposuresArray: Exposure[] = ['N', 'W', 'S', 'E'];
 
@@ -23,9 +16,7 @@ function Search() {
     const router = useRouter();
     const building = useBuilding('test_tower');
     const { filteredApartments } = useFilteredApartments(building?.apartments);
-    const [expanded, expand] = useState(false);
-    const [persistedScroll, setPersistedScroll] = useState<number | null>(null);
-    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    const sheetRef = useRef<SheetRef | null>(null);
 
     const roomsNumberRangeHelper = useMemo(() => {
         const roomsNumber = building?.apartments.map((apt) => apt.roomsNumber);
@@ -43,13 +34,7 @@ function Search() {
         (e: React.PointerEvent<HTMLTableRowElement>) => {
             const id = e.currentTarget.dataset.id as string;
             router.push({ query: { ...router.query, apartmentId: id } });
-            if (window.innerWidth < 1024) {
-                setPersistedScroll(
-                    scrollContainerRef.current?.scrollTop ?? null
-                );
-                scrollContainerRef.current?.scrollTo(0, 0);
-                expand(false);
-            }
+            sheetRef.current?.storeScroll();
         },
         [router]
     );
@@ -119,247 +104,135 @@ function Search() {
         [exposureFilter, router]
     );
 
-    const handleScroll = useCallback(
-        (e: React.SyntheticEvent<HTMLDivElement>) => {
-            if (window.innerWidth < 1024) {
-                const { scrollTop } = e.currentTarget;
-                if (scrollTop < -60 && expanded) {
-                    expand(false);
-                }
-            }
-        },
-        [expanded]
-    );
-
-    const restoreView = useCallback(() => {
-        if (window.innerWidth < 1024 && persistedScroll !== null) {
-            expand(true);
-            scrollContainerRef.current?.scrollTo({
-                top: persistedScroll,
-                behavior: 'smooth',
-            });
-            setPersistedScroll(null);
-        }
-    }, [persistedScroll]);
-
-    const toggleExpansion = useCallback(() => {
-        if (expanded && window.innerWidth < 1024) {
-            scrollContainerRef.current?.scrollTo(0, 0);
-        }
-        expand((v) => !v);
-    }, [expanded]);
-
-    const [origin, setOrigin] = useState<number | null>(null);
-    const [transform, setTransform] = useState<number>(0);
-
-    const handlePointerDown = useCallback((e: PointerEvent<HTMLDivElement>) => {
-        const scrollTop = scrollContainerRef.current?.scrollTop;
-        if (
-            window.innerWidth < 1024 &&
-            scrollTop !== undefined &&
-            scrollTop <= 0
-        ) {
-            setOrigin(e.pageY);
-        }
-    }, []);
-
-    const handlePointerMove = useCallback(
-        (e: PointerEvent<HTMLDivElement>) => {
-            if (origin !== null) {
-                const delta = e.pageY - origin;
-                if (expanded && delta >= 0) {
-                    setTransform(delta);
-                } else if (!expanded && delta <= 100) {
-                    // TODO: apply a better function for overscroll
-                    setTransform(
-                        delta <= 0 ? delta : delta / (delta / 100 + 1)
-                    );
-                }
-            }
-        },
-        [expanded, origin]
-    );
-
-    const handlePointerUp = useCallback(() => {
-        if (transform > 50) {
-            expand(false);
-        } else if (transform < -50) {
-            expand(true);
-        }
-        setOrigin(null);
-        setTransform(0);
-    }, [transform]);
-
-    const handlePointerCancel = useCallback(() => {
-        setOrigin(null);
-        setTransform(0);
-    }, []);
-
     return (
         <>
-            <div
-                style={{
-                    transform: `translateY(${
-                        expanded
-                            ? 'var(--search-sheet-translate-expanded)'
-                            : 'var(--search-sheet-translate-collapsed)'
-                    }) translateY(${transform}px)`,
-                }}
-                className={`${
-                    origin === null ? 'bottom-sheet' : ''
-                } absolute inset-x-0 -bottom-full z-[10000000000] flex h-full w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
-                    expanded ? 'rounded-t-none' : ''
-                } bg-base-darker drop-shadow lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none`}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerCancel}
-            >
+            <Sheet ref={sheetRef}>
                 <div
-                    role="button"
-                    onClick={toggleExpansion}
-                    className="flex shrink-0 cursor-pointer justify-center pb-1 pt-2 lg:hidden"
+                    id="filters"
+                    className="z-10 bg-base-darker py-2 lg:sticky lg:inset-0"
                 >
-                    <span className="h-1 w-8 rounded-full bg-typo-secondary"></span>
+                    <Filter icon="bed" label="Bedrooms">
+                        {roomsNumberRangeHelper.map((roomsNumber) => {
+                            const checked = roomsNumberFilter.has(roomsNumber);
+                            return (
+                                <ButtonGroup
+                                    key={roomsNumber}
+                                    id={roomsNumber.toString()}
+                                    name="roomsNumber"
+                                    onChange={handleRoomsNumberFilterChange}
+                                    checked={checked}
+                                >
+                                    {roomsNumber}
+                                </ButtonGroup>
+                            );
+                        })}
+                    </Filter>
+                    <Filter icon="explore" label="Exposure">
+                        {ExposuresArray.map((exposure) => {
+                            const checked = exposureFilter.has(exposure);
+                            return (
+                                <ButtonGroup
+                                    key={exposure}
+                                    id={exposure}
+                                    name="exposure"
+                                    onChange={handleExposureFilterChange}
+                                    checked={checked}
+                                >
+                                    {exposure}
+                                </ButtonGroup>
+                            );
+                        })}
+                    </Filter>
+                    <Filter icon="floor" label="Floor">
+                        <Slider
+                            step={1}
+                            min={1}
+                            max={building?.floorsNumber ?? 100}
+                            value={floorNumberFilter}
+                            onChange={handleFloorRangeChange}
+                        />
+                    </Filter>
                 </div>
-                <div
-                    ref={scrollContainerRef}
-                    className={`h-full ${
-                        expanded ? '' : 'touch-none'
-                    } overflow-y-auto px-3 lg:h-full lg:touch-auto`}
-                    onScroll={handleScroll}
-                >
-                    <div
-                        id="filters"
-                        className="z-10 bg-base-darker py-2 lg:sticky lg:inset-0"
-                    >
-                        <Filter icon="bed" label="Bedrooms">
-                            {roomsNumberRangeHelper.map((roomsNumber) => {
-                                const checked =
-                                    roomsNumberFilter.has(roomsNumber);
+                <div id="data" className="mb-2 rounded-md bg-base p-2">
+                    <table className="w-full text-center">
+                        <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
+                            <tr className="text-sm font-bold">
+                                <td className="py-2">
+                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                        tag
+                                    </span>
+                                    <span className="hidden lg:inline">
+                                        Number
+                                    </span>
+                                </td>
+                                <td className="py-2">
+                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                        explore
+                                    </span>
+                                    <span className="hidden lg:inline">
+                                        Exposure
+                                    </span>
+                                </td>
+                                <td className="py-2">
+                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                        floor
+                                    </span>{' '}
+                                    <span className="hidden lg:inline">
+                                        Floor
+                                    </span>
+                                </td>
+                                <td className="py-2">
+                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                        bed
+                                    </span>
+                                    <span className="hidden lg:inline">
+                                        Bedrooms
+                                    </span>
+                                </td>
+                                <td className="py-2">
+                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                        square_foot
+                                    </span>
+                                    <span className="hidden lg:inline">
+                                        Area, m²
+                                    </span>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredApartments?.map((apt) => {
                                 return (
-                                    <ButtonGroup
-                                        key={roomsNumber}
-                                        id={roomsNumber.toString()}
-                                        name="roomsNumber"
-                                        onChange={handleRoomsNumberFilterChange}
-                                        checked={checked}
+                                    <tr
+                                        className={`${
+                                            router.query.apartmentId === apt.id
+                                                ? 'bg-primary-focus'
+                                                : ''
+                                        } border-b-[1px] border-divider last:border-b-0 hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active`}
+                                        key={apt.id}
+                                        onClick={handleApartmentSelect}
+                                        role="link"
+                                        data-href={`/search?apartmentId=${apt.id}`}
+                                        data-id={apt.id}
                                     >
-                                        {roomsNumber}
-                                    </ButtonGroup>
+                                        <td className="py-2">{apt.name}</td>
+                                        <td className="py-2">
+                                            {apt.exposure.join(', ')}
+                                        </td>
+                                        <td className="py-2">
+                                            {apt.floorNumber}
+                                        </td>
+                                        <td className="py-2">
+                                            {apt.roomsNumber}
+                                        </td>
+                                        <td className="py-2">{apt.fullArea}</td>
+                                    </tr>
                                 );
                             })}
-                        </Filter>
-                        <Filter icon="explore" label="Exposure">
-                            {ExposuresArray.map((exposure) => {
-                                const checked = exposureFilter.has(exposure);
-                                return (
-                                    <ButtonGroup
-                                        key={exposure}
-                                        id={exposure}
-                                        name="exposure"
-                                        onChange={handleExposureFilterChange}
-                                        checked={checked}
-                                    >
-                                        {exposure}
-                                    </ButtonGroup>
-                                );
-                            })}
-                        </Filter>
-                        <Filter icon="floor" label="Floor">
-                            <Slider
-                                step={1}
-                                min={1}
-                                max={building?.floorsNumber ?? 100}
-                                value={floorNumberFilter}
-                                onChange={handleFloorRangeChange}
-                            />
-                        </Filter>
-                    </div>
-                    <div id="data" className="mb-2 rounded-md bg-base p-2">
-                        <table className="w-full text-center">
-                            <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
-                                <tr className="text-sm font-bold">
-                                    <td className="py-2">
-                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
-                                            tag
-                                        </span>
-                                        <span className="hidden lg:inline">
-                                            Number
-                                        </span>
-                                    </td>
-                                    <td className="py-2">
-                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
-                                            explore
-                                        </span>
-                                        <span className="hidden lg:inline">
-                                            Exposure
-                                        </span>
-                                    </td>
-                                    <td className="py-2">
-                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
-                                            floor
-                                        </span>{' '}
-                                        <span className="hidden lg:inline">
-                                            Floor
-                                        </span>
-                                    </td>
-                                    <td className="py-2">
-                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
-                                            bed
-                                        </span>
-                                        <span className="hidden lg:inline">
-                                            Bedrooms
-                                        </span>
-                                    </td>
-                                    <td className="py-2">
-                                        <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
-                                            square_foot
-                                        </span>
-                                        <span className="hidden lg:inline">
-                                            Area, m²
-                                        </span>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredApartments?.map((apt) => {
-                                    return (
-                                        <tr
-                                            className={`${
-                                                router.query.apartmentId ===
-                                                apt.id
-                                                    ? 'bg-primary-focus'
-                                                    : ''
-                                            } border-b-[1px] border-divider last:border-b-0 hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active`}
-                                            key={apt.id}
-                                            onClick={handleApartmentSelect}
-                                            role="link"
-                                            data-href={`/search?apartmentId=${apt.id}`}
-                                            data-id={apt.id}
-                                        >
-                                            <td className="py-2">{apt.name}</td>
-                                            <td className="py-2">
-                                                {apt.exposure.join(', ')}
-                                            </td>
-                                            <td className="py-2">
-                                                {apt.floorNumber}
-                                            </td>
-                                            <td className="py-2">
-                                                {apt.roomsNumber}
-                                            </td>
-                                            <td className="py-2">
-                                                {apt.fullArea}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <ApartmentInfo onClose={restoreView} />
+            </Sheet>
+            <ApartmentInfo onClose={sheetRef.current?.restoreScroll} />
         </>
     );
 }
