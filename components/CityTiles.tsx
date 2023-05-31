@@ -23,6 +23,7 @@ type CityTilesProps = {
     viewMode: ViewModes;
 };
 
+// TODO: add shadows (.recieveShadow is too expensive and unavailable on MeshBasicMaterial)
 function CityTiles(props: CityTilesProps) {
     const { camera, gl: renderer, scene } = useThree();
     const tilesRenderer = useRef<TilesRenderer | null>(null);
@@ -41,12 +42,6 @@ function CityTiles(props: CityTilesProps) {
 
             tilesRenderer.current.setCamera(camera);
             tilesRenderer.current.setResolutionFromRenderer(camera, renderer);
-
-            tilesRenderer.current.onLoadModel = (scene) => {
-                scene.traverse((c) => {
-                    c.receiveShadow = true;
-                });
-            };
 
             tilesRenderer.current.onLoadTileSet = () => {
                 if (tilesRenderer.current) {
