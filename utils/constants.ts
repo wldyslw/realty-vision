@@ -15,3 +15,5 @@ function getExposureToRotationMap(
 }
 
 export const ExposureToRotationMap = getExposureToRotationMap(0);
+
+export const PersistedQueryStorageKey = 'persistedQuery';

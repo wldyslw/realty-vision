@@ -13,12 +13,14 @@ export type SheetRef = {
     scrollTo: (x: number) => void;
     storeScroll: () => void;
     restoreScroll: () => void;
+    toggle: () => void;
 };
 
 type SheetProps = {
     children?: ReactNode;
     expandedClass?: string;
     collapsedClass?: string;
+    className?: string;
 };
 
 const isMobile = () => window.innerWidth < 1024;
@@ -28,6 +30,7 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
         expandedClass = 'var(--search-sheet-translate-expanded)',
         collapsedClass = 'var(--search-sheet-translate-collapsed)',
         children,
+        className = '',
     },
     ref
 ) {
@@ -122,6 +125,11 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
                         setPersistedScroll(null);
                     }
                 },
+                toggle() {
+                    if (isMobile()) {
+                        expand((v) => !v);
+                    }
+                },
             };
         },
         [persistedScroll]
@@ -138,7 +146,7 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
                 origin === null ? 'bottom-sheet' : ''
             } absolute inset-x-0 -bottom-full z-[10000000000] flex h-full w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
                 expanded ? 'rounded-t-none' : ''
-            } bg-base-darker drop-shadow lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none`}
+            } bg-base-darker drop-shadow lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none ${className}`}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}

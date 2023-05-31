@@ -14,6 +14,7 @@ export enum ViewModes {
     Overview,
     Search,
     CrossSection,
+    Hidden,
 }
 
 type ViewerProps = {
@@ -34,6 +35,7 @@ const shadowCameraArgs: Record<
     [ViewModes.Overview]: [-30, 30, 50, -20, 50, 200],
     [ViewModes.Search]: [-30, 30, 50, -20, 70, 150],
     [ViewModes.CrossSection]: [-30, 30, 50, -20, 70, 100],
+    [ViewModes.Hidden]: [0, 0, 0, 0, 0, 0], // can be anything, but I hope this will save some resourses
 };
 
 function Lights(props: LightsProps) {
@@ -93,19 +95,20 @@ export default function Viewer(props: ViewerProps) {
     });
 
     const viewMode: ViewModes = useMemo(() => {
-        if (router.pathname.includes('search')) {
+        if (router.pathname === '/') {
+            return ViewModes.Overview;
+        } else if (router.pathname.includes('/search')) {
             return ViewModes.Search;
         }
-        return ViewModes.Overview;
+        return ViewModes.Hidden;
     }, [router.pathname]);
 
     return (
         <Canvas
             resize={{ debounce: 5 }}
-            className={
-                (props.className ?? '') +
-                (hovered ? 'cursor-pointer' : 'cursor-default')
-            }
+            className={`${viewMode === ViewModes.Hidden ? 'hidden' : ''} ${
+                hovered ? 'cursor-pointer' : 'cursor-default'
+            } ${props.className ?? ''}`}
             shadows
             camera={{ position: [60, 60, 60] }}
         >
