@@ -7,7 +7,7 @@ const links = [
     { href: '/about', icon: 'info', label: 'About' },
     { href: '/gallery', icon: 'image', label: 'Gallery' },
     { href: '/map', icon: 'location_on', label: 'Map' },
-    { href: '/contacts', icon: 'call', label: 'Contacts' },
+    { href: '#contacts', icon: 'call', label: 'Contacts' },
 ];
 
 export default function MainNav() {
@@ -15,6 +15,11 @@ export default function MainNav() {
 
     return (
         <nav className="flex justify-center overflow-y-auto p-2 lg:flex-col lg:justify-start">
+            <img
+                alt="Company logo"
+                src="https://yanay-group.co.il/wp-content/uploads/2023/02/logo-square.png"
+                className="mx-auto mb-8 mt-4 hidden w-full max-w-[10rem] lg:block"
+            />
             {links.map(({ href, icon, label }) => {
                 return (
                     <IconLink
