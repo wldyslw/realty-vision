@@ -179,3 +179,8 @@ body {
     @apply absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-base/70 px-2 py-1 backdrop-blur;
     content: attr(data-label);
 }
+
+.gallery {
+    @apply grid content-start gap-4;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+}
