@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRef, memo, useEffect, useMemo, useCallback, useState } from 'react';
 import { Map, Marker } from 'mapbox-gl';
 import useSWR from 'swr';
@@ -172,6 +173,9 @@ function MapPage() {
 
     return (
         <>
+            <Head>
+                <title>Map | The Building</title>
+            </Head>
             <div ref={containerRef} id="map" className="h-full w-full"></div>
             <div className="absolute inset-x-0 top-0 z-10 flex items-center overflow-x-auto px-4 py-2">
                 <Chip

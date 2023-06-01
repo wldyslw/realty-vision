@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo, useRef, type ChangeEvent } from 'react';
 
@@ -106,6 +107,9 @@ function Search() {
 
     return (
         <>
+            <Head>
+                <title>Search | The Building</title>
+            </Head>
             <Sheet ref={sheetRef}>
                 <div
                     id="filters"

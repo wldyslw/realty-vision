@@ -1,7 +1,14 @@
+import Head from 'next/head';
 import { memo } from 'react';
 
 function About() {
-    return null;
+    return (
+        <>
+            <Head>
+                <title>About | The Building</title>
+            </Head>
+        </>
+    );
 }
 
 export default memo(About);

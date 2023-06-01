@@ -1,5 +1,6 @@
 import { memo, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import IconLink from '@/components/IconLink';
 import Sheet, { SheetRef } from '@/components/Sheet';
@@ -23,6 +24,9 @@ function Details() {
 
     return (
         <>
+            <Head>
+                <title>Apartment {apartmentInfo?.name} | The Building</title>
+            </Head>
             <Sheet ref={sheetRef} className="lg:w-96">
                 <div className="flex py-4">
                     <IconLink

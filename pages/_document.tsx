@@ -5,7 +5,6 @@ export default function Document() {
         <Html lang="en">
             <Head>
                 <link rel="icon" href="/icon.png" type="image/png" />
-                <title>The Building</title>
                 <script
                     id="dark-mode"
                     dangerouslySetInnerHTML={{ __html: process.env.darkMode }}

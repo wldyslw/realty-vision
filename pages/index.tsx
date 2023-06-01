@@ -1,3 +1,9 @@
+import Head from 'next/head';
+
 export default function Home() {
-    return null;
+    return (
+        <Head>
+            <title>The Building</title>
+        </Head>
+    );
 }
