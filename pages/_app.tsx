@@ -6,6 +6,7 @@ import { Leva } from 'leva';
 
 import Viewer from '@/components/Viewer';
 import MainNav from '@/components/MainNav';
+import Contacts from '@/components/Contacts';
 import fetcher from '@/utils/fetcher';
 import { ComplexInfoContext } from '@/utils/contexts';
 import type { Complex } from '@/types';
@@ -40,6 +41,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
                 <div className="relative flex h-full min-h-0 w-full min-w-0 flex-col-reverse overflow-hidden lg:flex-row">
                     <Component {...pageProps} />
                     <Viewer />
+                    {router.asPath.includes('#contacts') && <Contacts />}
                 </div>
             </main>
             <Leva

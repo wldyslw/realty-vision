@@ -176,7 +176,7 @@ body {
 }
 
 .mapboxgl-marker:not(.origin-marker)::after {
-    @apply absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-base/70 px-2 py-1 backdrop-blur;
+    @apply absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-base/70 px-2 py-1 backdrop-blur-md;
     content: attr(data-label);
 }
 
