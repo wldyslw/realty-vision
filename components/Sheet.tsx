@@ -146,7 +146,7 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
                 origin === null ? 'bottom-sheet' : ''
             } absolute inset-x-0 -bottom-full z-[10000000000] flex h-full w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
                 expanded ? 'rounded-t-none' : ''
-            } bg-base-darker drop-shadow lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none ${className}`}
+            } bg-base-darker/90 drop-shadow backdrop-blur-md lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none ${className}`}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}

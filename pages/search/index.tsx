@@ -109,7 +109,7 @@ function Search() {
             <Sheet ref={sheetRef}>
                 <div
                     id="filters"
-                    className="z-10 bg-base-darker py-2 lg:sticky lg:inset-0"
+                    className="z-10 py-2 lg:sticky lg:inset-0 lg:bg-base-darker"
                 >
                     <Filter icon="bed" label="Bedrooms">
                         {roomsNumberRangeHelper.map((roomsNumber) => {

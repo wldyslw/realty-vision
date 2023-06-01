@@ -1,3 +1,4 @@
+import { MapInfo, Place, PlaceTypes } from '@/types/map';
 import { Apartment, Availability, Building, Complex, Exposure } from '../types';
 
 const aptIds = Array.from({ length: 7 }).map((_, floorIndex) => {
@@ -45,4 +46,50 @@ export const building: Building = {
 export const complex: Complex = {
     name: 'Test Complex',
     buildings: [building],
+};
+
+const places: Place[] = [
+    {
+        name: 'Church',
+        coords: [-71.0623494384355, 42.35579772676142],
+        type: PlaceTypes.Culture,
+    },
+    {
+        name: 'State Library',
+        coords: [-71.06374920452704, 42.35831012784041],
+        type: PlaceTypes.Culture,
+    },
+    {
+        name: 'Metro Station 01',
+        coords: [-71.06236525596752, 42.356334134097665],
+        type: PlaceTypes.Transport,
+    },
+    {
+        name: 'Metro Station 02',
+        coords: [-71.06469634759789, 42.35256794409563],
+        type: PlaceTypes.Transport,
+    },
+    {
+        name: 'Bus Station',
+        coords: [-71.06577601680956, 42.356929222674154],
+        type: PlaceTypes.Transport,
+    },
+    {
+        name: 'Public Park',
+        coords: [-71.06560561847631, 42.35610755156907],
+        type: PlaceTypes.Park,
+    },
+    {
+        name: 'Public School',
+        coords: [-71.06345755971847, 42.35445557310731],
+        type: PlaceTypes.Education,
+    },
+];
+
+export const mapInfo: MapInfo = {
+    places,
+    origin: {
+        name: 'The Building',
+        coords: [-71.063097, 42.356206],
+    },
 };

@@ -44,8 +44,8 @@ export default function App({ Component, pageProps, router }: AppProps) {
             </main>
             <Leva
                 hidden={
-                    process.env.NODE_ENV === 'production' &&
-                    window.location.hash !== '#debug'
+                    typeof window !== 'undefined' &&
+                    !window.location.hash.includes('#debug')
                 }
             />
         </ComplexInfoContext.Provider>
