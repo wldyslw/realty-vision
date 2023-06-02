@@ -141,6 +141,7 @@ html {
     left: 0;
     height: 3px;
     width: 250px;
+    opacity: 0.5;
 }
 
 .material-symbols-rounded {
