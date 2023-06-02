@@ -79,26 +79,26 @@
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --color-background-start: 0, 0, 0;
-        --color-background-end: 0, 0, 0;
+}
+.dark:root {
+    --color-background-start: 0, 0, 0;
+    --color-background-end: 0, 0, 0;
 
-        --color-base: var(--color-zinc-900);
-        --color-base-darker: var(--color-black);
-        --color-typo-primary: var(--color-white);
-        --color-typo-secondary: var(--color-zinc-500);
-        --color-divider: var(--color-zinc-700);
+    --color-base: var(--color-zinc-900);
+    --color-base-darker: var(--color-black);
+    --color-typo-primary: var(--color-white);
+    --color-typo-secondary: var(--color-zinc-500);
+    --color-divider: var(--color-zinc-700);
 
-        --color-primary: var(--color-amber-600);
-        --color-primary-focus: var(--color-amber-800);
-        --color-primary-darker: var(--color-amber-500);
-        --color-primary-hover: var(--color-amber-700);
-        --color-primary-active: var(--color-amber-800);
-    }
+    --color-primary: var(--color-amber-600);
+    --color-primary-focus: var(--color-amber-800);
+    --color-primary-darker: var(--color-amber-500);
+    --color-primary-hover: var(--color-amber-700);
+    --color-primary-active: var(--color-amber-800);
 }
 
 html {
-    overflow: hidden;
+    @apply h-screen overflow-hidden;
 }
 
 body {
@@ -112,7 +112,8 @@ body {
 }
 
 main,
-body {
+body,
+html {
     overflow: hidden;
     color: rgb(var(--color-typo-primary));
     background: linear-gradient(

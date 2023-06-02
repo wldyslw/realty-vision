@@ -7,7 +7,6 @@ import {
 } from 'next/document';
 
 export default function Document(props: DocumentProps) {
-    console.log(`Current locale: ${props.locale}`);
     return (
         <Html lang={props.locale} dir={props.locale === 'he' ? 'rtl' : 'ltr'}>
             <Head>

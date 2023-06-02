@@ -6,7 +6,7 @@ const nextTranslate = require('next-translate-plugin');
 const nextConfig = {
     reactStrictMode: true,
     env: {
-        darkMode: fs.readFileSync('./public/dark-mode.js').toString(),
+        darkMode: fs.readFileSync('./dark-mode.js').toString(),
     },
 };
 
