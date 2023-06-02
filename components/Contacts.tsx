@@ -11,7 +11,7 @@ function Contacts() {
     }, [router]);
 
     return (
-        <div className="absolute inset-0 z-[10000000010] flex flex-col items-center justify-center px-4 pt-32 lg:justify-start">
+        <div className="absolute inset-0 z-[100000001] flex flex-col items-center justify-center px-4 pt-32 lg:justify-start">
             <div
                 id="backdrop"
                 onClick={handleDissmiss}
@@ -21,7 +21,7 @@ function Contacts() {
                     <span className="material-symbols-rounded">close</span>
                 </span>
             </div>
-            <div className="opacity-scale-appear z-[10000000020] min-h-[50%] w-full max-w-3xl overflow-hidden rounded-3xl bg-base">
+            <div className="opacity-scale-appear z-[100000002] min-h-[50%] w-full max-w-3xl overflow-hidden rounded-3xl bg-base">
                 <a href="https://goo.gl/maps/Gdz98yEjqY2pp3YN8?coh=178571&entry=tt">
                     <img src="/map.png" alt="" className="cursor-pointer" />
                 </a>

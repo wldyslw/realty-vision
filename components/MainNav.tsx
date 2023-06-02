@@ -15,11 +15,18 @@ export default function MainNav() {
 
     return (
         <nav className="flex justify-center overflow-y-auto p-2 lg:flex-col lg:justify-start">
-            <img
-                alt="Company logo"
-                src="https://yanay-group.co.il/wp-content/uploads/2023/02/logo-square.png"
-                className="mx-auto mb-8 mt-4 hidden w-full max-w-[10rem] lg:block"
-            />
+            <picture>
+                <source
+                    srcSet="/logo-bg-black.png"
+                    media="(prefers-color-scheme: dark)"
+                />
+                <img
+                    src="/logo-bg-white.png"
+                    alt="Company logo"
+                    className="mx-auto mb-8 mt-4 hidden w-full max-w-[10rem] lg:block"
+                />
+            </picture>
+
             {links.map(({ href, icon, label }) => {
                 return (
                     <IconLink
