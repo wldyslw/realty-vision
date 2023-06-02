@@ -33,6 +33,10 @@ function ModelController({
         (state) => state.controls as CameraControls | null
     );
 
+    useEffect(() => {
+        controls?.setTarget(0, 10, 0);
+    }, [controls]);
+
     const buildingInfo = useBuilding(buildingId);
 
     const { filteredApartments, availableApartments } = useFilteredApartments(

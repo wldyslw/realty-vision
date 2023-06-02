@@ -9,6 +9,7 @@ import { useControls } from 'leva';
 import ModelController from './ModelController';
 import { HALF_PI, TAU } from '@/utils/constants';
 import CityTiles from './CityTiles';
+import ViewCube from './ViewCube';
 
 export enum ViewModes {
     Overview,
@@ -26,7 +27,7 @@ type LightsProps = {
     azimuth: number;
 };
 
-const showHelpers = process.env.NODE_ENV !== 'production';
+const showHelpers = false;
 
 const shadowCameraArgs: Record<
     ViewModes,
@@ -112,6 +113,7 @@ export default function Viewer(props: ViewerProps) {
             shadows
             camera={{ position: [60, 60, 60] }}
         >
+            {viewMode === ViewModes.Search && <ViewCube onHover={hover} />}
             {showAxesHelper && <axesHelper args={[50]} />}
             {showPerformance && <Perf minimal position="bottom-right" />}
             <ModelController
