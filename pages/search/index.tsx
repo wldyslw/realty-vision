@@ -110,7 +110,7 @@ function Search() {
             <Head>
                 <title>Search | The Building</title>
             </Head>
-            <Sheet ref={sheetRef}>
+            <Sheet ref={sheetRef} className="opacity-scale-appear">
                 <div
                     id="filters"
                     className="z-10 py-2 lg:sticky lg:inset-0 lg:bg-base-darker"
@@ -157,7 +157,10 @@ function Search() {
                         />
                     </Filter>
                 </div>
-                <div id="data" className="mb-2 rounded-md bg-base p-2">
+                <div
+                    id="data"
+                    className="opacity-scale-appear mb-2 rounded-md bg-base p-2"
+                >
                     <table className="w-full text-center">
                         <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
                             <tr className="text-sm font-bold">

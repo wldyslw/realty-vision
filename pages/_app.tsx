@@ -39,9 +39,9 @@ export default function App({ Component, pageProps, router }: AppProps) {
                     <MainNav />
                 </a.div>
                 <div className="relative flex h-full min-h-0 w-full min-w-0 flex-col-reverse overflow-hidden lg:flex-row">
+                    {router.asPath.includes('#contacts') && <Contacts />}
                     <Component {...pageProps} />
                     <Viewer />
-                    {router.asPath.includes('#contacts') && <Contacts />}
                 </div>
             </main>
             <Leva

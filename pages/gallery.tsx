@@ -15,7 +15,7 @@ function Gallery() {
                 <title>Gallery | The Building</title>
             </Head>
             <PhotoProvider>
-                <div className="overflow-y-auto px-8 py-4 lg:px-16 lg:py-8">
+                <div className="opacity-scale-appear h-full w-full overflow-y-auto px-8 py-4 lg:px-32 lg:py-8">
                     <h1 className="mb-4 text-4xl font-bold">Gallery</h1>
                     <div className="gallery">
                         {images.map((item, index) => (

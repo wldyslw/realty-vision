@@ -1,54 +1,27 @@
 import { useRouter } from 'next/router';
-import { memo, useCallback, useState } from 'react';
-import { useSpring, a } from '@react-spring/web';
+import { memo, useCallback } from 'react';
 
 import IconLink from './IconLink';
 
 function Contacts() {
-    const rounter = useRouter();
-    const [opened, open] = useState(true);
+    const router = useRouter();
 
     const handleDissmiss = useCallback(() => {
-        open(false);
-    }, []);
-
-    const style = useSpring({
-        from: {
-            opacity: opened ? 0 : 1,
-        },
-        to: {
-            opacity: opened ? 1 : 0,
-        },
-        config: {
-            tension: 300,
-            precision: 0.01,
-        },
-        onResolve(state) {
-            if ((state.value as unknown as number) === 0 && state.finished) {
-                rounter.push({ hash: null });
-            }
-        },
-    });
+        router.push({ hash: null });
+    }, [router]);
 
     return (
-        <div
-            id="backdrop"
-            className="absolute inset-0 z-[10000000010] flex flex-col items-center justify-center px-4 pt-32 lg:justify-start"
-        >
-            <a.div
-                style={style}
+        <div className="absolute inset-0 z-[10000000010] flex flex-col items-center justify-center px-4 pt-32 lg:justify-start">
+            <div
+                id="backdrop"
                 onClick={handleDissmiss}
-                className="absolute inset-0 cursor-pointer bg-base-darker/70 text-typo-secondary backdrop-blur-md transition-colors hover:text-typo-primary"
+                className="opacity-appear absolute inset-0 cursor-pointer bg-base-darker/70 text-typo-secondary backdrop-blur-md transition-colors hover:text-typo-primary"
             >
                 <span className="absolute right-0 top-0 p-8">
                     <span className="material-symbols-rounded">close</span>
                 </span>
-            </a.div>
-            <a.div
-                style={style}
-                id="modal"
-                className="z-[10000000020] min-h-[50%] w-full max-w-3xl overflow-hidden rounded-3xl bg-base"
-            >
+            </div>
+            <div className="opacity-scale-appear z-[10000000020] min-h-[50%] w-full max-w-3xl overflow-hidden rounded-3xl bg-base">
                 <a href="https://goo.gl/maps/Gdz98yEjqY2pp3YN8?coh=178571&entry=tt">
                     <img src="/map.png" alt="" className="cursor-pointer" />
                 </a>
@@ -71,7 +44,7 @@ function Contacts() {
                         +1 234 567 890
                     </IconLink>
                 </div>
-            </a.div>
+            </div>
         </div>
     );
 }

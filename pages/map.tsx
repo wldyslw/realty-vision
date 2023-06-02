@@ -176,8 +176,12 @@ function MapPage() {
             <Head>
                 <title>Map | The Building</title>
             </Head>
-            <div ref={containerRef} id="map" className="h-full w-full"></div>
-            <div className="absolute inset-x-0 top-0 z-10 flex items-center overflow-x-auto px-4 py-2">
+            <div
+                ref={containerRef}
+                id="map"
+                className="opacity-scale-appear h-full w-full"
+            ></div>
+            <div className="opacity-scale-appear absolute inset-x-0 top-0 z-10 flex items-center overflow-x-auto px-4 py-2">
                 <Chip
                     onClick={clearFilter}
                     className="inline-flex items-center"
