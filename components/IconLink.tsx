@@ -78,7 +78,7 @@ export default function IconLink({
             <span
                 className={`${
                     collapsed ? 'hidden lg:hidden' : ''
-                } ml-1 inline ${labelClass ?? ''}`}
+                } ms-1 inline ${labelClass ?? ''}`}
             >
                 {children}
             </span>

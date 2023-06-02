@@ -31,7 +31,7 @@ function Details() {
                 <div className="flex py-4">
                     <IconLink
                         collapsed
-                        className="mr-2"
+                        className="me-2"
                         onClick={sheetRef.current?.toggle}
                         href={backLink}
                         icon="arrow_back_ios_new"
@@ -42,7 +42,7 @@ function Details() {
                 </div>
                 <ApartmentInfoDigest apartmentInfo={apartmentInfo} />
                 <div>
-                    <IconLink icon="call" href="tel:123456789" className="mr-2">
+                    <IconLink icon="call" href="tel:123456789" className="me-2">
                         Call us
                     </IconLink>
                     <IconLink icon="mail" href="mailto:user@example.com">

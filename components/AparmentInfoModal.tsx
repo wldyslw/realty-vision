@@ -44,7 +44,7 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
         <aside
             className={`${
                 apartmentId
-                    ? 'bottom-0 lg:right-4'
+                    ? 'bottom-0 ltr:lg:right-4 rtl:lg:left-4'
                     : '-bottom-full lg:-right-full'
             } bottom-sheet absolute z-[100000000] w-full rounded-md rounded-t-3xl bg-base-darker/90 p-3 drop-shadow backdrop-blur-md transition-all lg:bottom-auto lg:top-4 lg:z-10 lg:w-80 lg:rounded-t-md`}
         >
@@ -61,7 +61,7 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
             </div>
             <ApartmentInfoDigest apartmentInfo={apartmentInfo} />
             <div className="mb-8 flex lg:mb-0">
-                <IconLink className="mr-2" href={detailsUrl} icon="grid_view">
+                <IconLink className="me-2" href={detailsUrl} icon="grid_view">
                     {floorDetails ? 'Back' : 'Key plan'}
                 </IconLink>
                 <IconLink

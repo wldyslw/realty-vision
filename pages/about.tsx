@@ -17,7 +17,7 @@ function About() {
                     <img
                         src="https://grupityanaygrouptlv.com/wp-content/uploads/2023/04/house-1.jpg"
                         alt=""
-                        className="float-left mb-8 mr-16 w-full rounded-md md:w-1/3"
+                        className="mb-8 me-16 w-full rounded-md ltr:float-left rtl:float-right md:w-1/3"
                     />
                     <h3 className="mb-2 text-2xl font-bold">אודות הפריוקט</h3>
                     <p className="mb-2 text-xl">
@@ -48,7 +48,7 @@ function About() {
                     <img
                         src="https://grupityanaygrouptlv.com/wp-content/uploads/2023/04/yanay-group-logo.png"
                         alt=""
-                        className="float-right mb-8 ml-16 w-full rounded-md md:w-1/4"
+                        className="mb-8 ms-16 w-full rounded-md ltr:float-right rtl:float-left md:w-1/4"
                     />
                     <p className="text-xl">
                         מי אנחנו משרדנו קיים כבר משנת 2015.משרדנו מתמחה בעיקר

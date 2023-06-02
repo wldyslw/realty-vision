@@ -17,7 +17,7 @@ function Contacts() {
                 onClick={handleDissmiss}
                 className="opacity-appear absolute inset-0 cursor-pointer bg-base-darker/70 text-typo-secondary backdrop-blur-md transition-colors hover:text-typo-primary"
             >
-                <span className="absolute right-0 top-0 p-8">
+                <span className="lrt:right-0 absolute top-0 p-8 rtl:left-0">
                     <span className="material-symbols-rounded">close</span>
                 </span>
             </div>
@@ -28,15 +28,18 @@ function Contacts() {
                 <div className="p-8">
                     <h1 className="text-3xl font-bold">Contact Us</h1>
                     <p className="mb-2 mt-1 text-typo-secondary">
-                        <span className="material-symbols-rounded mr-2 text-[1rem]">
+                        <span className="material-symbols-rounded text-[1rem]">
                             location_on
                         </span>
-                        1 City Hall Square #500, Boston, MA 02201, United States
+                        <span className="ms-2">
+                            1 City Hall Square #500, Boston, MA 02201, United
+                            States
+                        </span>
                     </p>
                     <IconLink
                         icon="mail"
                         href="mailto:user@example.com"
-                        className="mr-2"
+                        className="me-2"
                     >
                         user@example.com
                     </IconLink>

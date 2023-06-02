@@ -18,7 +18,7 @@ function Chip({
     return (
         <button
             style={{ backgroundColor: active ? activeColor : undefined }}
-            className={`mr-2 rounded-full bg-base/70 px-4 py-2 text-sm font-bold drop-shadow-md backdrop-blur-md ${
+            className={`me-2 rounded-full bg-base/70 px-4 py-2 text-sm font-bold drop-shadow-md backdrop-blur-md ${
                 className ?? ''
             }`}
             {...props}

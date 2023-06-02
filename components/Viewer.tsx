@@ -107,9 +107,11 @@ export default function Viewer(props: ViewerProps) {
     return (
         <Canvas
             resize={{ debounce: 5 }}
-            className={`${viewMode === ViewModes.Hidden ? 'hidden' : ''} ${
-                hovered ? 'cursor-pointer' : 'cursor-default'
-            } ${props.className ?? ''}`}
+            className={`canvas ${
+                viewMode === ViewModes.Hidden ? 'hidden' : ''
+            } ${hovered ? 'cursor-pointer' : 'cursor-default'} ${
+                props.className ?? ''
+            }`}
             shadows
             camera={{ position: [60, 60, 60] }}
         >

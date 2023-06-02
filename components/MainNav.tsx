@@ -36,7 +36,7 @@ export default function MainNav() {
                         icon={icon}
                         labelClass="hidden md:inline"
                         collapsed={router.pathname !== '/'}
-                        className="mx-2 my-0 lg:mx-0 lg:my-1 "
+                        className="mx-2 my-0 lg:mx-0 lg:my-1"
                     >
                         {label}
                     </IconLink>

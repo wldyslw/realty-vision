@@ -186,10 +186,10 @@ function MapPage() {
                     onClick={clearFilter}
                     className="inline-flex items-center"
                 >
-                    <span className="material-symbols-rounded mr-2">
+                    <span className="material-symbols-rounded">
                         location_on
                     </span>
-                    All
+                    <span className="ms-2">All</span>
                 </Chip>
                 {Array.from(visibleTypes).map((type) => {
                     const { icon, color } = placeTypeStyles[type];
@@ -202,10 +202,10 @@ function MapPage() {
                             onClick={handleFilterClick}
                             className="inline-flex items-center"
                         >
-                            <span className="material-symbols-rounded mr-2">
+                            <span className="material-symbols-rounded">
                                 {icon}
                             </span>
-                            {type}
+                            <span className="ms-2">{type}</span>
                         </Chip>
                     );
                 })}

@@ -123,6 +123,10 @@ body {
         rgb(var(--color-background-start));
 }
 
+.canvas {
+    direction: ltr;
+}
+
 .floor-label {
     transform: translate3d(-450px, -50%, 0);
     font-size: 2rem;
@@ -160,7 +164,18 @@ body {
     border-radius: 50%;
 }
 
-.button-group:not(:last-child)::after {
+:is([dir='ltr']) .button-group:not(:last-child)::after {
+    @apply bg-divider;
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 1rem;
+}
+
+:is([dir='rtl']) .button-group:not(:first-child)::after {
     @apply bg-divider;
     content: '';
     position: absolute;
@@ -215,4 +230,25 @@ body {
     to {
         opacity: 1;
     }
+}
+
+/* react-photo-view rtl mode fixes */
+
+.PhotoView-Portal {
+    direction: ltr !important;
+}
+
+:is([dir='rtl']) .PhotoView-Slider__BannerWrap {
+    direction: rtl;
+}
+
+:is([dir='rtl']) .PhotoView-Slider__ArrowLeft {
+    left: unset;
+    right: 0;
+    transform: rotate(180deg);
+}
+:is([dir='rtl']) .PhotoView-Slider__ArrowRight {
+    right: unset;
+    left: 0;
+    transform: rotate(180deg);
 }

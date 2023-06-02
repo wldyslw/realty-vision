@@ -165,7 +165,7 @@ function Search() {
                         <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
                             <tr className="text-sm font-bold">
                                 <td className="py-2">
-                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                    <span className="material-symbols-rounded text-2xl lg:hidden">
                                         tag
                                     </span>
                                     <span className="hidden lg:inline">
@@ -173,7 +173,7 @@ function Search() {
                                     </span>
                                 </td>
                                 <td className="py-2">
-                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                    <span className="material-symbols-rounded text-2xl lg:hidden">
                                         explore
                                     </span>
                                     <span className="hidden lg:inline">
@@ -181,7 +181,7 @@ function Search() {
                                     </span>
                                 </td>
                                 <td className="py-2">
-                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                    <span className="material-symbols-rounded text-2xl lg:hidden">
                                         floor
                                     </span>{' '}
                                     <span className="hidden lg:inline">
@@ -189,7 +189,7 @@ function Search() {
                                     </span>
                                 </td>
                                 <td className="py-2">
-                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                    <span className="material-symbols-rounded text-2xl lg:hidden">
                                         bed
                                     </span>
                                     <span className="hidden lg:inline">
@@ -197,7 +197,7 @@ function Search() {
                                     </span>
                                 </td>
                                 <td className="py-2">
-                                    <span className="material-symbols-rounded mr-2 text-2xl lg:hidden">
+                                    <span className="material-symbols-rounded text-2xl lg:hidden">
                                         square_foot
                                     </span>
                                     <span className="hidden lg:inline">

@@ -28,10 +28,10 @@ function ApartementInfoDigest(props: ApartementInfoDigestProps) {
                         className="my-2 w-1/3 flex-col flex-wrap justify-between"
                     >
                         <div className="flex">
-                            <span className="material-symbols-rounded mr-1">
+                            <span className="material-symbols-rounded">
                                 {icon}
                             </span>
-                            <span className="font-bold">
+                            <span className="ms-1 font-bold">
                                 {props.apartmentInfo?.[key]}
                             </span>
                         </div>
