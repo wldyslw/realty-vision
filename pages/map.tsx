@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRef, memo, useEffect, useMemo, useCallback, useState } from 'react';
 import { Map, Marker } from 'mapbox-gl';
 import useSWR from 'swr';
+import useTranslation from 'next-translate/useTranslation';
 
 import Chip from '@/components/Chip';
 import fetcher from '@/utils/fetcher';
@@ -56,6 +57,8 @@ const darkModeMedia =
         : null;
 
 function MapPage() {
+    const { t } = useTranslation('common');
+
     const containerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<Map | null>(null);
 
@@ -174,7 +177,7 @@ function MapPage() {
     return (
         <>
             <Head>
-                <title>Map | The Building</title>
+                <title>{t('navigation.map')} | The Building</title>
             </Head>
             <div
                 ref={containerRef}
@@ -189,7 +192,7 @@ function MapPage() {
                     <span className="material-symbols-rounded">
                         location_on
                     </span>
-                    <span className="ms-2">All</span>
+                    <span className="ms-2">{t('map.All')}</span>
                 </Chip>
                 {Array.from(visibleTypes).map((type) => {
                     const { icon, color } = placeTypeStyles[type];
@@ -205,7 +208,7 @@ function MapPage() {
                             <span className="material-symbols-rounded">
                                 {icon}
                             </span>
-                            <span className="ms-2">{type}</span>
+                            <span className="ms-2">{t('map.' + type)}</span>
                         </Chip>
                     );
                 })}

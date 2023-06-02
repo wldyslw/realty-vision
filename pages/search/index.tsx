@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { memo, useCallback, useMemo, useRef, type ChangeEvent } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import ApartmentInfo from '@/components/AparmentInfoModal';
 import { type Exposure } from '@/types';
@@ -14,6 +15,7 @@ import Sheet, { type SheetRef } from '@/components/Sheet';
 const ExposuresArray: Exposure[] = ['N', 'W', 'S', 'E'];
 
 function Search() {
+    const { t } = useTranslation('common');
     const router = useRouter();
     const building = useBuilding('test_tower');
     const { filteredApartments } = useFilteredApartments(building?.apartments);
@@ -108,14 +110,14 @@ function Search() {
     return (
         <>
             <Head>
-                <title>Search | The Building</title>
+                <title>{t('navigation.search')} | The Building</title>
             </Head>
             <Sheet ref={sheetRef} className="opacity-scale-appear">
                 <div
                     id="filters"
                     className="z-10 py-2 lg:sticky lg:inset-0 lg:bg-base-darker"
                 >
-                    <Filter icon="bed" label="Bedrooms">
+                    <Filter icon="bed" label={t('search.bedrooms')}>
                         {roomsNumberRangeHelper.map((roomsNumber) => {
                             const checked = roomsNumberFilter.has(roomsNumber);
                             return (
@@ -131,7 +133,7 @@ function Search() {
                             );
                         })}
                     </Filter>
-                    <Filter icon="explore" label="Exposure">
+                    <Filter icon="explore" label={t('search.exposure')}>
                         {ExposuresArray.map((exposure) => {
                             const checked = exposureFilter.has(exposure);
                             return (
@@ -142,12 +144,12 @@ function Search() {
                                     onChange={handleExposureFilterChange}
                                     checked={checked}
                                 >
-                                    {exposure}
+                                    {t('search.directions.' + exposure)}
                                 </ButtonGroup>
                             );
                         })}
                     </Filter>
-                    <Filter icon="floor" label="Floor">
+                    <Filter icon="floor" label={t('search.floor_number')}>
                         <Slider
                             step={1}
                             min={1}
@@ -169,7 +171,7 @@ function Search() {
                                         tag
                                     </span>
                                     <span className="hidden lg:inline">
-                                        Number
+                                        {t('search.apartment_number')}
                                     </span>
                                 </td>
                                 <td className="py-2">
@@ -177,7 +179,7 @@ function Search() {
                                         explore
                                     </span>
                                     <span className="hidden lg:inline">
-                                        Exposure
+                                        {t('search.exposure')}
                                     </span>
                                 </td>
                                 <td className="py-2">
@@ -185,7 +187,7 @@ function Search() {
                                         floor
                                     </span>{' '}
                                     <span className="hidden lg:inline">
-                                        Floor
+                                        {t('search.floor_number')}
                                     </span>
                                 </td>
                                 <td className="py-2">
@@ -193,7 +195,7 @@ function Search() {
                                         bed
                                     </span>
                                     <span className="hidden lg:inline">
-                                        Bedrooms
+                                        {t('search.bedrooms')}
                                     </span>
                                 </td>
                                 <td className="py-2">
@@ -201,7 +203,7 @@ function Search() {
                                         square_foot
                                     </span>
                                     <span className="hidden lg:inline">
-                                        Area, m²
+                                        {t('search.area_m_2')}
                                     </span>
                                 </td>
                             </tr>
@@ -223,7 +225,11 @@ function Search() {
                                     >
                                         <td className="py-2">{apt.name}</td>
                                         <td className="py-2">
-                                            {apt.exposure.join(', ')}
+                                            {apt.exposure
+                                                .map((e) =>
+                                                    t(`search.directions.${e}`)
+                                                )
+                                                .join(', ')}
                                         </td>
                                         <td className="py-2">
                                             {apt.floorNumber}

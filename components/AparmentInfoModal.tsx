@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 
 import IconLink from './IconLink';
 import type { Apartment } from '@/types';
@@ -17,6 +18,7 @@ type ApartmentInfoProps = {
 let apartmentInfo: Apartment;
 
 export default function ApartmentInfo(props: ApartmentInfoProps) {
+    const { t } = useTranslation('common');
     const router = useRouter();
     const apartmentId = router.query.apartmentId as string | undefined;
     const _apartmentInfo = useApartment(apartmentId ?? null);
@@ -50,7 +52,7 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
         >
             <div className="flex justify-between px-4 py-2">
                 <h2 className="text-2xl font-bold">
-                    Apartment {apartmentInfo?.name ?? ''}
+                    {t('general.apartment')} {apartmentInfo?.name ?? ''}
                 </h2>
                 <IconLink
                     collapsed
@@ -62,14 +64,14 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
             <ApartmentInfoDigest apartmentInfo={apartmentInfo} />
             <div className="mb-8 flex lg:mb-0">
                 <IconLink className="me-2" href={detailsUrl} icon="grid_view">
-                    {floorDetails ? 'Back' : 'Key plan'}
+                    {floorDetails ? t('search.back') : t('search.key_plan')}
                 </IconLink>
                 <IconLink
                     onClick={persistQuery}
                     href={`/details/${apartmentId}`}
                     icon="vrpano"
                 >
-                    Explore
+                    {t('search.explore')}
                 </IconLink>
             </div>
         </aside>

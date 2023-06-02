@@ -1,8 +1,15 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import {
+    Html,
+    Head,
+    Main,
+    NextScript,
+    type DocumentProps,
+} from 'next/document';
 
-export default function Document() {
+export default function Document(props: DocumentProps) {
+    console.log(`Current locale: ${props.locale}`);
     return (
-        <Html lang="en" dir="rtl">
+        <Html lang={props.locale} dir={props.locale === 'he' ? 'rtl' : 'ltr'}>
             <Head>
                 <link rel="icon" href="/icon.png" type="image/png" />
                 <script

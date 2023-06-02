@@ -51,7 +51,7 @@ function ViewCube({
         (e: ThreeEvent<PointerEvent>) => {
             e.stopPropagation();
             hover(null);
-            onHover?.(true);
+            onHover?.(false);
         },
         [onHover]
     );
@@ -60,7 +60,7 @@ function ViewCube({
         (e: ThreeEvent<PointerEvent>) => {
             e.stopPropagation();
             hover(e.face?.materialIndex ?? null);
-            onHover?.(false);
+            onHover?.(true);
         },
         [onHover]
     );

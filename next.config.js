@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
+const nextTranslate = require('next-translate-plugin');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,4 +10,4 @@ const nextConfig = {
     },
 };
 
-module.exports = nextConfig;
+module.exports = nextTranslate(nextConfig);

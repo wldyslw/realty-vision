@@ -1,14 +1,19 @@
 import Head from 'next/head';
 import { memo } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 function About() {
+    const { t } = useTranslation('common');
+
     return (
         <>
             <Head>
-                <title>About | The Building</title>
+                <title>{t('navigation.about')} | The Building</title>
             </Head>
             <div className="opacity-scale-appear h-full w-full overflow-y-auto px-8 py-4 lg:px-32 lg:py-8">
-                <h1 className="pb-2 text-4xl font-bold">About</h1>
+                <h1 className="pb-2 text-4xl font-bold">
+                    {t('navigation.about')}
+                </h1>
 
                 <div>
                     <h2 className="pb-4 text-2xl text-typo-secondary">

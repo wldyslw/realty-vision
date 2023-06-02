@@ -1,0 +1,47 @@
+{
+    "general": {
+        "apartment": "דירה"
+    },
+    "navigation": {
+        "home": "ראשי",
+        "search": "דירות",
+        "about": "אודות הפרויקט",
+        "gallery": "גלריה",
+        "map": "מפה",
+        "contacts": "צור קשר"
+    },
+    "search": {
+        "directions": {
+            "north": "צפון",
+            "south": "דרום",
+            "west": "מערב",
+            "east": "מזרח",
+            "N": "צ",
+            "S": "ד",
+            "W": "מע",
+            "E": "מז"
+        },
+        "bedrooms": "חדרים",
+        "exposure": "כיווני אוויר",
+        "floor_number": "קומה",
+        "area_m_2": "שטח ,מ'ר",
+        "balcony_area_m_2": "מרפסת ,מ'ר",
+        "apartment_number": "מספר הדירה",
+        "type": "סוג דירה",
+        "rooms_number": "חדרים",
+        "explore": "סיור",
+        "key_plan": "תכנית קומה",
+        "back": "חזור"
+    },
+    "map": {
+        "All": "הכל",
+        "Park": "פארקים",
+        "Culture": "תרבות",
+        "Transport": "תחבורה",
+        "Education": "חינוך",
+        "Shopping": "מרכולים"
+    },
+    "contacts": {
+        "contact_us": "צור קשר"
+    }
+}

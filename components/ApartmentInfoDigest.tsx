@@ -1,5 +1,7 @@
-import type { Apartment } from '@/types';
 import { memo } from 'react';
+import useTranslation from 'next-translate/useTranslation';
+
+import type { Apartment } from '@/types';
 
 type ApartementInfoDigestProps = {
     apartmentInfo: Apartment | null;
@@ -10,15 +12,16 @@ type Icon = string;
 type KeyType = keyof Apartment;
 
 const visibleApartmentProperties: [KeyType, Label, Icon][] = [
-    ['type', 'Type', 'dashboard'],
-    ['exposure', 'Exposure', 'explore'],
-    ['fullArea', 'Area, m²', 'square_foot'],
-    ['balconyArea', 'Balcony, m²', 'balcony'],
-    ['floorNumber', 'Floor', 'floor'],
-    ['roomsNumber', 'Rooms', 'bed'],
+    ['type', 'type', 'dashboard'],
+    ['exposure', 'exposure', 'explore'],
+    ['fullArea', 'area_m_2', 'square_foot'],
+    ['balconyArea', 'balcony_area_m_2', 'balcony'],
+    ['floorNumber', 'floor_number', 'floor'],
+    ['roomsNumber', 'rooms_number', 'bed'],
 ];
 
 function ApartementInfoDigest(props: ApartementInfoDigestProps) {
+    const { t } = useTranslation('common');
     return (
         <div className="mb-2 flex flex-wrap rounded-md bg-base px-4 py-2">
             {visibleApartmentProperties.map(([key, label, icon]) => {
@@ -32,11 +35,17 @@ function ApartementInfoDigest(props: ApartementInfoDigestProps) {
                                 {icon}
                             </span>
                             <span className="ms-1 font-bold">
-                                {props.apartmentInfo?.[key]}
+                                {key === 'exposure'
+                                    ? props.apartmentInfo?.exposure
+                                          .map((e) =>
+                                              t('search.directions.' + e)
+                                          )
+                                          .join(', ')
+                                    : props.apartmentInfo?.[key]}
                             </span>
                         </div>
                         <span className="text-xs text-typo-secondary">
-                            {label}
+                            {t(`search.${label}`)}
                         </span>
                     </div>
                 );

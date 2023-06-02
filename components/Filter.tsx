@@ -15,7 +15,7 @@ export function Filter({ children, label, icon }: FilterProps) {
                 className="me-4 flex items-center text-lg lg:text-xl"
             >
                 <span className="material-symbols-rounded">{icon}</span>
-                <span className="ms-2">{label}</span>
+                <span className="ms-2 whitespace-nowrap">{label}</span>
             </div>
             <div className="flex w-full items-center justify-end">
                 {children}

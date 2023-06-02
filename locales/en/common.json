@@ -1,0 +1,50 @@
+{
+    "general": {
+        "apartment": "Apartment"
+    },
+    "navigation": {
+        "home": "Home",
+        "search": "Search",
+        "about": "About",
+        "gallery": "Gallery",
+        "map": "Map",
+        "contacts": "Contacts"
+    },
+    "search": {
+        "directions": {
+            "north": "North",
+            "south": "South",
+            "west": "West",
+            "east": "East",
+            "N": "N",
+            "S": "S",
+            "W": "W",
+            "E": "E"
+        },
+        "bedrooms": "Bedrooms",
+        "exposure": "Exposure",
+        "floor_number": "Floor",
+        "area_m_2": "Area, m²",
+        "balcony_area_m_2": "Balcony, m²",
+        "apartment_number": "Number",
+        "type": "Type",
+        "rooms_number": "Rooms",
+        "explore": "Explore",
+        "key_plan": "Key plan",
+        "back": "Back"
+    },
+    "details": {
+        "write_us": "Write us",
+        "call_us": "Call us"
+    },
+    "map": {
+        "Park": "Park",
+        "Culture": "Culture",
+        "Transport": "Transport",
+        "Education": "Education",
+        "Shopping": "Shopping"
+    },
+    "contacts": {
+        "contact_us": "Contact Us"
+    }
+}

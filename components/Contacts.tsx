@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
 import { memo, useCallback } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 import IconLink from './IconLink';
 
 function Contacts() {
+    const { t } = useTranslation('common');
     const router = useRouter();
 
     const handleDissmiss = useCallback(() => {
@@ -26,7 +28,9 @@ function Contacts() {
                     <img src="/map.png" alt="" className="cursor-pointer" />
                 </a>
                 <div className="p-8">
-                    <h1 className="text-3xl font-bold">Contact Us</h1>
+                    <h1 className="text-3xl font-bold">
+                        {t('contacts.contact_us')}
+                    </h1>
                     <p className="mb-2 mt-1 text-typo-secondary">
                         <span className="material-symbols-rounded text-[1rem]">
                             location_on

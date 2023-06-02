@@ -1,16 +1,19 @@
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
+
 import IconLink from './IconLink';
 
 const links = [
-    { href: '/', icon: 'home', label: 'Home' },
-    { href: '/search', icon: 'search', label: 'Search' },
-    { href: '/about', icon: 'info', label: 'About' },
-    { href: '/gallery', icon: 'image', label: 'Gallery' },
-    { href: '/map', icon: 'location_on', label: 'Map' },
-    { href: '#contacts', icon: 'call', label: 'Contacts' },
+    { href: '/', icon: 'home', label: 'home' },
+    { href: '/search', icon: 'search', label: 'search' },
+    { href: '/about', icon: 'info', label: 'about' },
+    { href: '/gallery', icon: 'image', label: 'gallery' },
+    { href: '/map', icon: 'location_on', label: 'map' },
+    { href: '#contacts', icon: 'call', label: 'contacts' },
 ];
 
 export default function MainNav() {
+    const { t } = useTranslation('common');
     const router = useRouter();
 
     return (
@@ -38,7 +41,7 @@ export default function MainNav() {
                         collapsed={router.pathname !== '/'}
                         className="mx-2 my-0 lg:mx-0 lg:my-1"
                     >
-                        {label}
+                        {t('navigation.' + label)}
                     </IconLink>
                 );
             })}
