@@ -118,7 +118,7 @@ function ViewCube({
                         attach={`material-${index}`}
                         map={textures[index]}
                         transparent
-                        color={hovered === index ? '#f59e0b' : '#a3a3a3'}
+                        color={hovered === index ? '#d59a43' : '#a3a3a3'}
                     />
                 ))}
                 <boxGeometry args={[50, 50, 50]} />

@@ -16,6 +16,7 @@ type IconLinkProps = Partial<LinkProps> & {
     type?: 'default' | 'filled';
     pathMatcher?: (router: NextRouter, href: string | UrlObject) => boolean;
     onClick?: React.MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
+    targetBlank?: boolean;
 };
 
 type ButtonProps = React.DetailedHTMLProps<
@@ -46,6 +47,7 @@ export default function IconLink({
     pathMatcher = defaultPathMatcher,
     type = 'default',
     onClick,
+    targetBlank = false,
 }: IconLinkProps) {
     const router = useRouter();
 
@@ -60,6 +62,7 @@ export default function IconLink({
 
     return (
         <Component
+            target={targetBlank ? '_blank' : '_self'}
             href={href as NonNullable<typeof href>}
             onClick={onClick}
             className={`${matches ? 'bg-primary-focus' : ''} ${

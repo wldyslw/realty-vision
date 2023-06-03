@@ -12,11 +12,18 @@ import { ComplexInfoContext } from '@/utils/contexts';
 import type { Complex } from '@/types';
 
 import '@/styles/globals.css';
+import { useCallback, useEffect, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
 const font = Roboto({ weight: ['400'], subsets: ['latin'] });
 
+let interval: number | null = null;
+
 export default function App({ Component, pageProps, router }: AppProps) {
+    const { t } = useTranslation('common');
     const { data, isValidating, error } = useSWR<Complex>('/api/meta', fetcher);
+    const [buttonActive, setActive] = useState(false);
+    const [splashVisible, setSplashVisible] = useState(true);
 
     const [style] = useSpring(
         {
@@ -25,10 +32,54 @@ export default function App({ Component, pageProps, router }: AppProps) {
         [router.pathname]
     );
 
+    useEffect(() => {
+        interval = setTimeout(() => {
+            setActive(true);
+        }, 3000) as unknown as number;
+        return () => {
+            if (interval !== null) {
+                clearInterval(interval);
+            }
+        };
+    }, []);
+
+    const openSplash = useCallback(() => {
+        setSplashVisible(false);
+    }, []);
+
     return (
         <ComplexInfoContext.Provider
             value={{ data: data ?? null, isLoading: isValidating, error }}
         >
+            <div
+                className={`splash absolute inset-0 z-[100000005] transition-transform ${
+                    splashVisible ? 'translate-y-0' : '-translate-y-full'
+                }`}
+            >
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900/40 backdrop-blur-sm">
+                    <img src="/logo-bg-black.png" alt="" className="" />
+                    <button
+                        onClick={openSplash}
+                        disabled={!buttonActive}
+                        className={`mt-8 flex items-center rounded-xl bg-zinc-900/70 px-4 py-2 text-xl drop-shadow-md backdrop-blur transition-transform hover:scale-105 disabled:hover:scale-100`}
+                    >
+                        <span
+                            className={`spinner ${
+                                buttonActive ? 'hidden' : 'inline-block'
+                            }`}
+                        ></span>
+                        <span
+                            className={`ms-2 transition-colors ${
+                                buttonActive
+                                    ? 'text-white'
+                                    : 'cursor-not-allowed text-zinc-500'
+                            }`}
+                        >
+                            {t('general.start')}
+                        </span>
+                    </button>
+                </div>
+            </div>
             <main
                 className={`absolute inset-0 flex flex-col-reverse lg:flex-row ${font.className}`}
             >

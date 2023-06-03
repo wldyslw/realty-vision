@@ -1,6 +1,7 @@
 {
     "general": {
-        "apartment": "Apartment"
+        "apartment": "Apartment",
+        "start": "Let's go!"
     },
     "navigation": {
         "home": "Home",
@@ -33,11 +34,8 @@
         "key_plan": "Key plan",
         "back": "Back"
     },
-    "details": {
-        "write_us": "Write us",
-        "call_us": "Call us"
-    },
     "map": {
+        "All": "All",
         "Park": "Park",
         "Culture": "Culture",
         "Transport": "Transport",

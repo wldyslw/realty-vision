@@ -1,8 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { CameraHelper, type OrthographicCamera } from 'three';
+import {
+    CameraHelper,
+    type OrthographicCamera,
+    PerspectiveCamera,
+} from 'three';
 import { CameraControls, Sky, Grid, useHelper } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useControls } from 'leva';
 
@@ -38,6 +42,10 @@ const shadowCameraArgs: Record<
     [ViewModes.CrossSection]: [-30, 30, 50, -20, 70, 100],
     [ViewModes.Hidden]: [0, 0, 0, 0, 0, 0], // can be anything, but I hope this will save some resourses
 };
+
+const cam = new PerspectiveCamera();
+cam.near = 1;
+cam.far = 100;
 
 function Lights(props: LightsProps) {
     const ref = useRef<OrthographicCamera>(null);
@@ -80,10 +88,29 @@ function Lights(props: LightsProps) {
 const maxDistance = process.env.NODE_ENV === 'development' ? 5000 : 70;
 const sunAzimuth = 3.7;
 
+const matcher =
+    typeof window !== 'undefined'
+        ? window.matchMedia('(min-width: 1024px)')
+        : undefined;
+
 // TODO: Solve limitation: CameraControls doesn't allow to truck&rotate on the same mouse button
 export default function Viewer(props: ViewerProps) {
     const router = useRouter();
     const [hovered, hover] = useState(false);
+
+    const [cubeShown, showCube] = useState<boolean>(matcher?.matches ?? false);
+
+    const handleMatch = useCallback(() => {
+        showCube(matcher?.matches ?? false);
+    }, []);
+
+    useEffect(() => {
+        matcher?.addEventListener('change', handleMatch);
+        return () => {
+            matcher?.removeEventListener('change', handleMatch);
+        };
+    }, [handleMatch]);
+
     const { showAxesHelper, showPerformance } = useControls({
         showAxesHelper: {
             label: 'Show axes helper',
@@ -115,7 +142,7 @@ export default function Viewer(props: ViewerProps) {
             shadows
             camera={{ position: [60, 60, 60] }}
         >
-            {viewMode === ViewModes.Search && <ViewCube onHover={hover} />}
+            {cubeShown && <ViewCube onHover={hover} />}
             {showAxesHelper && <axesHelper args={[50]} />}
             {showPerformance && <Perf minimal position="bottom-right" />}
             <ModelController
@@ -125,6 +152,7 @@ export default function Viewer(props: ViewerProps) {
             />
             <CameraControls
                 makeDefault
+                camera-far={800}
                 distance={70}
                 minDistance={30}
                 maxDistance={maxDistance}

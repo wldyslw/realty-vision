@@ -1,6 +1,7 @@
 {
     "general": {
-        "apartment": "דירה"
+        "apartment": "דירה",
+        "start": "בוא נלך!"
     },
     "navigation": {
         "home": "ראשי",

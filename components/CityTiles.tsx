@@ -23,9 +23,19 @@ type CityTilesProps = {
     viewMode: ViewModes;
 };
 
+// TODO: remove this dirty hack and use performance callback of r3f
+const matcher =
+    typeof window !== 'undefined'
+        ? window.matchMedia('(min-width: 1024px)')
+        : undefined;
+
 // TODO: add shadows (.recieveShadow is too expensive and unavailable on MeshBasicMaterial)
 function CityTiles(props: CityTilesProps) {
-    const { camera, gl: renderer, scene } = useThree();
+    const { camera, renderer, scene } = useThree((state) => ({
+        camera: state.camera,
+        renderer: state.gl,
+        scene: state.scene,
+    }));
     const tilesRenderer = useRef<TilesRenderer | null>(null);
 
     useEffect(() => {
@@ -33,6 +43,8 @@ function CityTiles(props: CityTilesProps) {
             tilesRenderer.current = new TilesRenderer(
                 process.env.NEXT_PUBLIC_TILESET_URL
             );
+
+            tilesRenderer.current.maxDepth = matcher?.matches ?? true ? 16 : 14;
 
             tilesRenderer.current.preprocessURL = (uri) => {
                 // if tiles and web app have different origins, double slashes may appear
@@ -96,6 +108,11 @@ function CityTiles(props: CityTilesProps) {
 
             tilesRenderer.current.manager.addHandler(/\.gltf$/, loader);
         }
+
+        return () => {
+            tilesRenderer.current?.dispose();
+            tilesRenderer.current = null;
+        };
     }, [camera, renderer, scene]);
 
     useFrame(() => {
