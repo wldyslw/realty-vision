@@ -52,16 +52,24 @@ export default function App({ Component, pageProps, router }: AppProps) {
             value={{ data: data ?? null, isLoading: isValidating, error }}
         >
             <div
-                className={`splash absolute inset-0 z-[100000005] transition-transform ${
+                className={`absolute inset-0 z-[100000005] overflow-hidden transition-transform ${
                     splashVisible ? 'translate-y-0' : '-translate-y-full'
                 }`}
             >
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900/40 backdrop-blur-sm">
-                    <img src="/logo-bg-black.png" alt="" className="" />
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    className="h-full w-full object-cover object-center"
+                >
+                    <source src="/promo.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900/60 px-4">
+                    <img src="/logo-bg-black.png" alt="Yanay Group Logo" />
                     <button
                         onClick={openSplash}
                         disabled={!buttonActive}
-                        className={`mt-8 flex items-center rounded-xl bg-zinc-900/70 px-4 py-2 text-xl drop-shadow-md backdrop-blur transition-transform hover:scale-105 disabled:hover:scale-100`}
+                        className={`mt-8 flex items-center rounded-xl bg-primary/30 px-4 py-2 text-xl drop-shadow-md backdrop-blur transition-transform hover:scale-105 disabled:hover:scale-100`}
                     >
                         <span
                             className={`spinner ${
@@ -71,8 +79,8 @@ export default function App({ Component, pageProps, router }: AppProps) {
                         <span
                             className={`ms-2 transition-colors ${
                                 buttonActive
-                                    ? 'text-white'
-                                    : 'cursor-not-allowed text-zinc-500'
+                                    ? 'text-primary-darker'
+                                    : 'cursor-not-allowed text-primary-darker/50'
                             }`}
                         >
                             {t('general.start')}

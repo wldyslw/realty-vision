@@ -110,7 +110,7 @@ function Search() {
     return (
         <>
             <Head>
-                <title>{t('navigation.search')} | The Building</title>
+                <title>{`${t('navigation.search')} | The Building`}</title>
             </Head>
             <Sheet ref={sheetRef} className="opacity-scale-appear">
                 <div

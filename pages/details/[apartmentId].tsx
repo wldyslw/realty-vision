@@ -35,8 +35,9 @@ function Details() {
         <>
             <Head>
                 <title>
-                    {t('general.apartment')} {apartmentInfo?.name} | The
-                    Building
+                    {`${t('general.apartment')} ${
+                        apartmentInfo?.name
+                    } | The Building`}
                 </title>
             </Head>
             <Sheet ref={sheetRef} className="lg:w-96">

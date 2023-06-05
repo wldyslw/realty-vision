@@ -1,9 +1,9 @@
 import { useFrame, useThree } from '@react-three/fiber';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'; // replace this with three-stdlib
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'; // replace this with three-stdlib
+import { DRACOLoader, GLTFLoader } from 'three-stdlib';
 import { Box3, Sphere, Matrix4, Vector3, Quaternion } from 'three';
 import { memo, useEffect, useRef } from 'react';
 import { TilesRenderer } from '3d-tiles-renderer';
+import throttle from 'lodash.throttle';
 
 import { ViewModes } from './Viewer';
 
@@ -44,7 +44,10 @@ function CityTiles(props: CityTilesProps) {
                 process.env.NEXT_PUBLIC_TILESET_URL
             );
 
-            tilesRenderer.current.maxDepth = matcher?.matches ?? true ? 16 : 14;
+            tilesRenderer.current.maxDepth = matcher?.matches ? 16 : 14;
+
+            const originalUpdate = tilesRenderer.current.update;
+            tilesRenderer.current.update = throttle(originalUpdate, 100);
 
             tilesRenderer.current.preprocessURL = (uri) => {
                 // if tiles and web app have different origins, double slashes may appear

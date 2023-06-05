@@ -112,7 +112,7 @@ body {
 }
 
 .spinner {
-    @apply h-6 w-6 rounded-full border-4 border-transparent border-r-white border-t-white;
+    @apply h-6 w-6 rounded-full border-4 border-transparent border-r-primary-darker border-t-primary-darker;
     animation: spin 0.6s linear infinite;
 }
 

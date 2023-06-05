@@ -97,6 +97,20 @@ const matcher =
 export default function Viewer(props: ViewerProps) {
     const router = useRouter();
     const [hovered, hover] = useState(false);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const [frameloop, setFrameloop] = useState<'always' | 'never'>('never');
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([{ isIntersecting }]) => {
+            setFrameloop(isIntersecting ? 'always' : 'never');
+        }, {});
+
+        if (canvasRef.current) {
+            observer.observe(canvasRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     const [cubeShown, showCube] = useState<boolean>(matcher?.matches ?? false);
 
@@ -133,6 +147,8 @@ export default function Viewer(props: ViewerProps) {
 
     return (
         <Canvas
+            frameloop={frameloop}
+            ref={canvasRef}
             resize={{ debounce: 5 }}
             className={`canvas ${
                 viewMode === ViewModes.Hidden ? 'hidden' : ''
@@ -167,19 +183,18 @@ export default function Viewer(props: ViewerProps) {
                 cellSize={0}
             />
             <CityTiles viewMode={viewMode} />
+            <Sky
+                visible={viewMode === ViewModes.Overview}
+                distance={1000}
+                turbidity={8}
+                rayleigh={0.1}
+                mieCoefficient={0.0001}
+                mieDirectionalG={0.9}
+                inclination={0.7}
+                azimuth={sunAzimuth / TAU}
+            />
             {viewMode === ViewModes.Overview && (
-                <>
-                    <Sky
-                        distance={1000}
-                        turbidity={8}
-                        rayleigh={0.1}
-                        mieCoefficient={0.0001}
-                        mieDirectionalG={0.9}
-                        inclination={0.7}
-                        azimuth={sunAzimuth / TAU}
-                    />
-                    <fogExp2 attach="fog" args={[0xd2e0ea, 0.002]} />
-                </>
+                <fogExp2 attach="fog" args={[0xd2e0ea, 0.002]} />
             )}
         </Canvas>
     );

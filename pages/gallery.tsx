@@ -15,7 +15,7 @@ function Gallery() {
     return (
         <>
             <Head>
-                <title>{t('navigation.gallery')} | The Building</title>
+                <title>{`${t('navigation.gallery')} | The Building`}</title>
             </Head>
             <PhotoProvider>
                 <div className="opacity-scale-appear h-full w-full overflow-y-auto px-8 py-4 lg:px-32 lg:py-8">

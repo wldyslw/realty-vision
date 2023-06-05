@@ -1,6 +1,13 @@
 import { MathUtils } from 'three';
 import { useRouter } from 'next/router';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    memo,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+    Suspense,
+} from 'react';
 import { type ThreeEvent, useThree } from '@react-three/fiber';
 import type { CameraControls } from '@react-three/drei';
 
@@ -11,6 +18,7 @@ import useApartment from '@/utils/useApartment';
 import { absoluteAngle, circularMean } from '@/utils/math';
 import useBuilding from '@/utils/useBuilding';
 import useFilteredApartments from '@/utils/useFilteredApartment';
+import BuildingPlaceholder from '@/models/BuildingPlaceholder';
 
 type ModelControllerProps = {
     buildingId: string;
@@ -237,7 +245,11 @@ function ModelController({
         visibleSelectionBoxes,
     ]);
 
-    return <Model {...modelProps} />;
+    return (
+        <Suspense fallback={<BuildingPlaceholder />}>
+            <Model {...modelProps} />
+        </Suspense>
+    );
 }
 
 export default memo(ModelController);

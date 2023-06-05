@@ -177,7 +177,7 @@ function MapPage() {
     return (
         <>
             <Head>
-                <title>{t('navigation.map')} | The Building</title>
+                <title>{`${t('navigation.map')} | The Building`}</title>
             </Head>
             <div
                 ref={containerRef}

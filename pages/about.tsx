@@ -8,7 +8,7 @@ function About() {
     return (
         <>
             <Head>
-                <title>{t('navigation.about')} | The Building</title>
+                <title>{`${t('navigation.about')} | The Building`}</title>
             </Head>
             <div className="opacity-scale-appear h-full w-full overflow-y-auto px-8 py-4 lg:px-32 lg:py-8">
                 <h1 className="pb-2 text-4xl font-bold">
@@ -16,19 +16,16 @@ function About() {
                 </h1>
 
                 <div>
-                    <h2 className="pb-4 text-2xl text-typo-secondary">
-                        The Project
-                    </h2>
                     <img
                         src="https://grupityanaygrouptlv.com/wp-content/uploads/2023/04/house-1.jpg"
                         alt=""
                         className="mb-8 me-16 w-full rounded-md ltr:float-left rtl:float-right md:w-1/3"
                     />
-                    {/* EN */}
 
-                    <h3 className="text-en mb-2 text-2xl font-bold">
+                    {/* EN */}
+                    <h2 className="text-en pb-4 text-2xl text-typo-secondary">
                         About the project
-                    </h3>
+                    </h2>
                     <p className="text-en mb-2 text-xl">
                         Welcome to your next home in Tel Aviv in the prestigious
                         Tzalah neighborhood in the pulsating heart of the city.
@@ -56,10 +53,9 @@ function About() {
                     </p>
 
                     {/* HE */}
-
-                    <h3 className="text-he mb-2 text-2xl font-bold">
+                    <h2 className="text-he pb-4 text-2xl text-typo-secondary">
                         אודות הפריוקט
-                    </h3>
+                    </h2>
                     <p className="text-he mb-2 text-xl">
                         ברוכים הבאים לבית הבא שלכם בתל-אביב בשכונת צהלה היוקרתית
                         בליבה הפועם של העיר.
@@ -82,9 +78,6 @@ function About() {
                     </p>
                 </div>
                 <div className="clear-left py-4">
-                    <h2 className="mb-4 text-2xl text-typo-secondary">
-                        The Developer
-                    </h2>
                     <img
                         src="https://grupityanaygrouptlv.com/wp-content/uploads/2023/04/yanay-group-logo.png"
                         alt=""
@@ -92,11 +85,9 @@ function About() {
                     />
 
                     {/* EN */}
-
-                    <h3 className="text-en mb-2 text-2xl font-bold">
+                    <h2 className="text-en mb-4 text-2xl text-typo-secondary">
                         Who we are
-                    </h3>
-
+                    </h2>
                     <p className="text-en mb-2 text-xl">
                         Our office has existed since 2015. Our office
                         specializes mainly in the Ramat Gan-Givataim area - in
@@ -117,11 +108,9 @@ function About() {
                     </p>
 
                     {/* HE */}
-
-                    <h3 className="text-he mb-2 text-2xl font-bold">
+                    <h2 className="text-he mb-4 text-2xl text-typo-secondary">
                         מי אנחנו
-                    </h3>
-
+                    </h2>
                     <p className="text-he text-xl">
                         משרדנו קיים כבר משנת 2015.משרדנו מתמחה בעיקר באזור רמת
                         גן-גבעתיים — במכירה \ והשכרת נכסים חדשים ויד 2.-שיווק
