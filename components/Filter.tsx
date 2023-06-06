@@ -8,7 +8,7 @@ export function Filter({ children, label, icon }: FilterProps) {
     return (
         <fieldset
             aria-labelledby={`${icon}_filter_legend`}
-            className="mb-2 flex flex-row justify-between rounded-md bg-base px-4 py-2"
+            className="flex flex-row justify-between border-b-[1px] border-b-divider/50 px-4 py-2 last:border-none"
         >
             <div
                 id={`${icon}_filter_legend`}

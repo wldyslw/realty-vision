@@ -112,10 +112,10 @@ function Search() {
             <Head>
                 <title>{`${t('navigation.search')} | The Building`}</title>
             </Head>
-            <Sheet ref={sheetRef} className="opacity-scale-appear">
+            <Sheet ref={sheetRef} className="opacity-scale-appear lg:py-2">
                 <div
                     id="filters"
-                    className="z-10 py-2 lg:sticky lg:inset-0 lg:bg-base-darker"
+                    className="z-10 mb-2 rounded-md bg-base px-2 lg:sticky lg:inset-0"
                 >
                     <Filter icon="bed" label={t('search.bedrooms')}>
                         {roomsNumberRangeHelper.map((roomsNumber) => {
@@ -164,7 +164,7 @@ function Search() {
                     className="opacity-scale-appear mb-2 rounded-md bg-base p-2"
                 >
                     <table className="w-full text-center">
-                        <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:top-48">
+                        <thead className="sticky inset-0 rounded-t-md bg-base text-typo-secondary lg:static">
                             <tr className="text-sm font-bold">
                                 <td className="py-2">
                                     <span className="material-symbols-rounded text-2xl lg:hidden">
@@ -216,7 +216,7 @@ function Search() {
                                             router.query.apartmentId === apt.id
                                                 ? 'bg-primary-focus'
                                                 : ''
-                                        } border-b-[1px] border-divider last:border-b-0 hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active`}
+                                        } border-b-[1px] border-divider/50 last:border-b-0 hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active`}
                                         key={apt.id}
                                         onClick={handleApartmentSelect}
                                         role="link"

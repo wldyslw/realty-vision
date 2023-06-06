@@ -48,7 +48,7 @@ export default function MainNav() {
 
             <div className="h-full"></div>
 
-            <div className="hidden flex-col md:flex">
+            <div className="hidden md:flex md:max-lg:border-s-[1px] md:max-lg:border-divider/50 lg:flex-col">
                 <IconLink
                     icon="language"
                     labelClass="hidden md:inline"

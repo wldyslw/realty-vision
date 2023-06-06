@@ -4,7 +4,7 @@ import {
     useState,
     useCallback,
     useRef,
-    type PointerEvent,
+    type TouchEvent,
     type ReactNode,
     useImperativeHandle,
 } from 'react';
@@ -41,18 +41,6 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
     const [origin, setOrigin] = useState<number | null>(null);
     const [transform, setTransform] = useState<number>(0);
 
-    const handleScroll = useCallback(
-        (e: React.SyntheticEvent<HTMLDivElement>) => {
-            if (isMobile()) {
-                const { scrollTop } = e.currentTarget;
-                if (scrollTop < -60 && expanded) {
-                    expand(false);
-                }
-            }
-        },
-        [expanded]
-    );
-
     const toggleExpansion = useCallback(() => {
         if (expanded && isMobile()) {
             scrollContainerRef.current?.scrollTo(0, 0);
@@ -60,33 +48,32 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
         expand((v) => !v);
     }, [expanded]);
 
-    const handlePointerDown = useCallback((e: PointerEvent<HTMLDivElement>) => {
+    const handleTouchStart = useCallback((e: TouchEvent) => {
         const scrollTop = scrollContainerRef.current?.scrollTop;
         if (isMobile() && scrollTop !== undefined && scrollTop <= 0) {
-            setOrigin(e.pageY);
+            setOrigin(e.touches[0].pageY);
         }
     }, []);
 
-    const handlePointerMove = useCallback(
-        (e: PointerEvent<HTMLDivElement>) => {
+    const handleTouchMove = useCallback(
+        (e: TouchEvent) => {
             if (origin !== null) {
-                const delta = e.pageY - origin;
+                const delta = e.touches[0].pageY - origin;
                 if (expanded && delta >= 0) {
                     setTransform(delta);
-                } else if (!expanded && delta <= 100) {
-                    // TODO: apply a better function for overscroll
-                    setTransform(
-                        delta <= 0 ? delta : delta / (delta / 100 + 1)
-                    );
+                } else if (!expanded) {
+                    // asymptotically approaches 50
+                    setTransform(delta <= 0 ? delta : delta / (delta / 50 + 1));
                 }
             }
         },
         [expanded, origin]
     );
 
-    const handlePointerUp = useCallback(() => {
+    const handleTouchEnd = useCallback(() => {
         if (transform > 50) {
             expand(false);
+            scrollContainerRef.current?.scrollTo(0, 0);
         } else if (transform < -50) {
             expand(true);
         }
@@ -94,7 +81,7 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
         setTransform(0);
     }, [transform]);
 
-    const handlePointerCancel = useCallback(() => {
+    const handleTouchCancel = useCallback(() => {
         setOrigin(null);
         setTransform(0);
     }, []);
@@ -146,25 +133,26 @@ const Sheet = forwardRef<SheetRef, SheetProps>(function Sheet(
                 origin === null ? 'bottom-sheet' : ''
             } absolute inset-x-0 -bottom-full z-[100000000] flex h-full w-full max-w-full shrink-0 flex-col rounded-t-3xl ${
                 expanded ? 'rounded-t-none' : ''
-            } bg-base-darker/90 drop-shadow backdrop-blur-md lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none ${className}`}
-            onPointerDown={handlePointerDown}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-            onPointerCancel={handlePointerCancel}
+            } bg-base-darker/90 drop-shadow-xl backdrop-blur-md lg:static lg:h-full lg:max-h-full lg:w-128 lg:rounded-t-none ${className}`}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchCancel}
         >
             <div
                 role="button"
                 onClick={toggleExpansion}
-                className="flex shrink-0 cursor-pointer justify-center pb-1 pt-2 lg:hidden"
+                className="flex shrink-0 cursor-pointer justify-center py-3 lg:hidden"
             >
                 <span className="h-1 w-8 rounded-full bg-typo-secondary"></span>
             </div>
             <div
                 ref={scrollContainerRef}
                 className={`h-full ${
+                    transform !== 0 ? 'overscroll-none' : ''
+                } ${
                     expanded ? '' : 'touch-none'
                 } overflow-y-auto px-3 lg:h-full lg:touch-auto`}
-                onScroll={handleScroll}
             >
                 {children}
             </div>

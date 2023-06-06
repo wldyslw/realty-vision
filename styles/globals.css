@@ -66,7 +66,7 @@
     --color-primary-active: var(--color-yellow-400);
 
     --search-sheet-translate-expanded: -100%;
-    --search-sheet-translate-collapsed: -10rem;
+    --search-sheet-translate-collapsed: -9rem;
 }
 
 @media (min-width: 1024px) {
@@ -237,11 +237,13 @@ html {
 @keyframes opacity-scale {
     from {
         opacity: 0;
-        transform: scale(0.95);
+        /* transform: scale(0.95); */
+        scale: 0.95;
     }
     to {
         opacity: 1;
-        transform: scale(1);
+        /* transform: scale(1); */
+        scale: 1;
     }
 }
 

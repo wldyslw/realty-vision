@@ -150,7 +150,7 @@ export default function Viewer(props: ViewerProps) {
             frameloop={frameloop}
             ref={canvasRef}
             resize={{ debounce: 5 }}
-            className={`canvas ${
+            className={`canvas opacity-appear ${
                 viewMode === ViewModes.Hidden ? 'hidden' : ''
             } ${hovered ? 'cursor-pointer' : 'cursor-default'} ${
                 props.className ?? ''
