@@ -6,6 +6,7 @@ import { TilesRenderer } from '3d-tiles-renderer';
 import throttle from 'lodash.throttle';
 
 import { ViewModes } from './Viewer';
+import { desktopMatcher } from '@/utils/mediaMatchers';
 
 function rotationBetweenDirections(dir1: Vector3, dir2: Vector3) {
     const rotation = new Quaternion();
@@ -23,12 +24,6 @@ type CityTilesProps = {
     viewMode: ViewModes;
 };
 
-// TODO: remove this dirty hack and use performance callback of r3f
-const matcher =
-    typeof window !== 'undefined'
-        ? window.matchMedia('(min-width: 1024px)')
-        : undefined;
-
 // TODO: add shadows (.recieveShadow is too expensive and unavailable on MeshBasicMaterial)
 function CityTiles(props: CityTilesProps) {
     const { camera, renderer, scene } = useThree((state) => ({
@@ -44,7 +39,8 @@ function CityTiles(props: CityTilesProps) {
                 process.env.NEXT_PUBLIC_TILESET_URL
             );
 
-            tilesRenderer.current.maxDepth = matcher?.matches ? 16 : 14;
+            // TODO: remove this dirty hack and use performance callback of r3f
+            tilesRenderer.current.maxDepth = desktopMatcher?.matches ? 16 : 14;
 
             const originalUpdate = tilesRenderer.current.update;
             tilesRenderer.current.update = throttle(originalUpdate, 100);

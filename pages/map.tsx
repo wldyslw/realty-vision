@@ -6,6 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import Chip from '@/components/Chip';
 import fetcher from '@/utils/fetcher';
+import { darkModeObserver } from '@/utils/mediaMatchers';
 import { PlaceTypes, type MapInfo } from '@/types/map';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -51,11 +52,6 @@ if (originMarkerEl !== undefined) {
     `;
 }
 
-const darkModeMedia =
-    typeof window !== 'undefined'
-        ? window.matchMedia('(prefers-color-scheme: dark)')
-        : null;
-
 function MapPage() {
     const { t } = useTranslation('common');
 
@@ -63,17 +59,15 @@ function MapPage() {
     const mapRef = useRef<Map | null>(null);
 
     useEffect(() => {
-        const listener = (e: MediaQueryListEvent) => {
+        const observer = darkModeObserver((isDarkMode) => {
             mapRef.current?.setStyle(
-                e.matches
+                isDarkMode
                     ? process.env.NEXT_PUBLIC_MAPBOX_STYLES_DARK_URL
                     : process.env.NEXT_PUBLIC_MAPBOX_STYLES_LIGHT_URL
             );
-        };
-        darkModeMedia?.addEventListener('change', listener);
-        return () => {
-            darkModeMedia?.removeEventListener('change', listener);
-        };
+        });
+        observer.observe();
+        return () => observer.disconnect();
     }, []);
 
     const { data } = useSWR<MapInfo>('/api/mapInfo', fetcher);
@@ -120,9 +114,11 @@ function MapPage() {
             mapRef.current = new Map({
                 accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
                 container: containerRef.current,
-                style: darkModeMedia?.matches
-                    ? process.env.NEXT_PUBLIC_MAPBOX_STYLES_DARK_URL
-                    : process.env.NEXT_PUBLIC_MAPBOX_STYLES_LIGHT_URL,
+                style:
+                    typeof window !== undefined &&
+                    document.documentElement.classList.contains('dark')
+                        ? process.env.NEXT_PUBLIC_MAPBOX_STYLES_DARK_URL
+                        : process.env.NEXT_PUBLIC_MAPBOX_STYLES_LIGHT_URL,
                 center: [-71.063097, 42.356206],
                 zoom: 16,
                 maxZoom: 18,
@@ -182,7 +178,7 @@ function MapPage() {
             <div
                 ref={containerRef}
                 id="map"
-                className="opacity-scale-appear h-full w-full"
+                className="opacity-appear h-full w-full"
             ></div>
             <div className="opacity-scale-appear absolute inset-x-0 top-0 z-10 flex items-center overflow-x-auto px-4 py-2">
                 <Chip

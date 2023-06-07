@@ -12,6 +12,7 @@ import { useControls } from 'leva';
 
 import ModelController from './ModelController';
 import { HALF_PI, TAU } from '@/utils/constants';
+import { desktopMatcher } from '@/utils/mediaMatchers';
 import CityTiles from './CityTiles';
 import ViewCube from './ViewCube';
 
@@ -88,11 +89,6 @@ function Lights(props: LightsProps) {
 const maxDistance = process.env.NODE_ENV === 'development' ? 5000 : 70;
 const sunAzimuth = 3.7;
 
-const matcher =
-    typeof window !== 'undefined'
-        ? window.matchMedia('(min-width: 1024px)')
-        : undefined;
-
 // TODO: Solve limitation: CameraControls doesn't allow to truck&rotate on the same mouse button
 export default function Viewer(props: ViewerProps) {
     const router = useRouter();
@@ -112,16 +108,18 @@ export default function Viewer(props: ViewerProps) {
         return () => observer.disconnect();
     }, []);
 
-    const [cubeShown, showCube] = useState<boolean>(matcher?.matches ?? false);
+    const [cubeShown, showCube] = useState<boolean>(
+        desktopMatcher?.matches ?? false
+    );
 
     const handleMatch = useCallback(() => {
-        showCube(matcher?.matches ?? false);
+        showCube(desktopMatcher?.matches ?? false);
     }, []);
 
     useEffect(() => {
-        matcher?.addEventListener('change', handleMatch);
+        desktopMatcher?.addEventListener('change', handleMatch);
         return () => {
-            matcher?.removeEventListener('change', handleMatch);
+            desktopMatcher?.removeEventListener('change', handleMatch);
         };
     }, [handleMatch]);
 
