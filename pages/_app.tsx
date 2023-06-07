@@ -15,7 +15,10 @@ import '@/styles/globals.css';
 import { useCallback, useEffect, useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 
-const font = Roboto({ weight: ['400'], subsets: ['latin'] });
+const font = Roboto({
+    weight: ['100', '300', '400', '500', '700', '900'],
+    subsets: ['latin'],
+});
 
 let interval: number | null = null;
 
@@ -27,7 +30,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
 
     const [style] = useSpring(
         {
-            width: router.pathname === '/' ? '15rem' : '4rem',
+            width: router.pathname === '/' ? '15rem' : '5rem',
         },
         [router.pathname]
     );
@@ -54,7 +57,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
             <div
                 className={`absolute inset-0 z-[100000005] overflow-hidden transition-transform ${
                     splashVisible ? 'translate-y-0' : '-translate-y-full'
-                }`}
+                } ${font.className}`}
             >
                 <video
                     autoPlay

@@ -24,7 +24,10 @@ function Contacts() {
                 </span>
             </div>
             <div className="opacity-scale-appear z-[100000002] min-h-[50%] w-full max-w-3xl overflow-hidden rounded-3xl bg-base">
-                <a href="https://goo.gl/maps/Gdz98yEjqY2pp3YN8?coh=178571&entry=tt">
+                <a
+                    target="_blank"
+                    href="https://goo.gl/maps/Gdz98yEjqY2pp3YN8?coh=178571&entry=tt"
+                >
                     <img src="/map.png" alt="" className="cursor-pointer" />
                 </a>
                 <div className="p-8">

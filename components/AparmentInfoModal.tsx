@@ -51,11 +51,10 @@ export default function ApartmentInfo(props: ApartmentInfoProps) {
             } bottom-sheet absolute z-[100000000] w-full rounded-md rounded-t-3xl bg-base-darker/90 p-3 drop-shadow backdrop-blur-md transition-all lg:bottom-auto lg:top-4 lg:z-10 lg:w-80 lg:rounded-t-md`}
         >
             <div className="flex justify-between px-4 py-2">
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl">
                     {t('general.apartment')} {apartmentInfo?.name ?? ''}
                 </h2>
                 <IconLink
-                    collapsed
                     onClick={props?.onClose}
                     href={{ pathname: '/search', query: restParams }}
                     icon="close"

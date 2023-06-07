@@ -1,7 +1,10 @@
 {
     "general": {
+        "lang": "English",
         "apartment": "Apartment",
-        "start": "Let's go!"
+        "start": "Let's go!",
+        "light_mode": "Light mode",
+        "dark_mode": "Dark mode"
     },
     "navigation": {
         "home": "Home",
@@ -9,7 +12,8 @@
         "about": "About",
         "gallery": "Gallery",
         "map": "Map",
-        "contacts": "Contacts"
+        "contacts": "Contacts",
+        "more": "More"
     },
     "search": {
         "directions": {

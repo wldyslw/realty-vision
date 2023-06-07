@@ -12,10 +12,12 @@ export function Filter({ children, label, icon }: FilterProps) {
         >
             <div
                 id={`${icon}_filter_legend`}
-                className="me-4 flex items-center text-lg lg:text-xl"
+                className="me-4 flex items-center text-[1rem] lg:text-xl"
             >
-                <span className="material-symbols-rounded">{icon}</span>
-                <span className="ms-2 whitespace-nowrap">{label}</span>
+                <span className="material-symbols-rounded hidden lg:inline">
+                    {icon}
+                </span>
+                <span className="ms-0 whitespace-nowrap lg:ms-2">{label}</span>
             </div>
             <div className="flex w-full items-center justify-end">
                 {children}

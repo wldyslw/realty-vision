@@ -1,10 +1,10 @@
 import type React from 'react';
-import { useMemo, type ReactNode } from 'react';
-import Link, { type LinkProps } from 'next/link';
+import { useMemo, type ReactNode, memo } from 'react';
+import Link from 'next/link';
 import { type NextRouter, useRouter } from 'next/router';
 import type { UrlObject } from 'url';
 
-type IconLinkProps = Partial<LinkProps> & {
+type CommonProps = {
     icon?: string;
     href?: string | UrlObject;
     children?: ReactNode | ReactNode[];
@@ -13,20 +13,19 @@ type IconLinkProps = Partial<LinkProps> & {
     iconClass?: string;
     className?: string;
     matchPath?: boolean;
-    type?: 'default' | 'filled';
+    styling?: 'default' | 'filled';
     pathMatcher?: (router: NextRouter, href: string | UrlObject) => boolean;
-    onClick?: React.MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
-    targetBlank?: boolean;
+    useAnchor?: boolean;
 };
 
-type ButtonProps = React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
->;
+type ButtonProps = CommonProps &
+    React.DetailedHTMLProps<
+        React.ButtonHTMLAttributes<HTMLButtonElement>,
+        HTMLButtonElement
+    >;
+type LinkProps = CommonProps & Partial<React.ComponentProps<typeof Link>>;
 
-function ButtonWrapper({ children, ...props }: ButtonProps) {
-    return <button {...props}>{children}</button>;
-}
+export type IconLinkProps = LinkProps & ButtonProps;
 
 const defaultPathMatcher = (router: NextRouter, href: string | UrlObject) => {
     const hrefStr = typeof href === 'string' ? href : (href.pathname as string);
@@ -35,7 +34,7 @@ const defaultPathMatcher = (router: NextRouter, href: string | UrlObject) => {
         : router.pathname.includes(hrefStr);
 };
 
-export default function IconLink({
+function IconLink({
     children,
     icon,
     collapsed,
@@ -45,9 +44,9 @@ export default function IconLink({
     labelClass,
     iconClass,
     pathMatcher = defaultPathMatcher,
-    type = 'default',
-    onClick,
-    targetBlank = false,
+    styling = 'default',
+    useAnchor,
+    ...props
 }: IconLinkProps) {
     const router = useRouter();
 
@@ -58,33 +57,34 @@ export default function IconLink({
         return pathMatcher(router, href);
     }, [href, matchPath, pathMatcher, router]);
 
-    const Component = href ? Link : ButtonWrapper;
+    const Component: React.ElementType = href
+        ? useAnchor
+            ? 'a'
+            : Link
+        : 'button';
 
     return (
         <Component
-            target={targetBlank ? '_blank' : '_self'}
-            href={href as NonNullable<typeof href>}
-            onClick={onClick}
+            {...props}
+            href={href}
             className={`${matches ? 'bg-primary-focus' : ''} ${
-                collapsed ? 'justify-center' : ''
-            } ${
-                type === 'filled'
+                styling === 'filled'
                     ? 'justify-center bg-primary px-4 py-2 text-center text-white'
                     : 'px-2 py-1 text-primary-darker'
-            } inline-flex rounded-xl font-bold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
+            } inline-flex items-center rounded-xl font-semibold transition-colors hover:cursor-pointer hover:bg-primary-hover active:bg-primary-active ${className}`}
         >
-            <span
-                className={`material-symbols-rounded inline ${iconClass ?? ''}`}
-            >
+            <span className={`material-symbols-rounded ${iconClass ?? ''}`}>
                 {icon}
             </span>
             <span
-                className={`${
-                    collapsed ? 'hidden lg:hidden' : ''
-                } ms-1 inline ${labelClass ?? ''}`}
+                className={`${children ? 'inline' : 'hidden'} ${
+                    labelClass ?? 'ms-1'
+                }`}
             >
                 {children}
             </span>
         </Component>
     );
 }
+
+export default memo(IconLink);

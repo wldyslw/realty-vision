@@ -1,7 +1,10 @@
 {
     "general": {
+        "lang": "עִברִית",
         "apartment": "דירה",
-        "start": "בוא נלך!"
+        "start": "בוא נלך!",
+        "light_mode": "מצב אור",
+        "dark_mode": "מצב כהה"
     },
     "navigation": {
         "home": "ראשי",
@@ -9,7 +12,8 @@
         "about": "אודות הפרויקט",
         "gallery": "גלריה",
         "map": "מפה",
-        "contacts": "צור קשר"
+        "contacts": "צור קשר",
+        "more": "יותר"
     },
     "search": {
         "directions": {

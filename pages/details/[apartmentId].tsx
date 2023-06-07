@@ -43,13 +43,12 @@ function Details() {
             <Sheet ref={sheetRef} className="lg:w-96">
                 <div className="flex py-4">
                     <IconLink
-                        collapsed
                         className="me-2"
                         onClick={sheetRef.current?.toggle}
                         href={backLink}
                         icon="arrow_back_ios_new"
                     ></IconLink>
-                    <h2 className="text-2xl font-bold">
+                    <h2 className="text-2xl">
                         {t('general.apartment')} {apartmentInfo?.name ?? ''}
                     </h2>
                 </div>
